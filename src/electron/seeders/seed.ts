@@ -1,58 +1,92 @@
-import { User } from "../models/users.js";
+import {
+  add_members_to_festival,
+  start_festival,
+} from "../controllers/festival.js";
+import { Club } from "../models/club.js";
+import { Festival } from "../models/festival.js";
+import { Member } from "../models/member.js";
 
 export async function seed() {
   try {
-    // 1. Crear usarios de prueba
-    await User.findOrCreate({
-      where: {
-        name: "Juan Sal",
-      },
+    //Clubes
+    const [club1]: any = await Club.findOrCreate({
+      where: { name: "Torogoz" },
       defaults: {
-        name: "Juan Sal",
-        birth: new Date("2001-05-12"),
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        name: "Torogoz",
+        direction: "Calle ficticia #3 Colonia imaginación",
       },
     });
 
-    await User.findOrCreate({
-      where: {
-        name: "Claudia Quesadilla",
-      },
+    const [club2]: any = await Club.findOrCreate({
+      where: { name: "Mitha" },
       defaults: {
-        name: "Claudia Quesadilla",
-        birth: new Date("2003-09-10"),
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        name: "Mitha",
+        direction: "Calle ficticia #8 Colonia imaginación",
       },
     });
 
-    await User.findOrCreate({
+    //2 Deportistas
+    const [member1]: any = await Member.findOrCreate({
       where: {
-        name: "Camila Milanesa",
+        name: "Juan",
+        lastname: "Salgado",
       },
       defaults: {
-        name: "Camila Milanesa",
-        birth: new Date("1995-03-02"),
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        name: "Juan",
+        lastname: "Salgado",
+        birth: new Date("2015-05-12"),
+        number: "1",
       },
     });
 
-    await User.findOrCreate({
+    const [member2]: any = await Member.findOrCreate({
       where: {
-        name: "Carlos Drake",
+        name: "María",
+        lastname: "Cañero",
       },
       defaults: {
-        name: "Carlos Drake",
-        birth: new Date("2002-02-11"),
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        name: "María",
+        lastname: "Cañero",
+        birth: new Date("2015-05-12"),
+        number: "1",
       },
     });
 
-    console.log("Seed creado exitosamente.");
+    const [member3]: any = await Member.findOrCreate({
+      where: {
+        name: "Claudia",
+        lastname: "Quesada",
+      },
+      defaults: {
+        name: "Claudia",
+        lastname: "Quesada",
+        birth: new Date("2015-05-12"),
+        number: "1",
+      },
+    });
+
+    await club2.addMember(member3);
+    await club2.addMember(member2);
+    await club1.addMember(member1);
+
+    //Crear festival
+    const [festival]: any = await Festival.findOrCreate({
+      where: { name: "Torneo de prueba" },
+      defaults: { name: "Torneo de prueba" },
+    });
+
+    console.log("\n\n//========== Creación de festival.\n\n");
+    //añadir participantes a festival
+    const members: any = [member1.id, member2.id, member3.id];
+    console.log(JSON.stringify(members));
+    await add_members_to_festival(festival.id, members);
+
+    console.log("\n\n//========== Creación de festival. \n\n");
+    //Iniciar festival
+    console.log(await start_festival(festival.id));
+
+    console.log("\n\n//========== Seed creado exitosamente.\n\n");
   } catch (error) {
-    console.error("Error en seed:", error);
+    console.error("\n\n//======= Error en seed:", error);
   }
 }

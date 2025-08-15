@@ -1,9 +1,9 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database/db.js";
 
-export class User extends Model {}
+export class Club extends Model {}
 
-User.init(
+Club.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -14,18 +14,14 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    direction: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    birth: {
-      type: DataTypes.DATE,
-      allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: "Users",
+    tableName: "Clubs",
     timestamps: true,
     underscored: true,
   }

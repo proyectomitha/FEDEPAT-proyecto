@@ -1,4 +1,4 @@
-# Template-electron-react-sequelize
+# Propuesta gabriel - patinaje
 
 Este template provee lo mínimo necesario para el correcto funcionamiento de un proyecto de electron que usa sequelize como orm, react, tailwind y typescript para funcionar. Está construido sobre vite y también incluye un slint config.
 
