@@ -21,6 +21,10 @@ TestReaction.init(
       allowNull: false,
       defaultValue: 1,
     },
+    divisor: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+    },
     category: {
       type: DataTypes.STRING,
       allowNull: false,

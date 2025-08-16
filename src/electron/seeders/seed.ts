@@ -1,6 +1,7 @@
 import {
   add_members_to_festival,
   start_festival,
+  start_test_reaction,
 } from "../controllers/festival.js";
 import { Club } from "../models/club.js";
 import { Festival } from "../models/festival.js";
@@ -83,8 +84,12 @@ export async function seed() {
 
     console.log("\n\n//========== Creación de festival. \n\n");
     //Iniciar festival
-    console.log(await start_festival(festival.id));
-
+    /*/console.log(await start_festival(festival.id));
+    console.log(
+      JSON.stringify(
+        await start_test_reaction("63a1dba1-0e67-414e-b743-5a32b6c20bef", 2)
+      )
+    );*/
     console.log("\n\n//========== Seed creado exitosamente.\n\n");
   } catch (error) {
     console.error("\n\n//======= Error en seed:", error);

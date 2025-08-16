@@ -7,7 +7,7 @@ export class MemberSerieResistance extends Model {}
 
 MemberTestHability.init(
   {
-    puntaje: {
+    score: {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0,
@@ -27,7 +27,7 @@ MemberTestHability.init(
 
 MemberSerieReaction.init(
   {
-    puntaje: {
+    score: {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0,
@@ -47,7 +47,7 @@ MemberSerieReaction.init(
 
 MemberSerieResistance.init(
   {
-    puntaje: {
+    score: {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0,
