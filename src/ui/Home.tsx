@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 type User = {
   id: string;
   name: string;
-  description: string;
+  lastname: string;
   birth: Date;
 };
 
@@ -12,15 +12,15 @@ export function Home() {
     {
       id: "",
       name: "",
+      lastname: "",
       birth: new Date(),
-      description: "",
     },
   ]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         //@ts-ignore
-        const dfetch = await window.electron.obtenerUsuario();
+        const dfetch = await window.members.getMembers();
         console.log(dfetch);
         setData(dfetch);
       } catch (error) {
@@ -44,18 +44,18 @@ export function Home() {
         <table className="w-full p-10 text-left whitespace-nowrap bg-gray-800">
           <thead>
             <tr className="bg-gray-700">
-              <th className="p-4">Nombre</th>
-              <th className="p-4">Fecha de nacimiento</th>
-              <th className="p-4">Descripción</th>
+              <th className="p-4 pl-8">Nombre</th>
+              <th className="p-4">Apellido</th>
+              <th className="p-4 pr-8 text-right">Fecha de nacimiento</th>
             </tr>
           </thead>
           <tbody className="text-left">
             {data.map((user) => (
               <tr key={user.id}>
-                <td className="p-4">{user.name}</td>
-                <td className="p-4">{user.birth.toDateString()}</td>
-                <td className="p-4 whitespace-nowrap overflow-hidden text-ellipsis max-w-sm">
-                  {user.description}
+                <td className="p-4 pl-8">{user.name}</td>
+                <td className="p-4">{user.lastname}</td>
+                <td className="p-4 pr-8 text-right">
+                  {user.birth.toDateString()}
                 </td>
               </tr>
             ))}

@@ -1,5 +1,3 @@
-//Control de la lógica para la creación de las pruebas
-
 import { Festival } from "../models/festival.js";
 import { TestHability } from "../models/testHability.js";
 import { SerieReaction, TestReaction } from "../models/testReaction.js";
@@ -9,6 +7,11 @@ import {
   MemberTestHability,
 } from "../models/memberTest.js";
 import { Member } from "../models/member.js";
+import {
+  ordenarPosiciones,
+  serpenteo,
+  calcularEdad,
+} from "./auxiliar-functions.js";
 
 //start festival and create Test Hability
 /**
@@ -29,27 +32,38 @@ export async function start_festival(id: string) {
 
   // Definimos rangos de edad con su nombre
   const rangos = [
-    { nombre: "menores de 6", min: 0, max: 5 },
-    { nombre: "7-8", min: 7, max: 8 },
-    { nombre: "9-10", min: 9, max: 10 },
-    { nombre: "11-12", min: 11, max: 12 },
-    { nombre: "13-14", min: 13, max: 14 },
-    { nombre: "15-16", min: 15, max: 16 },
+    { nombre: "menores de 6 femenino", gender: "F", min: 0, max: 5 },
+    { nombre: "menores de 6 masculino", gender: "M", min: 0, max: 5 },
+    { nombre: "7-8 femenino", gender: "F", min: 7, max: 8 },
+    { nombre: "7-8 masculino", gender: "M", min: 7, max: 8 },
+    { nombre: "9-10 femenino", gender: "F", min: 9, max: 10 },
+    { nombre: "9-10 masculino", gender: "M", min: 9, max: 10 },
+    { nombre: "11-12 femenino", gender: "F", min: 11, max: 12 },
+    { nombre: "11-12 masculino", gender: "M", min: 11, max: 12 },
+    { nombre: "13-14 femenino", gender: "F", min: 13, max: 14 },
+    { nombre: "13-14 masculino", gender: "M", min: 13, max: 14 },
+    { nombre: "15-16 femenino", gender: "F", min: 15, max: 16 },
+    { nombre: "15-16 masculino", gender: "M", min: 15, max: 16 },
   ];
 
   // Creamos objeto de categorías solo con las que tengan miembros
-  const categorias: Record<string, any[]> = {};
+  const categorias: Record<string, any> = {};
 
   for (const rango of rangos) {
     // Filtrar miembros que caen en el rango actual
     const miembrosEnRango = members.filter((m: any) => {
       const edad = calcularEdad(m.birth);
-      return edad >= rango.min && edad <= rango.max;
+      return (
+        edad >= rango.min && edad <= rango.max && rango.gender === m.gender
+      );
     });
 
     // Solo agregar categoría si hay miembros
     if (miembrosEnRango.length > 0) {
-      categorias[rango.nombre] = miembrosEnRango;
+      categorias[rango.nombre] = {
+        members: miembrosEnRango,
+        gender: rango.gender,
+      };
     }
   }
 
@@ -60,8 +74,12 @@ export async function start_festival(id: string) {
       where: {
         festival_id: id,
         category: categoria,
+        gender: categorias[categoria].gender,
       },
-      defaults: { category: categoria },
+      defaults: {
+        category: categoria,
+        gender: categorias[categoria].gender,
+      },
     });
     await (festival as any).addTestHability(phab);
 
@@ -70,8 +88,12 @@ export async function start_festival(id: string) {
       where: {
         festival_id: id,
         category: categoria,
+        gender: categorias[categoria].gender,
       },
-      defaults: { category: categoria },
+      defaults: {
+        category: categoria,
+        gender: categorias[categoria].gender,
+      },
     });
     await (festival as any).addTestReaction(preact);
 
@@ -80,13 +102,17 @@ export async function start_festival(id: string) {
       where: {
         festival_id: id,
         category: categoria,
+        gender: categorias[categoria].gender,
       },
-      defaults: { category: categoria },
+      defaults: {
+        category: categoria,
+        gender: categorias[categoria].gender,
+      },
     });
     await (festival as any).addTestResistance(pres);
 
     //Inscribir a pruebas iniciales (Habilidad)
-    const miembros = categorias[categoria]; // <- OJO: clave dinámica
+    const miembros = categorias[categoria].members; // <- OJO: clave dinámica
     if (miembros && miembros.length) {
       const memberIds = miembros.map((m: any) => m.id ?? m.get?.("id"));
       if (typeof (phab as any).addMembers === "function") {
@@ -317,74 +343,4 @@ export async function next_test_reaction(id: string, n_max: number) {
       }
     }
   }
-}
-
-//========================================== Funciones auxiliares
-
-//Función para calcular edad
-function calcularEdad(fechaNacimiento: Date): number {
-  const hoy = new Date();
-  let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
-  const m = hoy.getMonth() - fechaNacimiento.getMonth();
-  if (m < 0 || (m === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
-    edad--;
-  }
-  return edad;
-}
-
-// Ordenar por serpenteo. Es necesario pasar un array ordenado
-function serpenteo(lista: any[], series: number) {
-  const finalOrder: any[][] = [];
-  let temporalOrder: any[] = [];
-
-  let i = 0;
-  let p = -1;
-
-  while (i < lista.length) {
-    for (let j = 0; j < series; j++) {
-      if (i >= lista.length) break;
-      temporalOrder.push(lista[i]);
-      i++;
-    }
-
-    p *= -1;
-    if (p === 1) {
-      finalOrder.push([...temporalOrder]); // misma dirección
-    } else {
-      finalOrder.push([...temporalOrder].reverse()); // invertida
-    }
-    temporalOrder = [];
-  }
-
-  // Reorganizar por columnas → formar las series finales
-  const seriesArray: any[][] = [];
-  for (let j = 0; j < series; j++) {
-    const serie: any[] = [];
-    for (let i = 0; i < finalOrder.length; i++) {
-      if (finalOrder[i][j] !== undefined) {
-        serie.push(finalOrder[i][j]);
-      }
-    }
-    seriesArray.push(serie);
-  }
-
-  return seriesArray;
-}
-
-//Función que se le indica el tipo de competencia  y un array [{id, score, time}, ...]
-function ordenarPosiciones(type: string, array: any[]) {
-  let resultado = [];
-  if (type === "time") {
-    //Ordenar por tiempo
-    resultado = array.sort((a, b) => a.time - b.time);
-  } else {
-    //Ordenar por criterio de posición y tiempo
-    resultado = array.sort((a, b) => {
-      if (b.score === a.score) {
-        return a.time - b.time;
-      }
-      return b.score - a.score;
-    });
-  }
-  return resultado;
 }

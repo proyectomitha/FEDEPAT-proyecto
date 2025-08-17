@@ -4,7 +4,7 @@ import { isDev } from "./util.js";
 import { connectDB } from "./database/conection.js";
 import { seed } from "./seeders/seed.js";
 import { getPreloadPath } from "./pathResolver.js";
-import { registerIpcUser } from "./ipc-controllers/ipc-paciente.js";
+import { registerIpcMember } from "./ipc-controllers/ipc-members.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
@@ -15,13 +15,14 @@ app.on("ready", async () => {
     },
   });
   try {
-    connectDB(); //Conexión a la base de datos y migraciones
-    seed(); // Creación de seed por defecto
+    //Conexión a la base de datos y migraciones
+    await connectDB();
+    await seed(); // Creación de seed por defecto
   } catch (error) {
     console.log(error);
   }
 
-  registerIpcUser();
+  registerIpcMember();
 
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5123");

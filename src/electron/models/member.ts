@@ -22,6 +22,10 @@ Member.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     birth: {
       type: DataTypes.DATE,
       allowNull: false,
