@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Festival } from "../types";
+import { getFestivals } from "../fetchs";
 
 export function FestivalList({ search }: { search: string }) {
   const navigate = useNavigate();
@@ -9,10 +10,9 @@ export function FestivalList({ search }: { search: string }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPacientes() {
+    async function fetchData() {
       try {
-        // @ts-ignore
-        const data = await window.festivals.getFestivals();
+        const data = await getFestivals();
         if (data) setFestivals(data);
       } catch (error) {
         console.error("Error al obtener pacientes:", error);
@@ -21,7 +21,7 @@ export function FestivalList({ search }: { search: string }) {
       }
     }
 
-    fetchPacientes();
+    fetchData();
   }, []);
 
   // Filtrar cuando cambia `search`

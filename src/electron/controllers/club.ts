@@ -5,7 +5,10 @@ import { Member } from "../models/member.js";
 export async function get_club(id: string) {
   const club = await Club.findByPk(id);
   const members = await (club as any).getMembers();
-  return { club: club, members: members };
+  return {
+    club: (club as any).toJSON(),
+    members: members.map((m: any) => m.toJSON()),
+  };
 }
 
 //get all club

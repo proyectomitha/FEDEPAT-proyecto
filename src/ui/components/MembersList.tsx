@@ -3,18 +3,25 @@ import { useNavigate } from "react-router-dom";
 import type { Member } from "../types";
 import { calcularEdad } from "../functions";
 
-export function MemberList({ search }: { search: string }) {
+export function MemberList({
+  search,
+  getMembersFunction,
+}: {
+  search: string;
+  getMembersFunction?: () => Promise<Member[]>;
+}) {
   const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [filteredData, setFilteredData] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPacientes() {
+    async function fetchData() {
       try {
-        // @ts-ignore
-        const data = await window.members.getMembers();
-        if (data) setMembers(data);
+        if (getMembersFunction) {
+          const data = await getMembersFunction(); // 👈 aquí la llamada
+          setMembers(data);
+        }
       } catch (error) {
         console.error("Error al obtener pacientes:", error);
       } finally {
@@ -22,7 +29,7 @@ export function MemberList({ search }: { search: string }) {
       }
     }
 
-    fetchPacientes();
+    fetchData();
   }, []);
 
   // Filtrar cuando cambia `search`

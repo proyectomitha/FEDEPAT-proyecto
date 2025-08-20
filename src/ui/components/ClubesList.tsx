@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Club } from "../types";
+import { getClubs } from "../fetchs";
 
 export function ClubesList({ search }: { search: string }) {
   const navigate = useNavigate();
@@ -9,10 +10,9 @@ export function ClubesList({ search }: { search: string }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPacientes() {
+    async function fetchData() {
       try {
-        // @ts-ignore
-        const data = await window.clubs.getClubs();
+        const data = await getClubs();
         if (data) setClubes(data);
       } catch (error) {
         console.error("Error al obtener pacientes:", error);
@@ -21,7 +21,7 @@ export function ClubesList({ search }: { search: string }) {
       }
     }
 
-    fetchPacientes();
+    fetchData();
   }, []);
 
   // Filtrar cuando cambia `search`
@@ -53,7 +53,7 @@ export function ClubesList({ search }: { search: string }) {
             {filteredData.map((club) => (
               <tr
                 key={club.id}
-                onClick={() => navigate(`/clubes/${club.id}`)}
+                onClick={() => navigate(`/clubs/${club.id}`)}
                 className="hover:bg-cyan-500 cursor-pointer"
               >
                 <td className="p-4 pl-8">{club.name}</td>

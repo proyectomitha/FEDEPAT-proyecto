@@ -24,7 +24,7 @@ export function registerIpcClub() {
     return await club.add_member_to_club(id, data_member);
   });
 
-  ipcMain.handle("getMembers", async (_event, { id }) => {
+  ipcMain.handle("getMembersFromClub", async (_event, { id }) => {
     return await club.get_member_from_club(id);
   });
 }

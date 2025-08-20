@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Searcher } from "../layout/Searcher";
 import { Sidebar } from "../layout/Sidebar";
 import { MemberList } from "../components/MembersList";
+import { getMembers } from "../fetchs";
 
 export function Members() {
   const [search, setSearch] = useState("");
@@ -16,7 +17,7 @@ export function Members() {
           onChangeSearch={setSearch}
           placeholder="Buscar deportista ..."
         />
-        <MemberList search={search} />
+        <MemberList search={search} getMembersFunction={getMembers} />
       </div>
     </>
   );
