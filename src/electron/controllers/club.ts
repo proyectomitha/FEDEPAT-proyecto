@@ -44,3 +44,10 @@ export async function add_member_to_club(id_club: string, data_member: any) {
   });
   return await (club as any).addMember(member);
 }
+
+//get members
+export async function get_member_from_club(id_club: string) {
+  const club = await Club.findByPk(id_club);
+  if (!club) return { error: `Club ${id_club} not found` };
+  return await (club as any).getMembers();
+}

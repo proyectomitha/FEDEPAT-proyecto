@@ -13,10 +13,14 @@ import { get_relation } from "./auxiliar-functions.js";
 //===================================================== Puntajes de cada prueba
 
 // get score by order in test
-export async function get_score_in_test(id: string) {}
+export async function get_score_in_test(id: string) {
+  return [`array de prueba. ID: ${id}`];
+}
 
 // get score by order in serie
-export async function get_score_in_serie(id: string) {}
+export async function get_score_in_serie(id: string) {
+  return [`array de prueba. ID: ${id}`];
+}
 
 //===================================================== Asignar puntuación
 
@@ -28,5 +32,7 @@ export async function set_score_in_serie(
   time: number
 ) {
   const relation = await get_relation(id_member, id_serie);
-  return relation?.update({ time: time, score: score });
+  return relation
+    ? relation.update({ time: time, score: score })
+    : { status: "error", error: "relation not found" };
 }

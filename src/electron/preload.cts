@@ -29,6 +29,9 @@ electron.contextBridge.exposeInMainWorld("clubs", {
 
   addMemberToClub: async (id: string, data_member: any) =>
     await ipcRenderer.invoke("addMemberToClub", { id, data_member }),
+
+  getMembers: async (id: string) =>
+    await ipcRenderer.invoke("getMembers", { id }),
 });
 
 electron.contextBridge.exposeInMainWorld("festivals", {
@@ -68,4 +71,20 @@ electron.contextBridge.exposeInMainWorld("tests", {
 
   addMemberToFestival: async (id: string, data: any) =>
     await ipcRenderer.invoke("addMemberToFestival", { id, data }),*/
+});
+
+electron.contextBridge.exposeInMainWorld("score", {
+  getScoreTest: async (id: string) =>
+    await ipcRenderer.invoke("getScoreTest", { id }),
+
+  getScoreSerie: async (id: string) =>
+    await ipcRenderer.invoke("getScoreSerie", { id }),
+
+  setScore: async (
+    id_member: string,
+    id_serie: string,
+    score: number,
+    time: number
+  ) =>
+    await ipcRenderer.invoke("setScore", { id_member, id_serie, score, time }),
 });

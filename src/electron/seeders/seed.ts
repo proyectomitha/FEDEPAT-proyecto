@@ -33,7 +33,7 @@ export async function seed() {
         name: "Juan",
         lastname: "Salgado",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "A123",
 
         gender: "M",
       },
@@ -48,7 +48,7 @@ export async function seed() {
         name: "María",
         lastname: "Cañero",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "A124",
         gender: "F",
       },
     });
@@ -62,7 +62,7 @@ export async function seed() {
         name: "Claudia",
         lastname: "Quesada",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "B213",
         gender: "F",
       },
     });
@@ -76,7 +76,7 @@ export async function seed() {
         name: "Marco",
         lastname: "Quesada",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "B331",
         gender: "M",
       },
     });
@@ -90,7 +90,7 @@ export async function seed() {
         name: "Camila",
         lastname: "Payer",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "C121",
         gender: "F",
       },
     });
@@ -104,7 +104,7 @@ export async function seed() {
         name: "Rocío",
         lastname: "Villén",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "A351",
         gender: "F",
       },
     });
@@ -118,7 +118,7 @@ export async function seed() {
         name: "Guillermo",
         lastname: "Gutierrez",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "A541",
         gender: "M",
       },
     });
@@ -132,7 +132,7 @@ export async function seed() {
         name: "Lucía",
         lastname: "Sierra",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "A101",
         gender: "F",
       },
     });
@@ -146,7 +146,7 @@ export async function seed() {
         name: "Inés",
         lastname: "Pose",
         birth: new Date("2015-05-12"),
-        number: "1",
+        number: "B209",
         gender: "F",
       },
     });

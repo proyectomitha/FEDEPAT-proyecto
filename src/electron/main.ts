@@ -5,10 +5,13 @@ import { connectDB } from "./database/conection.js";
 import { seed } from "./seeders/seed.js";
 import { getPreloadPath } from "./pathResolver.js";
 import { registerIpcMember } from "./ipc-controllers/ipc-members.js";
+import { registerIpcClub } from "./ipc-controllers/ipc-clubs.js";
+import { registerIpcFestival } from "./ipc-controllers/ipc-festivals.js";
+import { registerIpcScore } from "./ipc-controllers/ipc-score.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
-    minWidth: 770, // ancho mínimo
+    minWidth: 900, // ancho mínimo
     minHeight: 300, //alto mínimo
     webPreferences: {
       preload: getPreloadPath(),
@@ -23,6 +26,9 @@ app.on("ready", async () => {
   }
 
   registerIpcMember();
+  registerIpcClub();
+  registerIpcFestival();
+  registerIpcScore();
 
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5123");

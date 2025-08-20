@@ -163,7 +163,7 @@ export async function configure_test_reaction(
     let i_0: number = 4;
     for (let i = 4; i > 1; i--) {
       if (
-        Math.ceil(n_members / i) > 10 &&
+        Math.ceil(n_members / i) > n_max &&
         Math.ceil(n_members / i) < n_max ** 2 &&
         i < i_0
       ) {
@@ -343,4 +343,11 @@ export async function next_test_reaction(id: string, n_max: number) {
       }
     }
   }
+}
+
+// Terminar test de habilidad
+export async function end_test_hability(id: string) {
+  const testHability = await TestHability.findByPk(id);
+  if (!testHability) return { status: "error", error: "Test not found" };
+  return await testHability.update({ locked: true });
 }
