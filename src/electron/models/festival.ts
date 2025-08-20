@@ -21,7 +21,7 @@ Festival.init(
     locked: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: true,
     },
     startDate: {
       type: DataTypes.DATE,

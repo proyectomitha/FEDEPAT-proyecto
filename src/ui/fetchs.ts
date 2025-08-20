@@ -1,6 +1,6 @@
 //============== Clubs ===============//
 
-import type { Club, Member } from "./types";
+import type { Club, Festival, Member } from "./types";
 
 export async function getClubs() {
   // @ts-ignore
@@ -19,6 +19,47 @@ export async function getClub(
 export async function getFestivals() {
   // @ts-ignore
   return await window.festivals.getFestivals();
+}
+
+export async function getFestival(id_festival: string) {
+  // @ts-ignore
+  return await window.festivals.getFestival(id_festival);
+}
+
+export async function createFestival(): Promise<Festival> {
+  //@ts-ignore
+  return await window.festivals.createFestival({
+    name: "Nuevo festival",
+    description: "Descripción ...",
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+}
+
+export async function deleteFestival(id_festival: string) {
+  //@ts-ignore
+  return await window.festivals.deleteFestival(id_festival);
+}
+
+export async function addMemberToFestival(
+  id_festival: string,
+  ids_member: string[]
+) {
+  //@ts-ignore
+  return await window.festivals.addMemberToFestival(id_festival, ids_member);
+}
+
+export async function removeMemberToFestival(
+  id_festival: string,
+  ids_member: string[]
+) {
+  //@ts-ignore
+  return await window.festivals.removeMemberToFestival(id_festival, ids_member);
+}
+
+export async function startFestival(id: string) {
+  //@ts-ignore
+  return await window.festivals.startFestival(id);
 }
 
 //============== Members ===============//

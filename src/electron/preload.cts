@@ -34,11 +34,43 @@ electron.contextBridge.exposeInMainWorld("clubs", {
     await ipcRenderer.invoke("getMembersFromClub", { id }),
 });
 
+electron.contextBridge.exposeInMainWorld("tests", {
+  startFestival: async (id: string) =>
+    await ipcRenderer.invoke("startFestival"),
+
+  configureTestReaction: async (
+    id: string,
+    n_series: number,
+    type: string,
+    strict_mode: number,
+    n_max: number
+  ) =>
+    await ipcRenderer.invoke("configureTestReaction", {
+      id,
+      n_series,
+      type,
+      strict_mode,
+      n_max,
+    }),
+
+  startTestReaction: async (id: string) =>
+    await ipcRenderer.invoke("startTestReaction", { id }),
+
+  nextTestReaction: async (id: string, n_max: number) =>
+    await ipcRenderer.invoke("nextTestReaction", { id, n_max }),
+
+  endTestHability: async (id: string) =>
+    await ipcRenderer.invoke("endTestHability", { id }),
+});
+
 electron.contextBridge.exposeInMainWorld("festivals", {
   getFestivals: async () => await ipcRenderer.invoke("getFestivals"),
 
   getFestival: async (id: string) =>
     await ipcRenderer.invoke("getFestival", { id }),
+
+  createFestival: async (data: any) =>
+    await ipcRenderer.invoke("createFestival", { data }),
 
   updtateFestival: async (id: string, data: any) =>
     await ipcRenderer.invoke("updtateFestival", { id, data }),
@@ -51,34 +83,17 @@ electron.contextBridge.exposeInMainWorld("festivals", {
 
   addMemberToFestival: async (id: string, data: any) =>
     await ipcRenderer.invoke("addMemberToFestival", { id, data }),
-});
 
-electron.contextBridge.exposeInMainWorld("tests", {
-  /*
-  getFestivals: async () => await ipcRenderer.invoke("getFestivals"),
-
-  getFestival: async (id: string) =>
-    await ipcRenderer.invoke("getFestival", { id }),
-
-  updtateFestival: async (id: string, data: any) =>
-    await ipcRenderer.invoke("updtateFestival", { id, data }),
-
-  deleteFestival: async (id: string) =>
-    await ipcRenderer.invoke("deleteFestival", { id }),
-
-  startFestival: async (id: string) =>
-    await ipcRenderer.invoke("startFestival", { id }),
-
-  addMemberToFestival: async (id: string, data: any) =>
-    await ipcRenderer.invoke("addMemberToFestival", { id, data }),*/
+  removeMemberToFestival: async (id: string, data: any) =>
+    await ipcRenderer.invoke("removeMemberToFestival", { id, data }),
 });
 
 electron.contextBridge.exposeInMainWorld("score", {
-  getScoreTest: async (id: string) =>
-    await ipcRenderer.invoke("getScoreTest", { id }),
+  getScoreTestReaction: async (id: string) =>
+    await ipcRenderer.invoke("getScoreTestReaction", { id }),
 
-  getScoreSerie: async (id: string) =>
-    await ipcRenderer.invoke("getScoreSerie", { id }),
+  getScoreSerieReaction: async (id: string) =>
+    await ipcRenderer.invoke("getScoreSerieReaction", { id }),
 
   setScore: async (
     id_member: string,

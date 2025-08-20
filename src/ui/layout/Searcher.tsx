@@ -13,7 +13,7 @@ export function Searcher({
     <div>
       {date && (
         <div className="flex pb-5 gap-2 flex-col lg:flex-row">
-          <div className="flex flex-1 shadow-md">
+          <div className="flex flex-1">
             <input
               type="text"
               placeholder={placeholder}

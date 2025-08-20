@@ -124,6 +124,8 @@ export async function start_festival(id: string) {
       }
     }
   }
+
+  return true;
 }
 
 //Configurar la organización de la prueba de reacción e iniciarla

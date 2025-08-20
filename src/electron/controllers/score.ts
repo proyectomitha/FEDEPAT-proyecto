@@ -1,3 +1,6 @@
+import { Member } from "../models/member.js";
+import { MemberSerieReaction } from "../models/memberTest.js";
+import { SerieReaction, TestReaction } from "../models/testReaction.js";
 import { get_relation } from "./auxiliar-functions.js";
 
 //==================================================== Puntajes globales
@@ -13,13 +16,41 @@ import { get_relation } from "./auxiliar-functions.js";
 //===================================================== Puntajes de cada prueba
 
 // get score by order in test
-export async function get_score_in_test(id: string) {
-  return [`array de prueba. ID: ${id}`];
+export async function get_score_in_test_reaction(id: string) {
+  const serie = await TestReaction.findAll({
+    where: { id },
+    include: [
+      {
+        model: SerieReaction,
+        where: { order: 3 },
+        include: [
+          {
+            model: Member,
+            through: {
+              attributes: ["score", "time"],
+            },
+          },
+        ],
+      },
+    ],
+    order: [[SerieReaction, Member, MemberSerieReaction, "score", "DESC"]],
+  });
+  return serie;
 }
 
 // get score by order in serie
-export async function get_score_in_serie(id: string) {
-  return [`array de prueba. ID: ${id}`];
+export async function get_score_in_serie_reaction(id: string) {
+  const serie = await SerieReaction.findAll({
+    where: { id: id },
+    include: {
+      model: Member,
+      through: {
+        attributes: ["score", "time"],
+      },
+    },
+    order: [[Member, MemberSerieReaction, "score", "DESC"]],
+  });
+  return serie;
 }
 
 //===================================================== Asignar puntuación

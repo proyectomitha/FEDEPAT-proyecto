@@ -13,6 +13,10 @@ export function registerIpcFestival() {
     return await festival.get_festival(id);
   });
 
+  ipcMain.handle("createFestival", async (_event, { data }) => {
+    return await festival.create_festival(data);
+  });
+
   ipcMain.handle("updtateFestival", async (_event, { id, data }) => {
     return await festival.update_festival(id, data);
   });
@@ -29,5 +33,7 @@ export function registerIpcFestival() {
     return await festival.add_members_to_festival(id, data);
   });
 
-  //Falta el método de remover miembros
+  ipcMain.handle("removeMemberToFestival", async (_event, { id, data }) => {
+    return await festival.remove_member_to_festival(id, data);
+  });
 }

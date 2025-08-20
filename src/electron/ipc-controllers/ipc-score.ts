@@ -2,13 +2,13 @@ import { ipcMain } from "electron";
 import * as score from "../controllers/score.js";
 
 export function registerIpcScore() {
-  ipcMain.handle("getScoreTest", async (_event, { id }) => {
-    const users: any = await score.get_score_in_test(id);
+  ipcMain.handle("getScoreTestReaction", async (_event, { id }) => {
+    const users: any = await score.get_score_in_test_reaction(id);
     return users.map((p: any) => p.toJSON());
   });
 
-  ipcMain.handle("getScoreSerie", async (_event, { id }) => {
-    const users: any = await score.get_score_in_serie(id);
+  ipcMain.handle("getScoreSerieReaction", async (_event, { id }) => {
+    const users: any = await score.get_score_in_serie_reaction(id);
     return users.map((p: any) => p.toJSON());
   });
 

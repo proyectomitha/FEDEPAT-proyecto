@@ -1,9 +1,15 @@
 import { Users, Database, Medal, PartyPopper, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export function Sidebar({ currentView }: { currentView: string }) {
+export function Sidebar({
+  currentView,
+  open_t = true,
+}: {
+  currentView: string;
+  open_t?: boolean;
+}) {
   const navigate = useNavigate();
-  const open: boolean = true;
+  const open: boolean = open_t;
 
   const navItems = [
     {
@@ -43,8 +49,8 @@ export function Sidebar({ currentView }: { currentView: string }) {
       {/* Sidebar */}
       <div
         className={`fixed top-auto left-0 h-full bg-cyan-600 text-white shadow-lg transition-transform z-30 
-         lg:w-50 w-19 p-4 flex flex-col gap-4
-        ${open ? "translate-x-0" : "-translate-x-full"} 
+          w-19 p-4 flex flex-col gap-4
+        ${open ? "lg:w-50 translate-x-0" : ""} 
         md:translate-x-0`}
       >
         {navItems.map((item) => (
@@ -59,7 +65,9 @@ export function Sidebar({ currentView }: { currentView: string }) {
             } flex hover:cursor-pointer items-center gap-3 p-2 hover:bg-cyan-700 rounded transition`}
           >
             {item.icon}
-            <span className=" hidden lg:inline-block">{item.label}</span>
+            <span className={`hidden ${open ? "lg:inline-block" : ""}`}>
+              {item.label}
+            </span>
           </button>
         ))}
       </div>
