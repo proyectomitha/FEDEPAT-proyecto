@@ -5,6 +5,7 @@ export type Festival = {
   locked: boolean;
   startDate: Date;
   endDate: Date;
+  active: boolean;
 };
 
 export type Member = {

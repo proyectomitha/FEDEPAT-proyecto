@@ -6,7 +6,14 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+}
+
+body {
   background-color: oklch(30.2% 0.056 229.695);
+}
+
+.scroll-stable {
+  scrollbar-gutter: stable;
 }
 
 h1 {

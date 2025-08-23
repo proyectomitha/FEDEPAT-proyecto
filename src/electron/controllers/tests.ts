@@ -24,7 +24,7 @@ export async function start_festival(id: string) {
   if (!festival) return { error: `Festival ${id} not found` };
 
   //Bloquear el festival
-  festival.update({ locked: true });
+  await festival.update({ locked: true });
 
   //==Crear pruebas
   // Obtener miembros desde la relación

@@ -38,19 +38,19 @@ export function ElementListAddMembersFestival({
   if (loading) return <p>Cargando clubes...</p>;
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 max-h-96 overflow-y-auto  scroll-stable">
       {elements.length === 0 ? (
         <p>No hay elementos.</p>
       ) : (
-        <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600">
-          <thead className="bg-cyan-800">
+        <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600 table-fixed border-collapse">
+          <thead className="sticky top-0 bg-cyan-800">
             <tr>
               {data.map((col) => (
                 <th key={col.label} className="p-4 pl-8">
                   {col.label}
                 </th>
               ))}
-              <th className="p-4 pl-8"></th>
+              <th className=""></th>
             </tr>
           </thead>
           <tbody>
@@ -74,9 +74,9 @@ export function ElementListAddMembersFestival({
                     </td>
                   );
                 })}
-                <td className="p-2 px-4">
+                <td className="pl-2 pr-4 text-right">
                   <button
-                    className="p-1 rounded-sm bg-purple-700 hover:bg-purple-600 cursor-pointer"
+                    className="p-1 rounded-sm bg-blue-600 hover:bg-blue-700 cursor-pointer"
                     onClick={async () => {
                       await addMemberToFestival(id_festival, [member.id]);
                       reload();

@@ -69,8 +69,8 @@ export function make_relations() {
   });
 
   // Miembro N:1 club
-  Club.hasMany(Member);
-  Member.belongsTo(Club);
+  Club.hasMany(Member, { as: "members" });
+  Member.belongsTo(Club, { as: "club" });
 
   // Miembro N:N festival
   Festival.belongsToMany(Member, {
@@ -100,10 +100,13 @@ export function make_relations() {
 
   // TestReacción 1:N SerieReaccion
   TestReaction.hasMany(SerieReaction, {
+    as: "serieReactions",
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
-  SerieReaction.belongsTo(TestReaction);
+  SerieReaction.belongsTo(TestReaction, {
+    as: "testReactions",
+  });
 
   // TestResistencia N:1 festival
   Festival.hasMany(TestResistance, {
@@ -115,8 +118,11 @@ export function make_relations() {
 
   // TestResistance 1:N SerieResistance
   TestResistance.hasMany(SerieResistance, {
+    as: "serieResistances",
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
-  SerieResistance.belongsTo(TestResistance);
+  SerieResistance.belongsTo(TestResistance, {
+    as: "testResistances",
+  });
 }

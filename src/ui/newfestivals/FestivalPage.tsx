@@ -27,7 +27,7 @@ export function Festivals() {
               className="px-4 h-9 mb-5 rounded-sm bg-blue-600 hover:bg-blue-700 cursor-pointer "
               onClick={async () => {
                 const newFestival = await createFestival();
-                if (newFestival) navigate(`/festivals/${newFestival.id}`);
+                if (newFestival) navigate(`/newfestivals/${newFestival.id}`);
               }}
             >
               Nuevo festival

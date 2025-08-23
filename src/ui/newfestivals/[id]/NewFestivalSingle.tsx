@@ -34,7 +34,6 @@ export function NewFestivalSingle() {
       try {
         const members = await getMembers();
         if (members) setMembers(members);
-        console.log("members execute");
       } catch (error) {
         console.error("Error al obtener otros miembros: ", error);
       } finally {
@@ -51,7 +50,7 @@ export function NewFestivalSingle() {
         if (!id) throw new Error("ID error");
         const data = await getFestival(id);
         if (data) setDataFestival(data);
-        console.log("festival execute");
+        console.log(data?.festival);
       } catch (error) {
         console.error("Error al obtener información del festival: ", error);
       } finally {
@@ -103,15 +102,29 @@ export function NewFestivalSingle() {
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
       <div className="ml-20 mt-0 h-full p-10 bg-cyan-950">
-        <div className="flex flex-col justify-center max-w-2xl mx-auto">
-          <h1 className="mb-5">Borrador</h1>
-          <p className="mb-10 text-left">
-            {dataFestival?.festival.description}
-          </p>
-        </div>
-
         {/* Editar festival */}
-        <UpdateFestivalForm />
+        <UpdateFestivalForm
+          cant_open={true}
+          init_open={true}
+          festival={
+            dataFestival
+              ? dataFestival.festival
+              : {
+                  id: "",
+                  name: "",
+                  description: "",
+                  startDate: new Date(),
+                  endDate: new Date(),
+                }
+          }
+          reload={() => {
+            setReload(true);
+            toast.success("Festival actualizado exitosamente", {
+              theme: "colored",
+              autoClose: 2000,
+            });
+          }}
+        />
 
         {/* Mostrar deportistas inscritos */}
         <div className="grid grid-cols-2 gap-5 justify-center flex-col lg:flex-row">
@@ -167,13 +180,13 @@ export function NewFestivalSingle() {
             className="bg-blue-700 hover:bg-blue-600 px-4 py-3 mt-10 w-[200px] rounded-md cursor-pointer"
             onClick={async () => {
               const del = await startFestival(id ? id : "");
-              del ? navigate(`/festivals/${id}`) : "";
+              del ? navigate(`/festival/${id}`) : "";
             }}
           >
             Iniciar festival
           </button>
           <button
-            className="bg-red-700 hover:bg-red-600 px-4 py-3 mt-10 w-[200px] rounded-md cursor-pointer"
+            className="bg-red-600 hover:bg-red-700 shadow-2xs px-4 py-3 mt-10 w-[200px] rounded-md cursor-pointer"
             onClick={async () => {
               const del = await deleteFestival(id ? id : "");
               if (del) {

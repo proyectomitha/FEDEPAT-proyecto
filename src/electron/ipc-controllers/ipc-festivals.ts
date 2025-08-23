@@ -17,7 +17,7 @@ export function registerIpcFestival() {
     return await festival.create_festival(data);
   });
 
-  ipcMain.handle("updtateFestival", async (_event, { id, data }) => {
+  ipcMain.handle("updateFestival", async (_event, { id, data }) => {
     return await festival.update_festival(id, data);
   });
 
@@ -35,5 +35,13 @@ export function registerIpcFestival() {
 
   ipcMain.handle("removeMemberToFestival", async (_event, { id, data }) => {
     return await festival.remove_member_to_festival(id, data);
+  });
+
+  ipcMain.handle("getCategories", async (_event, { id }) => {
+    return await festival.get_categories(id);
+  });
+
+  ipcMain.handle("getTests", async (_event, { id_festival, category }) => {
+    return await festival.get_tests(id_festival, category);
   });
 }

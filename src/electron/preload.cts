@@ -72,8 +72,8 @@ electron.contextBridge.exposeInMainWorld("festivals", {
   createFestival: async (data: any) =>
     await ipcRenderer.invoke("createFestival", { data }),
 
-  updtateFestival: async (id: string, data: any) =>
-    await ipcRenderer.invoke("updtateFestival", { id, data }),
+  updateFestival: async (id: string, data: any) =>
+    await ipcRenderer.invoke("updateFestival", { id, data }),
 
   deleteFestival: async (id: string) =>
     await ipcRenderer.invoke("deleteFestival", { id }),
@@ -86,9 +86,33 @@ electron.contextBridge.exposeInMainWorld("festivals", {
 
   removeMemberToFestival: async (id: string, data: any) =>
     await ipcRenderer.invoke("removeMemberToFestival", { id, data }),
+
+  getCategories: async (id: string) =>
+    await ipcRenderer.invoke("getCategories", { id }),
+
+  getTests: async (id_festival: string, category: string) =>
+    await ipcRenderer.invoke("getTests", { id_festival, category }),
 });
 
 electron.contextBridge.exposeInMainWorld("score", {
+  getGlobalScore: async (id_club: string) =>
+    await ipcRenderer.invoke("getGlobalScore", {
+      id_club,
+    }),
+
+  getGlobalScores: async () => await ipcRenderer.invoke("getGlobalScores", {}),
+
+  getGlobalScoreFestival: async (id_festival: string) =>
+    await ipcRenderer.invoke("getGlobalScoreFestival", {
+      id_festival,
+    }),
+
+  getGlobalScoreCategory: async (id_festival: string, category: string) =>
+    await ipcRenderer.invoke("getGlobalScoreCategory", {
+      id_festival,
+      category,
+    }),
+
   getScoreTestReaction: async (id: string) =>
     await ipcRenderer.invoke("getScoreTestReaction", { id }),
 

@@ -47,9 +47,10 @@ export function FestivalList({ search }: { search: string }) {
             <tr>
               <th className="p-4 pl-8">Nombre</th>
               <th className="p-4 py-2">Descripción</th>
-              <th className="p-4 py-2">Fecha de inicio</th>
-              <th className="p-4 py-2">Fecha de fin</th>
-              <th className="p-4 pl-8">Estado</th>
+              <th className="p-4 py-2 text-center">Fecha de inicio</th>
+              <th className="p-4 py-2 text-center">Fecha de fin</th>
+              <th className="p-4 pl-2 text-center">Estado</th>
+              <th className="p-4 pl-2 text-center">Actividad</th>
             </tr>
           </thead>
           <tbody>
@@ -58,8 +59,8 @@ export function FestivalList({ search }: { search: string }) {
                 key={festival.id}
                 onClick={() => {
                   festival.locked
-                    ? navigate(`/newfestivals/${festival.id}`)
-                    : navigate(`/festivals/${festival.id}`);
+                    ? navigate(`/festival/${festival.id}`)
+                    : navigate(`/newfestivals/${festival.id}`);
                 }}
                 className="hover:bg-cyan-500 cursor-pointer"
               >
@@ -69,14 +70,17 @@ export function FestivalList({ search }: { search: string }) {
                 <td className="p-4 max-w-[150px] truncate">
                   {festival.description}
                 </td>
-                <td className="p-4 py-2 max-w-[50px] truncate">
+                <td className="p-4 py-2 text-center max-w-[50px] truncate">
                   {new Date(festival.startDate).toLocaleDateString()}
                 </td>
-                <td className="p-4 py-2 max-w-[50px] truncate">
+                <td className="p-4 py-2 text-center max-w-[50px] truncate">
                   {new Date(festival.endDate).toLocaleDateString()}
                 </td>
-                <td className="p-4 pl-2">
-                  {festival.locked ? "En curso" : "Finalizado"}
+                <td className="p-4 pl-2 text-center">
+                  {festival.locked ? "Cerrado" : "Abierto"}
+                </td>
+                <td className="p-4 pl-2 text-center">
+                  {festival.active ? "En curso" : "Finalizado"}
                 </td>
               </tr>
             ))}
