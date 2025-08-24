@@ -2,7 +2,6 @@ const { ipcRenderer } = require("electron");
 
 const electron = require("electron");
 
-// Exponer funciones al renderer
 electron.contextBridge.exposeInMainWorld("members", {
   getMembers: async () => await ipcRenderer.invoke("getMembers"),
 
@@ -92,6 +91,21 @@ electron.contextBridge.exposeInMainWorld("festivals", {
 
   getTests: async (id_festival: string, category: string) =>
     await ipcRenderer.invoke("getTests", { id_festival, category }),
+
+  getTestHability: async (id_festival: string, category: string) =>
+    await ipcRenderer.invoke("getTestHability", { id_festival, category }),
+
+  getTestReaction: async (id_festival: string, category: string) =>
+    await ipcRenderer.invoke("getTestReaction", { id_festival, category }),
+
+  getSerieReaction: async (id: string) =>
+    await ipcRenderer.invoke("getSerieReaction", { id }),
+
+  getTestResistance: async (id_festival: string, category: string) =>
+    await ipcRenderer.invoke("getTestResistance", { id_festival, category }),
+
+  getSerieResistance: async (id: string) =>
+    await ipcRenderer.invoke("getSerieResistance", { id }),
 });
 
 electron.contextBridge.exposeInMainWorld("score", {

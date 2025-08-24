@@ -155,7 +155,7 @@ export function CategorySingle() {
               />
             </div>
             <button
-              className="p-4 bg-cyan-700 mt-5 cursor-pointer hover:bg-cyan-600"
+              className="p-4 bg-cyan-700 mt-5 cursor-pointer hover:bg-cyan-600 rounded-md"
               onClick={() => navigate(`/festival/category/test/${scoresClub}`)}
             >
               Ir a la prueba

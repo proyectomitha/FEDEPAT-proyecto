@@ -131,7 +131,7 @@ export async function start_festival(id: string) {
 //Configurar la organización de la prueba de reacción e iniciarla
 export async function configure_test_reaction(
   id: string,
-  n_series: number,
+  //n_series: number,
   type: string,
   strict_mode: number,
   n_max: number
@@ -153,7 +153,7 @@ export async function configure_test_reaction(
   const n_members = members.length;
 
   //Calculamos el número de order
-  let series: number = n_series; //Número de series iniciales que tiene la prueba
+  let series: number = Math.ceil(n_members / n_max); //n_series; //Número de series iniciales que tiene la prueba
   let order: number = 3; //Número de rondas que tiene la prueba
   let divisor: number = n_max; //Número de participantes que avanzarán a la ronda 2
   if (n_members > n_max ** 2 + n_max * strict_mode) {
@@ -176,7 +176,7 @@ export async function configure_test_reaction(
     aux ? (divisor = Math.ceil(n_members / i_0)) : (divisor = n_max);
 
     //Guardamos el número de series para iniciar la prueba
-    series = n_series;
+    series = Math.ceil(n_members / n_max);
   } else if (
     n_members <= n_max ** 2 + n_max * strict_mode ||
     n_members > n_max + strict_mode
@@ -219,8 +219,8 @@ export async function start_test_reaction(id: string) {
       festival_id: tReaction.festival_id,
     },
   });
-  if (!testHability)
-    return { status: "error", error: "Test hability not found" };
+  if (!testHability || !testHability.locked)
+    return { status: "error", error: "Test hability not found or init" };
   const results = await MemberTestHability.findAll({
     attributes: ["member_id"],
     where: {
@@ -297,7 +297,7 @@ export async function next_test_reaction(id: string, n_max: number) {
     const order_members = ordenarPosiciones(type, members);
 
     //Crear siguiente ronda
-    const lastSerie = await SerieReaction.findOrCreate({
+    const lastSerie: any = await SerieReaction.findOrCreate({
       where: {
         order: actual_order + 1,
         test_reaction_id: id,
@@ -310,6 +310,10 @@ export async function next_test_reaction(id: string, n_max: number) {
     tReaction.addSerieReaction(lastSerie);
 
     //filtrar los que pasan a la siguiente ronda (n_max) y asignarlos a lastSerie:
+    const primerosN = order_members.slice(0, n_max);
+    primerosN.map(async (member) => {
+      await lastSerie.addMember(member);
+    });
   }
 
   //En caso de estar en orden 1 ordenar y configurar las siguientes series (semifinal)

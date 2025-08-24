@@ -1,21 +1,16 @@
 import { ToastContainer } from "react-toastify";
 import { Sidebar } from "../../../layout/Sidebar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { ElementList } from "../../../components/ElementList";
 import { useEffect, useState } from "react";
-import { getGlobalScoreCategory } from "../../../fetchs";
+import { getTestHability } from "../../../fetchs";
 
-export function TestSingle() {
+export function TestHabilitySingle() {
   const navigate = useNavigate();
-  const { test } = useParams();
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>([]);
   const [reload, setReload] = useState(true);
   const [loading, setLoading] = useState(true);
-
-  //scores
-  const [scoresClub, setScoresClub] = useState("hability");
-  const [showScore, setShowScore] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -23,7 +18,8 @@ export function TestSingle() {
         const fest = localStorage.getItem("id_festival");
         const category = localStorage.getItem("category");
         if (!fest || !category) return;
-        const dataf = await getGlobalScoreCategory(fest, category);
+        const dataf = await getTestHability(fest, category);
+        console.log(dataf);
         if (dataf) setData(dataf);
       } catch (error) {
         console.error("Error al obtener información del festival: ", error);
@@ -34,22 +30,6 @@ export function TestSingle() {
     }
     fetchData();
   }, [reload]);
-
-  useEffect(() => {
-    if (scoresClub === "hability") {
-      data ? setShowScore(data.habilityScore[0].members) : setShowScore([]);
-    }
-    if (scoresClub === "reaction") {
-      data.reactionScore[0]
-        ? setShowScore(data.reactionScore[0].members)
-        : setShowScore([]);
-    }
-    if (scoresClub === "resistance") {
-      data.resistanceScore[0]
-        ? setShowScore(data.resistanceScore[0].members)
-        : setShowScore([]);
-    }
-  }, [scoresClub, data]);
 
   return (
     <>
@@ -69,44 +49,15 @@ export function TestSingle() {
               <ArrowLeft className="size-8" />
             </button>
           </div>
-          <h1 className="col-span-3 text-center w-full">
-            Prueba de{" "}
-            {test === "reaction"
-              ? "reacción"
-              : test === "resistance"
-              ? "resistencia"
-              : "habilidad"}
-          </h1>
+          <h1 className="col-span-3 text-center w-full">Prueba de habilidad</h1>
         </div>
         <div className="grid grid-cols-2 mt-15 gap-10">
-          {/* Zona donde podemos ver el puntaje total de los clubes ordenados */}
-          <div className="col-span-1">
-            <h2 className="text-3xl mb-5">Prueba</h2>
-
-            <h2 className="text-3xl mb-5">Serie</h2>
-            <ElementList
-              search={""}
-              elements={data ? data.clubesScore : []}
-              data={[
-                { attribute: "club", label: "Nombre", type: "str" },
-                {
-                  attribute: "habilityScore",
-                  label: "Prueba de Habilidad",
-                  type: "str",
-                },
-              ]}
-              loading={loading}
-              filter={["name"]}
-            />
-          </div>
-          {/* Zona con los primeros lugares de cada prueba (se cambia al seleccionar la prueba) debajo hay un botón para ir a la prueba */}
-          {/* Zona con los botones de las pruebas */}
-          <div className="col-span-1">
+          <div className="col-span-2">
             <h2 className="text-3xl">Puntajes</h2>
             <div className="mt-10 bg-cyan-800">
               <ElementList
                 search={""}
-                elements={showScore}
+                elements={data.members ? data.members : []}
                 data={[
                   { attribute: "number", label: "ID", type: "str" },
                   { attribute: "name", label: "Nombre", type: "str" },
@@ -127,10 +78,10 @@ export function TestSingle() {
               />
             </div>
             <button
-              className="p-4 bg-cyan-700 mt-5 cursor-pointer hover:bg-cyan-600"
+              className="p-4 bg-green-700 mt-5 cursor-pointer hover:bg-green-600 rounded-md"
               onClick={() => console.log("active")}
             >
-              Ir a la prueba
+              Completar prueba
             </button>
           </div>
         </div>

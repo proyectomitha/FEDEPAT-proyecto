@@ -587,11 +587,28 @@ export async function get_score_in_serie_reaction(id: string) {
     where: { id: id },
     include: {
       model: Member,
+      as: "members",
       through: {
         attributes: ["score", "time"],
       },
     },
     order: [[Member, MemberSerieReaction, "score", "DESC"]],
+  });
+  return serie;
+}
+
+// get score by order in serie
+export async function get_score_in_serie_resistance(id: string) {
+  const serie = await SerieResistance.findAll({
+    where: { id: id },
+    include: {
+      model: Member,
+      as: "members",
+      through: {
+        attributes: ["score", "time"],
+      },
+    },
+    order: [[Member, MemberSerieResistance, "score", "DESC"]],
   });
   return serie;
 }

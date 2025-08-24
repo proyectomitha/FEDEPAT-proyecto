@@ -138,9 +138,29 @@ export async function nextOrder(id_test: string) {
   return await window.members.getMember(id_test);
 }
 
-export async function getSerie(id_serie: string) {
+export async function getTestHability(id_festival: string, category: string) {
   // @ts-ignore
-  return await window.members.getMember(id_serie);
+  return await window.festivals.getTestHability(id_festival, category);
+}
+
+export async function getTestReaction(id_festival: string, category: string) {
+  // @ts-ignore
+  return await window.festivals.getTestReaction(id_festival, category);
+}
+
+export async function getSerieReaction(id_serie: string) {
+  // @ts-ignore
+  return await window.festivals.getSerieResistance(id_serie);
+}
+
+export async function getTestResistance(id_festival: string, category: string) {
+  // @ts-ignore
+  return await window.festivals.getTestResistance(id_festival, category);
+}
+
+export async function getSerieResistance(id_serie: string) {
+  // @ts-ignore
+  return await window.festivals.getSerieResistance(id_serie);
 }
 
 export async function endSerie(id_serie: string) {

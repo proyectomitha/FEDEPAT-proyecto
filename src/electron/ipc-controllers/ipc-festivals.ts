@@ -1,5 +1,6 @@
 import { ipcMain } from "electron";
 import * as festival from "../controllers/festival.js";
+import * as score from "../controllers/score.js";
 import * as test from "../controllers/tests.js";
 
 export function registerIpcFestival() {
@@ -43,5 +44,34 @@ export function registerIpcFestival() {
 
   ipcMain.handle("getTests", async (_event, { id_festival, category }) => {
     return await festival.get_tests(id_festival, category);
+  });
+
+  ipcMain.handle(
+    "getTestHability",
+    async (_event, { id_festival, category }) => {
+      return await festival.get_test_hability(id_festival, category);
+    }
+  );
+
+  ipcMain.handle(
+    "getTestReaction",
+    async (_event, { id_festival, category }) => {
+      return await festival.get_test_reaction(id_festival, category);
+    }
+  );
+
+  ipcMain.handle("getSerieReaction", async (_event, { id_serie }) => {
+    return await score.get_score_in_serie_reaction(id_serie);
+  });
+
+  ipcMain.handle(
+    "getTestResistance",
+    async (_event, { id_festival, category }) => {
+      return await festival.get_test_resistance(id_festival, category);
+    }
+  );
+
+  ipcMain.handle("getSerieResistance", async (_event, { id_serie }) => {
+    return await score.get_score_in_serie_resistance(id_serie);
   });
 }

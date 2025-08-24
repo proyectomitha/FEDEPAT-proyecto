@@ -132,7 +132,7 @@ export async function get_test_resistance(
   id_festival: string,
   category: string
 ) {
-  const testResistances = await TestResistance.findAll({
+  const testResistances = await TestResistance.findOne({
     where: {
       festival_id: id_festival,
       category: category,
@@ -141,43 +141,45 @@ export async function get_test_resistance(
       {
         model: SerieResistance,
         as: "serieResistances",
+        /*
         include: [
           {
             model: Member,
             as: "members",
             through: { attributes: ["score", "time"] },
           },
-        ],
+        ],*/
       },
     ],
-    order: [["category", "DESC"]],
   });
-  return {
-    resistanceTest: testResistances.map((m: any) => m.toJSON()),
-  };
+  return (testResistances as any).toJSON();
 }
 
 //get prueba de habilidad de festival y categoria
 export async function get_test_hability(id_festival: string, category: string) {
-  const testHabilitys = await await TestHability.findAll({
+  const testHabilitys = await await TestHability.findOne({
     where: {
       festival_id: id_festival,
       category: category,
-    },
-    order: [["category", "DESC"]],
+    } /*
+    include: [
+      {
+        model: Member,
+        as: "members",
+        through: { attributes: ["score", "time"] },
+      },
+    ],*/,
   });
-  return {
-    habilityTest: testHabilitys.map((m: any) => m.toJSON()),
-  };
+  return (testHabilitys as any).toJSON();
 }
 
 //get prueba de reacción de festival y categoria
 export async function get_test_reaction(id_festival: string, category: string) {
-  const testReactions = await TestReaction.findAll({
+  const testReactions = await TestReaction.findOne({
     where: {
       festival_id: id_festival,
       category: category,
-    },
+    } /*
     include: [
       {
         model: SerieReaction,
@@ -190,11 +192,8 @@ export async function get_test_reaction(id_festival: string, category: string) {
           },
         ],
       },
-    ],
-    order: [["category", "DESC"]],
+    ],*/,
   });
 
-  return {
-    reactionTest: testReactions.map((m: any) => m.toJSON()),
-  };
+  return (testReactions as any).toJSON();
 }

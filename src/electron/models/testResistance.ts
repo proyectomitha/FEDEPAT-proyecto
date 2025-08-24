@@ -39,6 +39,11 @@ TestResistance.init(
       allowNull: false,
       defaultValue: "time",
     },
+    init: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,

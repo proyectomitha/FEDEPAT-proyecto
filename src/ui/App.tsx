@@ -7,7 +7,8 @@ import { ClubSingle } from "./clubes/id/ClubSingle";
 import { NewFestivalSingle } from "./newfestivals/[id]/NewFestivalSingle";
 import { FestivalSingle } from "./festival/FestivalSingle";
 import { CategorySingle } from "./festival/category/CategorySingle";
-import { TestSingle } from "./festival/category/test/TestSingle";
+import { TestReactionSingle } from "./festival/category/test/TestReactionSingle";
+import { TestHabilitySingle } from "./festival/category/test/TestHabilitySingle";
 
 function App() {
   return (
@@ -20,7 +21,14 @@ function App() {
           path="/festival/category/:category"
           element={<CategorySingle />}
         />
-        <Route path="/festival/category/test/:test" element={<TestSingle />} />
+        <Route
+          path="/festival/category/test/reaction"
+          element={<TestReactionSingle />}
+        />
+        <Route
+          path="/festival/category/test/hability"
+          element={<TestHabilitySingle />}
+        />
         <Route path="/newfestivals/:id" element={<NewFestivalSingle />} />
         <Route path="/members" element={<Members />} />
         <Route path="/clubs" element={<Clubes />} />
