@@ -86,6 +86,7 @@ export function make_relations() {
 
   // TestHabilidad N:1 festival
   Festival.hasMany(TestHability, {
+    foreignKey: "festivalId", //*
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
@@ -93,6 +94,7 @@ export function make_relations() {
 
   // TestReacción N:1 festival
   Festival.hasMany(TestReaction, {
+    foreignKey: "festivalId", //*
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });

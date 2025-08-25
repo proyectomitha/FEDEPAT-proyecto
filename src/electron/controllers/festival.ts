@@ -161,14 +161,14 @@ export async function get_test_hability(id_festival: string, category: string) {
     where: {
       festival_id: id_festival,
       category: category,
-    } /*
+    },
     include: [
       {
         model: Member,
         as: "members",
         through: { attributes: ["score", "time"] },
       },
-    ],*/,
+    ],
   });
   return (testHabilitys as any).toJSON();
 }
@@ -179,21 +179,23 @@ export async function get_test_reaction(id_festival: string, category: string) {
     where: {
       festival_id: id_festival,
       category: category,
-    } /*
+    },
     include: [
       {
         model: SerieReaction,
         as: "serieReactions",
-        include: [
+        /*include: [
           {
             model: Member,
             as: "members",
             through: { attributes: ["score", "time"] },
           },
-        ],
+        ],*/
       },
-    ],*/,
+    ],
   });
 
   return (testReactions as any).toJSON();
 }
+
+//get serie reaction => trae todas las series

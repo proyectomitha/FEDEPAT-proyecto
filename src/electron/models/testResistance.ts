@@ -26,6 +26,11 @@ TestResistance.init(
       allowNull: false,
       defaultValue: 100,
     },
+    maxmember: {
+      type: DataTypes.NUMBER,
+      allowNull: false,
+      defaultValue: 100,
+    },
     gender: {
       type: DataTypes.STRING,
       allowNull: false,

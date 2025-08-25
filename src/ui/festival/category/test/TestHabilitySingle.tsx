@@ -1,10 +1,10 @@
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Sidebar } from "../../../layout/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { ElementList } from "../../../components/ElementList";
 import { useEffect, useState } from "react";
-import { getTestHability } from "../../../fetchs";
+import { endTestHability, getTestHability } from "../../../fetchs";
+import { ElementListUpdate } from "../../../components/ElementListUpdate";
 
 export function TestHabilitySingle() {
   const navigate = useNavigate();
@@ -55,31 +55,28 @@ export function TestHabilitySingle() {
           <div className="col-span-2">
             <h2 className="text-3xl">Puntajes</h2>
             <div className="mt-10 bg-cyan-800">
-              <ElementList
+              <ElementListUpdate
                 search={""}
+                reload={() => setReload(true)}
                 elements={data.members ? data.members : []}
-                data={[
-                  { attribute: "number", label: "ID", type: "str" },
-                  { attribute: "name", label: "Nombre", type: "str" },
-                  { attribute: "lastname", label: "Apellido", type: "str" },
-                  {
-                    attribute: "MemberTestHability.score",
-                    label: "Puntos",
-                    type: "str",
-                  },
-                  {
-                    attribute: "MemberTestHability.time",
-                    label: "Tiempo",
-                    type: "str",
-                  },
-                ]}
+                serie_id={data.id}
+                overflowy={true}
                 filter={["id"]}
                 loading={loading}
+                can_update={!data.locked}
               />
             </div>
             <button
               className="p-4 bg-green-700 mt-5 cursor-pointer hover:bg-green-600 rounded-md"
-              onClick={() => console.log("active")}
+              onClick={async () => {
+                const ret = await endTestHability(data.id);
+                ret
+                  ? setReload(true)
+                  : toast.error("Error al configurar test", {
+                      theme: "colored",
+                      autoClose: 2000,
+                    });
+              }}
             >
               Completar prueba
             </button>

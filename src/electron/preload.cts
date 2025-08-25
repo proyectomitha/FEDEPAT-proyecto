@@ -34,19 +34,14 @@ electron.contextBridge.exposeInMainWorld("clubs", {
 });
 
 electron.contextBridge.exposeInMainWorld("tests", {
-  startFestival: async (id: string) =>
-    await ipcRenderer.invoke("startFestival"),
-
   configureTestReaction: async (
     id: string,
-    n_series: number,
     type: string,
     strict_mode: number,
     n_max: number
   ) =>
     await ipcRenderer.invoke("configureTestReaction", {
       id,
-      n_series,
       type,
       strict_mode,
       n_max,
@@ -60,6 +55,12 @@ electron.contextBridge.exposeInMainWorld("tests", {
 
   endTestHability: async (id: string) =>
     await ipcRenderer.invoke("endTestHability", { id }),
+
+  endSerieReaction: async (id: string) =>
+    await ipcRenderer.invoke("endSerieReaction", { id }),
+
+  endSerieResistance: async (id: string) =>
+    await ipcRenderer.invoke("endSerieResistance", { id }),
 });
 
 electron.contextBridge.exposeInMainWorld("festivals", {

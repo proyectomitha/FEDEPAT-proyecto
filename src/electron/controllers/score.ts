@@ -10,7 +10,6 @@ import { TestHability } from "../models/testHability.js";
 import { SerieReaction, TestReaction } from "../models/testReaction.js";
 import { SerieResistance, TestResistance } from "../models/testResistance.js";
 import { get_relation } from "./auxiliar-functions.js";
-import { Sequelize, fn, col } from "sequelize";
 
 //==================================================== Puntajes globales
 
@@ -592,7 +591,9 @@ export async function get_score_in_serie_reaction(id: string) {
         attributes: ["score", "time"],
       },
     },
-    order: [[Member, MemberSerieReaction, "score", "DESC"]],
+    order: [
+      [{ model: Member, as: "members" }, MemberSerieReaction, "score", "DESC"],
+    ],
   });
   return serie;
 }
@@ -622,7 +623,12 @@ export async function set_score_in_serie(
   score: number,
   time: number
 ) {
-  const relation = await get_relation(id_member, id_serie);
+  const relation: any = await get_relation(id_member, id_serie);
+  console.log("\n\n");
+  console.log(score);
+
+  console.log(relation.score);
+  console.log("\n\n");
   return relation
     ? relation.update({ time: time, score: score })
     : { status: "error", error: "relation not found" };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { setScore } from "../fetchs";
 import { hmsToSeconds, secondsToHMS } from "../functions";
 
-export function ElementListUpdate({
+export function ElementListUpdateReaction({
   search,
   elements,
   serie_id,
@@ -42,8 +42,8 @@ export function ElementListUpdate({
     const init: Record<string, { score: number; time: number }> = {};
     filtered.forEach((m) => {
       init[m.id] = {
-        score: m.MemberTestHability?.score ?? 0,
-        time: m.MemberTestHability?.time ?? 0,
+        score: m.MemberSerieReaction?.score ?? 0,
+        time: m.MemberSerieReaction?.time ?? 0,
       };
     });
     setValues(init);

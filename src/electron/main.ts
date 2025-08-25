@@ -8,6 +8,7 @@ import { registerIpcMember } from "./ipc-controllers/ipc-members.js";
 import { registerIpcClub } from "./ipc-controllers/ipc-clubs.js";
 import { registerIpcFestival } from "./ipc-controllers/ipc-festivals.js";
 import { registerIpcScore } from "./ipc-controllers/ipc-score.js";
+import { registerIpcTest } from "./ipc-controllers/ipc-tests.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
@@ -29,6 +30,7 @@ app.on("ready", async () => {
   registerIpcClub();
   registerIpcFestival();
   registerIpcScore();
+  registerIpcTest();
 
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5123");

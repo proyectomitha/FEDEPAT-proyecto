@@ -8,3 +8,15 @@ export function calcularEdad(fechaNacimiento: Date): number {
   }
   return edad;
 }
+
+export function secondsToHMS(totalSeconds: number) {
+  if (!totalSeconds) return { h: 0, m: 0, s: 0 };
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return { h, m, s };
+}
+
+export function hmsToSeconds(h: number, m: number, s: number) {
+  return h * 3600 + m * 60 + s;
+}

@@ -2,16 +2,25 @@ import { ToastContainer } from "react-toastify";
 import { Sidebar } from "../../../layout/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { ElementList } from "../../../components/ElementList";
 import { useEffect, useState } from "react";
-import { getTestReaction } from "../../../fetchs";
+import {
+  endSerieReaction,
+  getSerieReaction,
+  getTestReaction,
+} from "../../../fetchs";
+import { TestConfigForm } from "../../../components/TestConfigForm";
+import { ElementListSerie } from "../../../components/ElementListSerie";
+import { ElementListUpdateReaction } from "../../../components/ElementListUpdateReaction";
 
 export function TestReactionSingle() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
+  const [dataSerie, setDataSerie] = useState<any>([]);
+  const [reloadSup, setReloadSup] = useState(true);
   const [reload, setReload] = useState(true);
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(1);
+  const [idSerie, setIdSerie] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -22,16 +31,32 @@ export function TestReactionSingle() {
         const dataf = await getTestReaction(fest, category);
         console.log(dataf);
         if (dataf) setData(dataf);
+        setOrder(dataf.numberTests);
       } catch (error) {
-        console.error("Error al obtener información del festival: ", error);
+        console.error("Error al obtener información de la prueba: ", error);
+      } finally {
+        setReloadSup(false);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [reloadSup]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const dataf = await getSerieReaction(idSerie);
+        //console.log(dataf);
+        if (dataf) setDataSerie(dataf[0].members);
+      } catch (error) {
+        console.error("Error al obtener información de la prueba: ", error);
       } finally {
         setReload(false);
         setLoading(false);
       }
     }
     fetchData();
-  }, [reload]);
-
+  }, [idSerie, reload]);
   return (
     <>
       <ToastContainer />
@@ -52,14 +77,33 @@ export function TestReactionSingle() {
           </div>
           <h1 className="col-span-3 text-center w-full">Prueba de reacción</h1>
         </div>
-        <div className="grid grid-cols-2 mt-15 gap-10">
-          <div className="col-span-1">
+
+        <div className={`mt-15 gap-10 ${data.init ? "hidden" : ""}`}>
+          <h2 className="text-2xl">La prueba aún no se ha iniciado</h2>
+          <TestConfigForm
+            test={{
+              id: data.id,
+              type: data.type,
+              maxmember: data.maxmember,
+              strict_mode: 1,
+            }}
+            reload={() => {
+              setReloadSup(false);
+            }}
+          />
+        </div>
+        <div
+          className={`grid grid-cols-5 mt-15 gap-10 ${
+            data.init ? "" : "hidden"
+          }`}
+        >
+          <div className="col-span-2">
             <h2 className="text-3xl mb-5">Prueba</h2>
             <ul className="flex bg-cyan-700 -mb-5">
               <li
                 className={`p-4 text-xl hover:bg-cyan-600 cursor-pointer ${
                   order == 1 ? "bg-cyan-600" : ""
-                } ${order < 2 ? "" : "hidden"}`}
+                } ${data.numberTests < 2 ? "" : "hidden"}`}
                 onClick={() => setOrder(1)}
               >
                 Fase de grupos
@@ -67,7 +111,7 @@ export function TestReactionSingle() {
               <li
                 className={`p-4 text-xl hover:bg-cyan-600 cursor-pointer ${
                   order === 2 ? "bg-cyan-600" : ""
-                } ${order < 3 ? "" : "hidden"}`}
+                } ${data.numberTests < 3 ? "" : "hidden"}`}
                 onClick={() => setOrder(2)}
               >
                 Semifinal
@@ -81,50 +125,44 @@ export function TestReactionSingle() {
                 Final
               </li>
             </ul>
-            <h2 className="text-3xl mb-5 mt-15">Serie</h2>
-            <div className="mt-10 bg-cyan-800">
-              <ElementList
-                search={""}
-                elements={data.members ? data.members : []}
+            <div className="mt-0 bg-cyan-800">
+              <ElementListSerie
+                reload={() => setReload(true)}
+                search={String(order)}
+                elements={data.serieReactions ? data.serieReactions : []}
                 data={[
                   { attribute: "number", label: "Serie", type: "str" },
-                  { attribute: "name", label: "Estado", type: "str" },
+                  { attribute: "locked", label: "Terminado", type: "str" },
                 ]}
-                filter={["id"]}
+                filter={["order"]}
                 loading={loading}
+                id={idSerie}
+                setId={function (id: string): void {
+                  setIdSerie(id);
+                }}
               />
             </div>
           </div>
-          <div className="col-span-1">
+          <div className="col-span-3">
             <h2 className="text-3xl">Puntajes</h2>
-            <div className="mt-10 bg-cyan-800">
-              <ElementList
+            <div className="mt-5 bg-cyan-800">
+              <ElementListUpdateReaction
                 search={""}
-                elements={data.members ? data.members : []}
-                data={[
-                  { attribute: "number", label: "ID", type: "str" },
-                  { attribute: "name", label: "Nombre", type: "str" },
-                  { attribute: "lastname", label: "Apellido", type: "str" },
-                  {
-                    attribute: "MemberTestHability.score",
-                    label: "Puntos",
-                    type: "str",
-                  },
-                  {
-                    attribute: "MemberTestHability.time",
-                    label: "Tiempo",
-                    type: "str",
-                  },
-                ]}
+                overflowy={true}
+                elements={dataSerie ? dataSerie : []}
                 filter={["id"]}
                 loading={loading}
+                reload={() => setReload(true)}
+                serie_id={idSerie}
               />
             </div>
             <button
-              className="p-4 bg-cyan-700 mt-5 cursor-pointer hover:bg-cyan-600 rounded-md"
-              onClick={() => console.log("active")}
+              className="ml-5 p-4 bg-green-700 mt-5 cursor-pointer hover:bg-green-600 rounded-md"
+              onClick={async () => {
+                console.log(await endSerieReaction(idSerie));
+              }}
             >
-              Ir a la prueba
+              Completar serie
             </button>
           </div>
         </div>

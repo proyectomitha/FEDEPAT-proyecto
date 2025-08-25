@@ -1,7 +1,7 @@
 import { Festival } from "../models/festival.js";
 import { TestHability } from "../models/testHability.js";
 import { SerieReaction, TestReaction } from "../models/testReaction.js";
-import { TestResistance } from "../models/testResistance.js";
+import { SerieResistance, TestResistance } from "../models/testResistance.js";
 import {
   MemberSerieReaction,
   MemberTestHability,
@@ -131,7 +131,6 @@ export async function start_festival(id: string) {
 //Configurar la organización de la prueba de reacción e iniciarla
 export async function configure_test_reaction(
   id: string,
-  //n_series: number,
   type: string,
   strict_mode: number,
   n_max: number
@@ -140,11 +139,12 @@ export async function configure_test_reaction(
   const tReaction: any = await TestReaction.findByPk(id);
   if (!tReaction) return { status: "error", error: "Test reaction not found" };
 
+  console.log(`\n\n Hello 1 ${type}\n\n`);
   //Obtenemos el número de participantes en la prueba
   const testHability: any = await TestHability.findOne({
     where: {
       category: tReaction.category,
-      festival_id: tReaction.festival_id,
+      FestivalId: tReaction.FestivalId,
     },
   });
   if (!testHability)
@@ -152,6 +152,7 @@ export async function configure_test_reaction(
   const members = await testHability.getMembers();
   const n_members = members.length;
 
+  console.log(`\n\n Hello 2 \n\n`);
   //Calculamos el número de order
   let series: number = Math.ceil(n_members / n_max); //n_series; //Número de series iniciales que tiene la prueba
   let order: number = 3; //Número de rondas que tiene la prueba
@@ -192,14 +193,24 @@ export async function configure_test_reaction(
     order = 3;
     divisor = n_members;
     series = 1;
+
+    console.log(`\n\n Hello 3 \n\n`);
   }
 
+  console.log(`\n\n 
+    maxmember: ${n_max} - ${typeof n_max},
+    numberSeries: ${series} - ${typeof series},
+    numberTests: ${order} - ${typeof order},
+    divisor: ${divisor} - ${typeof divisor},
+    type: ${type} - ${typeof type}, \n\n`);
   await tReaction.update({
+    maxmember: n_max,
     numberSeries: series,
     numberTests: order,
     divisor: divisor,
     type: type,
   });
+  console.log(`\n\n Hello 4 \n\n`);
 
   return await start_test_reaction(id);
 }
@@ -207,31 +218,35 @@ export async function configure_test_reaction(
 //Start test Reaction. No depende del orden
 export async function start_test_reaction(id: string) {
   //Obtener datos
+  console.log(`\n\n Hello 5 \n\n`);
   const tReaction: any = await TestReaction.findByPk(id);
   if (!tReaction) return { status: "error", error: "Test reaction not found" };
   const n_series = tReaction.numberSeries;
   const n_order = tReaction.numberTests;
 
+  if (tReaction.init) return;
+
   //Obtener resultados de la prueba de habilidad
   const testHability: any = await TestHability.findOne({
     where: {
       category: tReaction.category,
-      festival_id: tReaction.festival_id,
+      festivalId: tReaction.festivalId,
     },
   });
   if (!testHability || !testHability.locked)
     return { status: "error", error: "Test hability not found or init" };
   const results = await MemberTestHability.findAll({
-    attributes: ["member_id"],
     where: {
       test_hability_id: testHability.id,
     },
     order: [["time", "DESC"]],
   });
 
+  console.log(`\n\n Hello 6 ${results} \n\n`);
   //Ordenar por serpenteo
-  const orderSerp = await serpenteo(results, n_series);
+  const orderSerp: any = await serpenteo(results, n_series);
 
+  console.log(`\n\n Hello 7 ${orderSerp[0].memberId} \n\n`);
   //Crear serie y asignamos los participantes
   for (let i = 0; i < orderSerp.length; i++) {
     //Creamos la serie
@@ -242,35 +257,40 @@ export async function start_test_reaction(id: string) {
     await tReaction.addSerieReaction(newSerie);
     for (let j = 0; j < orderSerp[i].length; j++) {
       //asignamos los participantes a la serie creada
-      const member = await Member.findByPk(orderSerp[i][j]);
+      const member = await Member.findByPk(orderSerp[i][j].memberId);
       await newSerie.addMember(member);
     }
   }
+  //Marcarlo como iniciado
+  await tReaction.update({ init: true });
 
   //Enviar mensaje de ok
   return { status: "success" };
 }
 
+// <--- No funciona la adquisición del orden
+
 //Next test Reaction. Evalua el orden y pasa al siguiente en caso de existir
-export async function next_test_reaction(id: string, n_max: number) {
+export async function next_test_reaction(id: string) {
+  //id de testReaction
   //Obtener datos
   const tReaction: any = await TestReaction.findByPk(id);
   if (!tReaction) return { status: "error", error: "Test reaction not found" };
-  const n_order = tReaction.numberTests;
-  const divisor = tReaction.divisor;
+  const n_max: number = tReaction.maxmember;
   const type = tReaction.type;
 
-  //Determinar el order actual de las series
-  const memberSerie: any = await MemberSerieReaction.findOne({
-    attributes: ["order"],
+  //Determinar el order actual de las series <----------------------- Aquí el error
+  const memberSerie: any = await SerieReaction.findAll({
     where: {
-      serie_reaction_id: id,
+      testReactions: id,
     },
     order: [["order", "DESC"]],
+    limit: 1,
   });
+  console.log(`\n\n ${memberSerie.dataValues} \n`);
   const actual_order = memberSerie.order;
 
-  //Comprobar que las series de la última order están lockeadas
+  //Comprobar que las series de la última order están lockeadas <-------------- Hasta aquí el error
   const memberSerieDontLocked: any = await MemberSerieReaction.findOne({
     where: {
       serie_reaction_id: id,
@@ -354,6 +374,22 @@ export async function next_test_reaction(id: string, n_max: number) {
 // Terminar test de habilidad
 export async function end_test_hability(id: string) {
   const testHability = await TestHability.findByPk(id);
+  if (!testHability) return { status: "error", error: "Test not found" };
+  return await testHability.update({ locked: true });
+}
+
+// Terminar test de habilidad
+export async function end_serie_reaction(id: string) {
+  const testHability = await SerieReaction.findByPk(id);
+  if (!testHability) return { status: "error", error: "Test not found" };
+  const test = await testHability.update({ locked: true });
+  const next = await next_test_reaction(test.dataValues.TestReactionId);
+  return { test, next };
+}
+
+// Terminar test de habilidad
+export async function end_serie_resistance(id: string) {
+  const testHability = await SerieResistance.findByPk(id);
   if (!testHability) return { status: "error", error: "Test not found" };
   return await testHability.update({ locked: true });
 }

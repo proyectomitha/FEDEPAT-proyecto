@@ -23,6 +23,17 @@ export async function getGlobalScoreCategory(
   return await window.score.getGlobalScoreCategory(id_festival, category);
 }
 
+export async function setScore(
+  id_member: string,
+  id_serie: string,
+  score: number,
+  time: any
+) {
+  console.log(id_member, id_serie, score, time);
+  // @ts-ignore
+  return await window.score.setScore(id_member, id_serie, score, time);
+}
+
 //============== Clubs ===============//
 export async function getClubs() {
   // @ts-ignore
@@ -150,7 +161,7 @@ export async function getTestReaction(id_festival: string, category: string) {
 
 export async function getSerieReaction(id_serie: string) {
   // @ts-ignore
-  return await window.festivals.getSerieResistance(id_serie);
+  return await window.score.getScoreSerieReaction(id_serie);
 }
 
 export async function getTestResistance(id_festival: string, category: string) {
@@ -163,7 +174,38 @@ export async function getSerieResistance(id_serie: string) {
   return await window.festivals.getSerieResistance(id_serie);
 }
 
-export async function endSerie(id_serie: string) {
+export async function endSerieReaction(id_serie: string) {
   // @ts-ignore
-  return await window.members.getMember(id_serie);
+  return await window.tests.endSerieReaction(id_serie);
+}
+
+export async function endSerieResistancce(id_serie: string) {
+  // @ts-ignore
+  return await window.tests.endSerieResistance(id_serie);
+}
+
+//=============== Test =====================
+export async function updateTestReaction(
+  id: string,
+  type: string,
+  maxmember: number,
+  strict_mode: number
+) {
+  //@ts-ignore
+  return await window.tests.configureTestReaction(
+    id,
+    type,
+    strict_mode,
+    maxmember
+  );
+}
+
+export async function startTestReaction(id: string) {
+  // @ts-ignore
+  return await window.tests.startTestReaction(id);
+}
+
+export async function endTestHability(id: string) {
+  // @ts-ignore
+  return await window.tests.endTestHability(id);
 }

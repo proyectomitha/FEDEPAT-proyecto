@@ -8,12 +8,12 @@ export class MemberSerieResistance extends Model {}
 MemberTestHability.init(
   {
     score: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     time: {
-      type: DataTypes.TIME,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },
@@ -28,12 +28,12 @@ MemberTestHability.init(
 MemberSerieReaction.init(
   {
     score: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     time: {
-      type: DataTypes.TIME,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },
@@ -48,12 +48,12 @@ MemberSerieReaction.init(
 MemberSerieResistance.init(
   {
     score: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
     },
     time: {
-      type: DataTypes.TIME,
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },
