@@ -34,4 +34,8 @@ export function registerIpcTest() {
   ipcMain.handle("endSerieResistance", async (_event, { id }) => {
     return await test.end_serie_resistance(id);
   });
+
+  ipcMain.handle("auxiliar", async (_event, { id }) => {
+    return await test.next_test_reaction(id);
+  });
 }

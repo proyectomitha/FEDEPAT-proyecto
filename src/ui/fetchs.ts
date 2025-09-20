@@ -209,3 +209,8 @@ export async function endTestHability(id: string) {
   // @ts-ignore
   return await window.tests.endTestHability(id);
 }
+
+export async function auxiliar(id: string) {
+  // @ts-ignore
+  return await window.tests.auxiliar(id);
+}

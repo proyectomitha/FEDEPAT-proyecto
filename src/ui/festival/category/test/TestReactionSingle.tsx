@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
+  auxiliar,
   endSerieReaction,
   getSerieReaction,
   getTestReaction,
@@ -163,6 +164,14 @@ export function TestReactionSingle() {
               }}
             >
               Completar serie
+            </button>
+            <button
+              className="ml-5 p-4 bg-blue-700 mt-5 cursor-pointer hover:bg-blue-600 rounded-md"
+              onClick={async () => {
+                console.log(await auxiliar(idSerie));
+              }}
+            >
+              Auxiliar
             </button>
           </div>
         </div>

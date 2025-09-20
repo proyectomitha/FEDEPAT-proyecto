@@ -179,7 +179,7 @@ export async function configure_test_reaction(
     //Guardamos el número de series para iniciar la prueba
     series = Math.ceil(n_members / n_max);
   } else if (
-    n_members <= n_max ** 2 + n_max * strict_mode ||
+    n_members <= n_max ** 2 + n_max * strict_mode && //modificado para evitar el error de orden
     n_members > n_max + strict_mode
   ) {
     // Hay 2 rondas y empieza en la semi final
@@ -218,7 +218,6 @@ export async function configure_test_reaction(
 //Start test Reaction. No depende del orden
 export async function start_test_reaction(id: string) {
   //Obtener datos
-  console.log(`\n\n Hello 5 \n\n`);
   const tReaction: any = await TestReaction.findByPk(id);
   if (!tReaction) return { status: "error", error: "Test reaction not found" };
   const n_series = tReaction.numberSeries;
@@ -242,11 +241,9 @@ export async function start_test_reaction(id: string) {
     order: [["time", "DESC"]],
   });
 
-  console.log(`\n\n Hello 6 ${results} \n\n`);
   //Ordenar por serpenteo
   const orderSerp: any = await serpenteo(results, n_series);
 
-  console.log(`\n\n Hello 7 ${orderSerp[0].memberId} \n\n`);
   //Crear serie y asignamos los participantes
   for (let i = 0; i < orderSerp.length; i++) {
     //Creamos la serie
@@ -268,8 +265,6 @@ export async function start_test_reaction(id: string) {
   return { status: "success" };
 }
 
-// <--- No funciona la adquisición del orden
-
 //Next test Reaction. Evalua el orden y pasa al siguiente en caso de existir
 export async function next_test_reaction(id: string) {
   //id de testReaction
@@ -279,21 +274,22 @@ export async function next_test_reaction(id: string) {
   const n_max: number = tReaction.maxmember;
   const type = tReaction.type;
 
-  //Determinar el order actual de las series <----------------------- Aquí el error
+  //Determinar el order actual de las series
   const memberSerie: any = await SerieReaction.findAll({
     where: {
-      testReactions: id,
+      test_reaction_id: id,
     },
     order: [["order", "DESC"]],
     limit: 1,
   });
-  console.log(`\n\n ${memberSerie.dataValues} \n`);
-  const actual_order = memberSerie.order;
+  const actual_order = memberSerie[0].dataValues.order;
 
-  //Comprobar que las series de la última order están lockeadas <-------------- Hasta aquí el error
-  const memberSerieDontLocked: any = await MemberSerieReaction.findOne({
+  console.log("\n\n helo \n");
+
+  //Cambiar MemberSerieReaction por SerieReaction con el order actual y el test Reaction
+  const memberSerieDontLocked: any = await SerieReaction.findOne({
     where: {
-      serie_reaction_id: id,
+      test_reaction_id: id,
       locked: false,
       order: actual_order,
     },
@@ -301,19 +297,36 @@ export async function next_test_reaction(id: string) {
   if (memberSerieDontLocked)
     return { status: "error", error: "One or more sets are not over" };
 
+  console.log("\n\n helo2 \n");
   //Casuistica
   //En caso de estar en orden 3 lockear
   if (actual_order == 3) await tReaction.update({ locked: true });
+  console.log("\n\n helo3 \n");
 
   //En caso de estar en orden 2 ordenar y configurar la última serie (final)
   if (actual_order == 2) {
-    const members: any = MemberSerieReaction.findAll({
+    //=========Esta consulta está mal, debe traer los miembros pero trae la seri reaction
+    const series: any = await SerieReaction.findAll({
       where: {
         order: actual_order,
-        serie_reaction_id: id,
+        test_reaction_id: id,
       },
     });
+    console.log(`\n\n ${JSON.stringify(series)} \n\n members \n\n`);
+    let members: any[] = [];
+    for (const serie of series) {
+      //añadir a members los miembros con
+      const member: any[] = await MemberSerieReaction.findAll({
+        where: {
+          serie_reaction_id: serie.id,
+        },
+      });
+      console.log(JSON.stringify(member));
+      members = members.concat(member); // <-- reasignar
+    }
     //ordenar las posiciones
+    console.log("\n\n members \n\n");
+    console.log(`\n\n ${JSON.stringify(members)} \n\n`);
     const order_members = ordenarPosiciones(type, members);
 
     //Crear siguiente ronda
@@ -328,13 +341,18 @@ export async function next_test_reaction(id: string) {
       },
     });
     tReaction.addSerieReaction(lastSerie);
+    console.log("\n\n helo4 \n");
+    console.log(`\n\nPrimerosN:\n${JSON.stringify(lastSerie)}\n\n`);
 
     //filtrar los que pasan a la siguiente ronda (n_max) y asignarlos a lastSerie:
     const primerosN = order_members.slice(0, n_max);
+    console.log(`\n\nPrimerosN:\n${JSON.stringify(primerosN)}\n\n`);
     primerosN.map(async (member) => {
-      await lastSerie.addMember(member);
+      const real_member = await Member.findByPk(member.memberId);
+      await lastSerie[0].addMember(real_member);
     });
   }
+  console.log("\n\n helo5 \n");
 
   //En caso de estar en orden 1 ordenar y configurar las siguientes series (semifinal)
   if (actual_order == 1) {
@@ -344,6 +362,7 @@ export async function next_test_reaction(id: string) {
         serie_reaction_id: id,
       },
     });
+    console.log("\n\n helo6 \n");
     //ordenar las posiciones
     const order_members = ordenarPosiciones(type, members);
 
@@ -383,6 +402,7 @@ export async function end_serie_reaction(id: string) {
   const testHability = await SerieReaction.findByPk(id);
   if (!testHability) return { status: "error", error: "Test not found" };
   const test = await testHability.update({ locked: true });
+  console.log(`\n\n ID obtenido: ${test.dataValues.TestReactionId} \n`);
   const next = await next_test_reaction(test.dataValues.TestReactionId);
   return { test, next };
 }

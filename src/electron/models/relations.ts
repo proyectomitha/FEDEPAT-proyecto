@@ -107,7 +107,7 @@ export function make_relations() {
     onUpdate: "CASCADE",
   });
   SerieReaction.belongsTo(TestReaction, {
-    as: "testReactions",
+    as: "testReaction",
   });
 
   // TestResistencia N:1 festival

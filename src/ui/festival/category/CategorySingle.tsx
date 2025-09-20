@@ -134,7 +134,7 @@ export function CategorySingle() {
               </ul>
               <ElementList
                 search={""}
-                elements={showScore}
+                elements={[]} //showScore
                 data={[
                   { attribute: "number", label: "ID", type: "str" },
                   { attribute: "name", label: "Nombre", type: "str" },

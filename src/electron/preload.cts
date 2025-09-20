@@ -61,6 +61,8 @@ electron.contextBridge.exposeInMainWorld("tests", {
 
   endSerieResistance: async (id: string) =>
     await ipcRenderer.invoke("endSerieResistance", { id }),
+
+  auxiliar: async (id: string) => await ipcRenderer.invoke("auxiliar", { id }),
 });
 
 electron.contextBridge.exposeInMainWorld("festivals", {

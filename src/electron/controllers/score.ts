@@ -43,7 +43,7 @@ export async function getGlobalScore(id_club: string) {
               include: [
                 {
                   model: TestReaction,
-                  as: "testReactions",
+                  as: "testReaction",
                   attributes: ["id", "category"],
                   required: false,
                 },
@@ -139,7 +139,7 @@ export async function getGlobalScores() {
               include: [
                 {
                   model: TestReaction,
-                  as: "testReactions",
+                  as: "testReaction",
                   attributes: ["id", "category"],
                   required: false,
                 },
@@ -237,7 +237,7 @@ export async function getGlobalScoreFestival(festival_id: string) {
               include: [
                 {
                   model: TestReaction,
-                  as: "testReactions",
+                  as: "testReaction",
                   where: {
                     festival_id: festival_id,
                   },
@@ -463,7 +463,7 @@ export async function getGlobalScoreCategory(
               include: [
                 {
                   model: TestReaction,
-                  as: "testReactions",
+                  as: "testReaction",
                   where: {
                     category: category,
                     festival_id: festivalId,
