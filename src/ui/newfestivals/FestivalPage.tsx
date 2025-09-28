@@ -11,9 +11,9 @@ export function Festivals() {
   return (
     <>
       <Sidebar currentView="festivals" />
-      <div className="ml-20 lg:ml-50 mt-0 h-full p-10 bg-cyan-950">
+      <div className="ml-20 lg:ml-50 mt-0 h-full p-10">
         <div className="flex flex-col justify-center max-w-2xl mx-auto">
-          <h1 className="mb-5">Festivales</h1>
+          <h1 className="mb-5 text-cyan-800 font-bold">Festivales</h1>
         </div>
         <div className="mx-auto max-w-4xl">
           <div className="grid grid-cols-5 gap-3">

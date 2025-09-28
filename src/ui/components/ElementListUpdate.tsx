@@ -54,7 +54,7 @@ export function ElementListUpdate({
   return (
     <div className={`mt-5 ${overflowy ? "max-h-96 overflow-y-auto" : ""}`}>
       {elements.length === 0 ? (
-        <p className="text-xl py-10">No hay elementos.</p>
+        <p className="text-xl py-10 text-cyan-800">No hay elementos.</p>
       ) : (
         <div className="">
           <table

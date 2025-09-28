@@ -2,6 +2,8 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { updateFestival } from "../fetchs";
 import { toast } from "react-toastify";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type FestivalDTO = {
   id: string;
@@ -16,7 +18,7 @@ function toDate(v: Date | string): Date {
 }
 
 // Convierte string "YYYY-MM-DD" a Date sin desfase
-function fromInputDate(s: string): Date {
+/*function fromInputDate(s: string): Date {
   const [year, month, day] = s.split("-").map(Number);
   return new Date(year, month - 1, day); // mes empieza en 0
 }
@@ -29,7 +31,7 @@ function toInputDate(d: Date | string | undefined): string {
     dateObj.getTime() - dateObj.getTimezoneOffset() * 60000
   );
   return local.toISOString().slice(0, 10);
-}
+}*/
 
 export function UpdateFestivalForm({
   cant_open = false,
@@ -113,16 +115,18 @@ export function UpdateFestivalForm({
               <label className="text-sm font-medium text-gray-900 block mb-2">
                 Fecha de inicio
               </label>
-              <input
-                type="date"
-                value={toInputDate(form.startDate)}
-                onChange={(e) =>
+              <DatePicker
+                selected={form.startDate}
+                //@ts-ignore
+                onChange={(date: Date) =>
                   setForm((f) => ({
                     ...f,
-                    startDate: fromInputDate(e.target.value),
+                    startDate: date ?? new Date(),
                   }))
                 }
-                className="bg-gray-50 sm:text-sm rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 text-gray-500"
+                dateFormat="yyyy-MM-dd"
+                className="bg-gray-50 sm:text-sm rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 text-gray-700"
+                placeholderText="Selecciona una fecha"
               />
             </div>
 
@@ -130,16 +134,18 @@ export function UpdateFestivalForm({
               <label className="text-sm font-medium text-gray-900 block mb-2">
                 Fecha de finalización
               </label>
-              <input
-                type="date"
-                value={toInputDate(form.endDate)}
-                onChange={(e) =>
+              <DatePicker
+                selected={form.endDate}
+                //@ts-ignore
+                onChange={(date: Date) =>
                   setForm((f) => ({
                     ...f,
-                    endDate: fromInputDate(e.target.value),
+                    endDate: date ?? new Date(),
                   }))
                 }
-                className="bg-gray-50 sm:text-sm rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 text-gray-500"
+                dateFormat="yyyy-MM-dd"
+                className="bg-gray-50 sm:text-sm rounded-lg border border-gray-300 focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 text-gray-700"
+                placeholderText="Selecciona una fecha"
               />
             </div>
 

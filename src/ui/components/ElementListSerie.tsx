@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 export function ElementListSerie({
   setId,
@@ -50,7 +50,7 @@ export function ElementListSerie({
       }`}
     >
       {elements.length === 0 ? (
-        <p className="text-xl py-10">No hay elementos.</p>
+        <p className="text-xl py-10 text-cyan-800">No hay elementos.</p>
       ) : (
         <table
           className={`w-full p-10 text-left whitespace-nowrap bg-cyan-600 ${

@@ -9,7 +9,8 @@
 }
 
 body {
-  background-color: oklch(30.2% 0.056 229.695);
+  /*background-color: oklch(30.2% 0.056 229.695);*/
+  background-color: oklch(97.913% 0.00011 271.152);
 }
 
 .scroll-stable {

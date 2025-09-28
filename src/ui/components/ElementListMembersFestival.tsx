@@ -42,7 +42,7 @@ export function ElementListMembersFestival({
   return (
     <div className="mt-5 max-h-96 overflow-y-auto  scroll-stable">
       {elements.length === 0 ? (
-        <p>No hay elementos.</p>
+        <p className="text-cyan-800">No hay elementos.</p>
       ) : (
         <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600 table-fixed border-collapse">
           <thead className="sticky top-0 bg-cyan-800">

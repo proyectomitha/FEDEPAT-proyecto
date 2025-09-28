@@ -50,26 +50,32 @@ export function ClubSingle() {
   return (
     <>
       <Sidebar currentView="clubs" />
-      <div className="ml-20 lg:ml-50 mt-0 h-full p-10 bg-cyan-950">
-        <h1 className="text-3xl font-semibold mb-8">{dataClub?.club.name}</h1>
+      <div className="ml-20 lg:ml-50 mt-0 h-full p-10">
+        <h1 className="text-3xl font-semibold mb-8 text-cyan-800">
+          {dataClub?.club.name}
+        </h1>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-cyan-600 p-5 mb-10 rounded-sm">
           <div className="flex mb-3 gap-2">
-            <label className="text-gray-400 text-xl">Dirección:</label>
-            <p className="text-xl">{dataClub?.club.direction}</p>
+            <label className="text-gray-100 text-xl">Dirección:</label>
+            <p className="text-xl text-gray-100">{dataClub?.club.direction}</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-10">
             <div className="flex mb-3 gap-2">
-              <label className="text-gray-400 text-xl">Miembros:</label>
-              <p className="text-xl">{dataClub?.members.length}</p>
+              <label className="text-gray-100 text-xl">Miembros:</label>
+              <p className="text-xl text-gray-100">
+                {dataClub?.members.length}
+              </p>
             </div>
             <div className="flex mb-3 gap-2">
-              <label className="text-gray-400 text-xl">Participaciones:</label>
+              <label className="text-gray-100 text-xl">Participaciones:</label>
               <p className="text-xl">0</p>
             </div>
           </div>
         </div>
-        <h2 className="text-2xl my-3">Miembros del club</h2>
+        <h2 className="text-2xl my-3 text-cyan-800 font-semibold">
+          Miembros del club
+        </h2>
         {/* Añadir barra de busqueda, lista y botón para agregar miembro */}
         <Searcher
           placeholder="Buscar miembro ..."

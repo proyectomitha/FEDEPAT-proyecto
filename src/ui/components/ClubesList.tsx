@@ -40,7 +40,7 @@ export function ClubesList({ search }: { search: string }) {
   return (
     <div className="mt-5">
       {clubes.length === 0 ? (
-        <p>No hay clubes registrados.</p>
+        <p className="text-cyan-800">No hay clubes registrados.</p>
       ) : (
         <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600">
           <thead className="bg-cyan-800">

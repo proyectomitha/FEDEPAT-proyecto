@@ -68,7 +68,9 @@ export function NewFestivalSingle() {
 
     const filtered = dataFestival.members
       .filter((item) =>
-        `${item.name} ${item.lastname}`.toLowerCase().includes(lowerSearch)
+        `${item.name} ${item.lastname} ${item.number ?? ""}`
+          .toLowerCase()
+          .includes(lowerSearch)
       )
       .map((item) => ({
         ...item,
@@ -87,7 +89,9 @@ export function NewFestivalSingle() {
     const filtered = members
       .filter((item) => !festivalMemberIds.includes(item.id)) // 👈 solo los que NO están en el festival
       .filter((item) =>
-        `${item.name} ${item.lastname}`.toLowerCase().includes(lowerSearch)
+        `${item.name} ${item.lastname} ${item.number ?? ""}`
+          .toLowerCase()
+          .includes(lowerSearch)
       )
       .map((item) => ({
         ...item,
@@ -101,7 +105,7 @@ export function NewFestivalSingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 mt-0 h-full p-10 bg-cyan-950">
+      <div className="ml-20 mt-0 h-full p-10 ">
         {/* Editar festival */}
         <UpdateFestivalForm
           cant_open={true}
@@ -127,9 +131,11 @@ export function NewFestivalSingle() {
         />
 
         {/* Mostrar deportistas inscritos */}
-        <div className="grid grid-cols-2 gap-5 justify-center flex-col lg:flex-row">
+        <div className="grid grid-cols-1 gap-5 justify-center flex-col lg:flex-row">
           <div className="col-span-2 xl:col-span-1">
-            <h2 className="text-xl my-5">Participantes inscritos</h2>
+            <h2 className="text-xl my-5 text-cyan-800">
+              Participantes inscritos
+            </h2>
             <Searcher
               onChangeSearch={setSearchMember}
               placeholder="Buscar participante ..."
@@ -151,7 +157,7 @@ export function NewFestivalSingle() {
             />
           </div>
           <div className="col-span-2 xl:col-span-1">
-            <h2 className="text-xl my-5">Añadir participantes</h2>
+            <h2 className="text-xl my-5 text-cyan-800">Añadir participantes</h2>
             <Searcher
               onChangeSearch={setSearchNewMember}
               placeholder="Buscar nuevo participante ..."
@@ -169,7 +175,7 @@ export function NewFestivalSingle() {
                 { attribute: "gender", label: "Sexo", type: "str" },
                 { attribute: "number", label: "ID", type: "str" },
               ]}
-              filter={["name", "lastname"]}
+              filter={["name", "lastname", "number"]}
             />
           </div>
         </div>

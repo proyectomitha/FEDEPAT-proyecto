@@ -40,7 +40,7 @@ export function FestivalList({ search }: { search: string }) {
   return (
     <div className="mt-5">
       {festivals.length === 0 ? (
-        <p>No hay festivales registrados.</p>
+        <p className="text-gray-400">No hay festivales registrados.</p>
       ) : (
         <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600">
           <thead className="bg-cyan-800">

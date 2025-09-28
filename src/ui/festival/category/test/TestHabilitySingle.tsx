@@ -35,7 +35,7 @@ export function TestHabilitySingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 xl:ml-0 mt-0 h-full p-10 bg-cyan-950">
+      <div className="ml-20 xl:ml-0 mt-0 h-full p-10">
         <div className="flex items-center">
           <div className="col-span-1 text-left">
             <button

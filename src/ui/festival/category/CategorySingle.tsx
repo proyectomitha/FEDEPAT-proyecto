@@ -57,7 +57,7 @@ export function CategorySingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 xl:ml-0 mt-0 h-full p-10 bg-cyan-950">
+      <div className="ml-20 xl:ml-0 mt-0 h-full p-10 ">
         <div className="grid grid-cols-4 items-center">
           <div className="col-span-1 text-left">
             <button
@@ -69,12 +69,16 @@ export function CategorySingle() {
               <ArrowLeft className="size-8" />
             </button>
           </div>
-          <h1 className="col-span-3 text-left">Categoría {category}</h1>
+          <h1 className="col-span-3 text-left text-cyan-800 font-bold">
+            Categoría {category}
+          </h1>
         </div>
         <div className="grid grid-cols-2 mt-15 gap-10">
           {/* Zona donde podemos ver el puntaje total de los clubes ordenados */}
           <div className="col-span-2">
-            <h2 className="text-3xl">Ranking de clubes</h2>
+            <h2 className="text-3xl text-cyan-800 font-bold">
+              Ranking de clubes
+            </h2>
             <ElementList
               search={""}
               elements={data ? data.clubesScore : []}
@@ -104,7 +108,9 @@ export function CategorySingle() {
           {/* Zona con los primeros lugares de cada prueba (se cambia al seleccionar la prueba) debajo hay un botón para ir a la prueba */}
           {/* Zona con los botones de las pruebas */}
           <div className="col-span-2">
-            <h2 className="text-3xl">Ranking de prueba</h2>
+            <h2 className="text-3xl text-cyan-800 font-bold">
+              Ranking de prueba
+            </h2>
             <div className="mt-10 bg-cyan-800">
               <ul className="flex bg-cyan-700 -mb-5">
                 <li

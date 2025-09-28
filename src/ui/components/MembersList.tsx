@@ -48,7 +48,7 @@ export function MemberList({
   return (
     <div className="mt-5">
       {members.length === 0 ? (
-        <p>No hay miembros registrados.</p>
+        <p className="text-cyan-800">No hay miembros registrados.</p>
       ) : (
         <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600">
           <thead className="bg-cyan-800">

@@ -35,12 +35,12 @@ export function ElementListAddMembersFestival({
     setFilteredData(filtered);
   }, [search, elements, filter]);
 
-  if (loading) return <p>Cargando clubes...</p>;
+  if (loading) return <p className="text-cyan-800">Cargando clubes...</p>;
 
   return (
     <div className="mt-5 max-h-96 overflow-y-auto  scroll-stable">
       {elements.length === 0 ? (
-        <p>No hay elementos.</p>
+        <p className="text-cyan-800">No hay elementos.</p>
       ) : (
         <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600 table-fixed border-collapse">
           <thead className="sticky top-0 bg-cyan-800">
@@ -69,7 +69,10 @@ export function ElementListAddMembersFestival({
                   }
 
                   return (
-                    <td key={col.attribute as string} className="p-4 pl-8">
+                    <td
+                      key={col.attribute as string}
+                      className="p-4 pl-8 truncate"
+                    >
                       {displayValue}
                     </td>
                   );

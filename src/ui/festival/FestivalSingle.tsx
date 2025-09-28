@@ -71,7 +71,9 @@ export function FestivalSingle() {
 
     const filtered = dataFestival.members
       .filter((item) =>
-        `${item.name} ${item.lastname}`.toLowerCase().includes(lowerSearch)
+        `${item.name} ${item.lastname} ${item.number ?? ""}`
+          .toLowerCase()
+          .includes(lowerSearch)
       )
       .map((item) => ({
         ...item,
@@ -85,8 +87,10 @@ export function FestivalSingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 mt-0 h-full p-10 bg-cyan-950">
-        <h1 className="mb-10">{dataFestival?.festival.name}</h1>
+      <div className="ml-20 mt-0 h-full p-10">
+        <h1 className="mb-10 text-cyan-800 font-bold">
+          {dataFestival?.festival.name}
+        </h1>
 
         {/* Editar festival */}
         <UpdateFestivalForm
@@ -112,9 +116,9 @@ export function FestivalSingle() {
 
         {/* Mostrar deportistas inscritos y pruebas*/}
         <div
-          className={`mt-5 grid grid-cols-2 gap-5 justify-center flex-col lg:flex-row`}
+          className={`mt-5 grid grid-cols-1 gap-5 justify-center flex-col lg:flex-row`}
         >
-          <div className={`col-span-2 xl:col-span-1 bg-cyan-900`}>
+          <div className={`col-span-2 xl:col-span-1 bg-cyan-900 rounded-lg`}>
             <h2 className="text-2xl my-3 text-left ml-4">Participantes</h2>
 
             <div className="px-4">
@@ -134,11 +138,11 @@ export function FestivalSingle() {
                 { attribute: "gender", label: "Sexo", type: "str" },
                 { attribute: "number", label: "ID", type: "str" },
               ]}
-              filter={["name", "lastname"]}
+              filter={["name", "lastname", "number"]}
               overflowy={true}
             />
           </div>
-          <div className={`col-span-2 xl:col-span-1 bg-cyan-900`}>
+          <div className={`col-span-2 xl:col-span-1 bg-cyan-900 rounded-lg`}>
             <div>
               <h2 className="text-2xl my-3 text-left ml-4">Categorias</h2>
               <div className="px-4">
@@ -148,6 +152,7 @@ export function FestivalSingle() {
                 />
               </div>
               <ElementList
+                overflowy={true}
                 search={searchCategory}
                 path="festival/category/"
                 elements={categories}
