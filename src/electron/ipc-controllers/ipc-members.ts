@@ -9,7 +9,8 @@ export function registerIpcMember() {
   });
 
   ipcMain.handle("getMember", async (_event, { id }) => {
-    return await member.get_member(id);
+    const users = await member.get_member(id);
+    return users.map((p) => p.toJSON());
   });
 
   ipcMain.handle("updtateMember", async (_event, { id, data }) => {

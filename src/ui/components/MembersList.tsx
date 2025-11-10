@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Member } from "../types";
-import { calcularEdad } from "../functions";
 
 export function MemberList({
   search,
@@ -20,6 +19,7 @@ export function MemberList({
       try {
         if (getMembersFunction) {
           const data = await getMembersFunction(); // 👈 aquí la llamada
+          console.log(data);
           setMembers(data);
         }
       } catch (error) {
@@ -37,7 +37,10 @@ export function MemberList({
     const lowerSearch = search.toLowerCase();
 
     const filtered = members.filter((item) =>
-      `${item.name} ${item.lastname}`.toLowerCase().includes(lowerSearch)
+      //@ts-ignore
+      `${item.name} ${item.lastname} ${item.club.name} ${item.number}`
+        .toLowerCase()
+        .includes(lowerSearch)
     );
 
     setFilteredData(filtered);
@@ -46,17 +49,17 @@ export function MemberList({
   if (loading) return <p>Cargando miembros...</p>;
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 rounded-l-2xl max-h-[calc(100vh-10rem)] overflow-y-auto custom-scrollbar">
       {members.length === 0 ? (
-        <p className="text-cyan-800">No hay miembros registrados.</p>
+        <p className="text-black">No hay miembros registrados.</p>
       ) : (
-        <table className="w-full p-10 text-left whitespace-nowrap bg-cyan-600">
-          <thead className="bg-cyan-800">
+        <table className="w-full table-fixed p-10 text-left whitespace-nowrap text-black bg-gray-100">
+          <thead className="bg-[#ffb200] sticky top-0 text-lg font-light cursor-default">
             <tr>
               <th className="p-4 pl-8">Nombre</th>
-              <th className="p-4 pl-8">Apellido</th>
-              <th className="p-4 pl-8 text-center">Edad</th>
-              <th className="p-4 pl-8 text-center">Sexo</th>
+              <th className="p-4 pl-8 bg-[#ffc43c]">Apellido</th>
+              <th className="p-4 pl-8 text-center">Género</th>
+              <th className="p-4 pl-8 bg-[#ffc43c] text-center">Club</th>
               <th className="p-4 pl-8 text-center">ID</th>
             </tr>
           </thead>
@@ -65,14 +68,17 @@ export function MemberList({
               <tr
                 key={member.id}
                 onClick={() => navigate(`/members/${member.id}`)}
-                className="hover:bg-cyan-500 cursor-pointer"
+                className="hover:bg-white border-b-3 border-white cursor-pointer"
               >
                 <td className="p-4 pl-8">{member.name}</td>
                 <td className="p-4 pl-8">{member.lastname}</td>
-                <td className="p-4 pl-8 text-center">
-                  {calcularEdad(new Date(member.birth))}
-                </td>
                 <td className="p-4 pl-8 text-center">{member.gender}</td>
+                <td className="p-4 pl-8 text-center">
+                  {
+                    //@ts-ignore
+                    member.club.name
+                  }
+                </td>
                 <td className="p-4 pl-8 text-center">{member.number}</td>
               </tr>
             ))}

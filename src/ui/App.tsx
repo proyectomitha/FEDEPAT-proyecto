@@ -9,6 +9,7 @@ import { FestivalSingle } from "./festival/FestivalSingle";
 import { CategorySingle } from "./festival/category/CategorySingle";
 import { TestReactionSingle } from "./festival/category/test/TestReactionSingle";
 import { TestHabilitySingle } from "./festival/category/test/TestHabilitySingle";
+import { MembersSingle } from "./members/[id]/MemberSingle";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         />
         <Route path="/newfestivals/:id" element={<NewFestivalSingle />} />
         <Route path="/members" element={<Members />} />
+        <Route path="/members/:id" element={<MembersSingle />} />
         <Route path="/clubs" element={<Clubes />} />
         <Route path="/clubs/:id" element={<ClubSingle />} />
       </Routes>

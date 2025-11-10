@@ -10,7 +10,7 @@
 
 body {
   /*background-color: oklch(30.2% 0.056 229.695);*/
-  background-color: oklch(97.913% 0.00011 271.152);
+  background-color: oklch(100% 0.00011 271.152);
 }
 
 .scroll-stable {
@@ -20,4 +20,27 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+/* Estilo para navegadores basados en WebKit (Chrome, Edge, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar:hover {
+  cursor: pointer;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb; /* gray-200 */
+  border-radius: 0px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #797979; /* blue-500 */
+  border-radius: 0px; /* rounded-full */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #525252; /* blue-600 */
 }

@@ -9,15 +9,14 @@ export function Members() {
   return (
     <>
       <Sidebar currentView="members" />
-      <div className="ml-20 lg:ml-50 mt-0 h-full p-10 ">
-        <div className="flex flex-col justify-center max-w-2xl mx-auto">
-          <h1 className="mb-5 text-cyan-800 font-bold">Deportistas</h1>
-        </div>
+      <div className="ml-20 mt-0 h-full p-10 ">
         <Searcher
           onChangeSearch={setSearch}
           placeholder="Buscar deportista ..."
         />
-        <MemberList search={search} getMembersFunction={getMembers} />
+        <div>
+          <MemberList search={search} getMembersFunction={getMembers} />
+        </div>
       </div>
     </>
   );

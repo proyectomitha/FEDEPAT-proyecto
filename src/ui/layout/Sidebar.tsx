@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export function Sidebar({
   currentView,
-  open_t = true,
+  open_t = false,
 }: {
   currentView: string;
   open_t?: boolean;
@@ -14,31 +14,31 @@ export function Sidebar({
   const navItems = [
     {
       label: "Deportistas",
-      icon: <Users />,
+      icon: <Users size={30} />,
       view: "members",
       path: "/members",
     },
     {
       label: "Clubes",
-      icon: <Home />,
+      icon: <Home size={30} />,
       view: "clubs",
       path: "/clubs",
     },
     {
       label: "Festivales",
-      icon: <PartyPopper />,
+      icon: <PartyPopper size={30} />,
       view: "festivals",
       path: "/",
     },
     {
-      label: "Puntuación",
-      icon: <Medal />,
-      view: "puntuacion",
+      label: "Ranking",
+      icon: <Medal size={30} />,
+      view: "ranking",
       path: "/puntuacion",
     },
     {
       label: "Base de datos",
-      icon: <Database />,
+      icon: <Database size={30} />,
       view: "database",
       path: "/database",
     },
@@ -48,28 +48,26 @@ export function Sidebar({
     <>
       {/* Sidebar */}
       <div
-        className={`fixed top-auto left-0 h-full bg-cyan-600 text-white shadow-lg transition-transform z-30 
-          w-19 p-4 flex flex-col gap-4
+        className={`fixed top-auto left-0 h-full text-white transition-transform z-30 p-2
         ${open ? "lg:w-50 translate-x-0" : ""} 
         md:translate-x-0`}
       >
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            onClick={() => {
-              navigate(item.path);
-            }}
-            title={item.label}
-            className={`${
-              currentView === item.view ? "bg-cyan-700" : ""
-            } flex hover:cursor-pointer items-center gap-3 p-2 hover:bg-cyan-700 rounded transition`}
-          >
-            {item.icon}
-            <span className={`hidden ${open ? "lg:inline-block" : ""}`}>
-              {item.label}
-            </span>
-          </button>
-        ))}
+        <div className="bg-[#131314] w-20 p-2 flex flex-col gap-4 h-full rounded-3xl">
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+              }}
+              title={item.label}
+              className={`${
+                currentView === item.view ? "bg-[#47474c]" : ""
+              } flex hover:cursor-pointer items-center gap-3 px-auto py-4 hover:bg-[#47474c] rounded-2xl transition`}
+            >
+              <span className="mx-auto">{item.icon}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </>
   );

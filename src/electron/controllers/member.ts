@@ -1,14 +1,35 @@
 import { Member } from "../models/member.js";
+import { Club } from "../models/club.js";
 import { Op } from "sequelize";
 
 //1 obtener user por id
 export async function get_member(id: string) {
-  return await Member.findByPk(id);
+  const member = await Member.findAll({
+    where: { id: id },
+    include: [
+      {
+        model: Club,
+        as: "club",
+        attributes: ["name", "id"],
+      },
+    ],
+  });
+  return member;
 }
 
 //2 obtener todos los users
 export async function get_members() {
-  return await Member.findAll();
+  const members = await Member.findAll({
+    include: [
+      {
+        model: Club,
+        as: "club",
+        attributes: ["name", "id"],
+      },
+    ],
+  });
+  console.log(members);
+  return members;
 }
 
 //2.5 obtener los participantes de una misma edad
