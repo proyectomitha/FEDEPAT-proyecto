@@ -12,6 +12,10 @@ export function registerIpcClub() {
     return await club.get_club(id);
   });
 
+  ipcMain.handle("createClub", async (_event, { data }) => {
+    return await club.create_club(data);
+  });
+
   ipcMain.handle("updtateClub", async (_event, { id, data }) => {
     return await club.update_club(id, data);
   });

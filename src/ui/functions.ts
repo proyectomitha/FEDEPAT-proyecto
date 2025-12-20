@@ -20,3 +20,11 @@ export function secondsToHMS(totalSeconds: number) {
 export function hmsToSeconds(h: number, m: number, s: number) {
   return h * 3600 + m * 60 + s;
 }
+
+//Obtener fecha
+export function formatDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}

@@ -3,8 +3,10 @@ import { Searcher } from "../layout/Searcher";
 import { Sidebar } from "../layout/Sidebar";
 import { ClubesList } from "../components/ClubesList";
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function Clubes() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   return (
     <>
@@ -18,7 +20,10 @@ export function Clubes() {
             title="Nuevo club"
             className="col-span-3 justify-center ml-auto cursor-pointer"
           >
-            <div className="w-fit p-5 flex gap-5 items-center rounded-2xl text-3xl bg-amber-500 hover:bg-amber-400">
+            <div
+              className="w-fit p-5 flex gap-5 items-center rounded-2xl text-3xl bg-amber-500 hover:bg-amber-400"
+              onClick={() => navigate(`/clubs/new-club`)}
+            >
               <p>Nuevo club</p>
               <Plus size={35} />
             </div>

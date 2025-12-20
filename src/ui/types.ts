@@ -17,6 +17,14 @@ export type Member = {
   birth: Date;
 };
 
+export type NewMember = {
+  name: string;
+  lastname: string;
+  number: string;
+  gender: string;
+  birth: Date;
+};
+
 export type Club = {
   id: string;
   name: string;

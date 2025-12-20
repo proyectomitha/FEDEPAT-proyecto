@@ -54,13 +54,13 @@ export function ClubSingle() {
   return (
     <>
       <Sidebar currentView="clubs" />
-      <div className="ml-20 mt-0 h-full p-10">
-        <div className="mt-10 grid grid-cols-10 gap-4  mb-5">
+      <div className="ml-20 mt-0 h-full px-10 py-3">
+        <div className=" grid grid-cols-10 gap-4 mb-5">
           <h1 className="col-span-8 border-3 rounded-2xl text-4xl text-left font-semibold text-black p-3">
             {dataClub?.club.name}
           </h1>
 
-          <div className="col-span-1 2xl:col-span-1 text-right flex m-auto gap-5">
+          <div className="col-span-2 2xl:col-span-2 flex m-auto gap-5">
             <div
               onClick={() => navigate(`/clubs`)}
               title="Eliminar club"
@@ -70,7 +70,7 @@ export function ClubSingle() {
             </div>
             <div
               title="Editar club"
-              onClick={() => navigate(`/clubs`)}
+              onClick={() => navigate(`/clubs/${id}/edit`)}
               className="justify-center rounded-2xl items-center text-2xl 2xl:text-3xl bg-blue-500 hover:bg-blue-400 p-5 w-full h-full cursor-pointer flex gap-5 max-w-20"
             >
               <Pencil size={32} />
@@ -127,7 +127,8 @@ export function ClubSingle() {
 
           <div
             title="Nuevo deportista"
-            className="col-span-4 lg:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5"
+            onClick={() => navigate(`/clubs/${id}/new-member`)}
+            className="col-span-4 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5"
           >
             <p className="text-lg lg:text-2xl">Nuevo deportista</p>
             <UserPlus size={35} />

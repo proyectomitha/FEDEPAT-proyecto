@@ -20,6 +20,9 @@ electron.contextBridge.exposeInMainWorld("clubs", {
 
   getClub: async (id: string) => await ipcRenderer.invoke("getClub", { id }),
 
+  createClub: async (data: any) =>
+    await ipcRenderer.invoke("createClub", { data }),
+
   updtateClub: async (id: string, data: any) =>
     await ipcRenderer.invoke("updtateClub", { id, data }),
 

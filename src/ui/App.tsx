@@ -10,6 +10,10 @@ import { CategorySingle } from "./festival/category/CategorySingle";
 import { TestReactionSingle } from "./festival/category/test/TestReactionSingle";
 import { TestHabilitySingle } from "./festival/category/test/TestHabilitySingle";
 import { MembersSingle } from "./members/[id]/MemberSingle";
+import { NewMember } from "./clubes/id/newMember/NewMember";
+import { EditMember } from "./members/[id]/editMember/EditMember";
+import { NewClub } from "./clubes/newClub/NewClub";
+import { EditClub } from "./clubes/editClub/EditClub";
 
 function App() {
   return (
@@ -33,8 +37,12 @@ function App() {
         <Route path="/newfestivals/:id" element={<NewFestivalSingle />} />
         <Route path="/members" element={<Members />} />
         <Route path="/members/:id" element={<MembersSingle />} />
+        <Route path="/members/:id/edit" element={<EditMember />} />
         <Route path="/clubs" element={<Clubes />} />
+        <Route path="/clubs/new-club" element={<NewClub />} />
         <Route path="/clubs/:id" element={<ClubSingle />} />
+        <Route path="/clubs/:id/edit" element={<EditClub />} />
+        <Route path="/clubs/:id/new-member" element={<NewMember />} />
       </Routes>
     </div>
   );

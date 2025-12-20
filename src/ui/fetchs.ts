@@ -1,4 +1,4 @@
-import type { Club, Festival, Member } from "./types";
+import type { Club, Festival, Member, NewMember } from "./types";
 //============== Score ===============//
 export async function getGlobalScore(id_club: string) {
   // @ts-ignore
@@ -40,11 +40,26 @@ export async function getClubs() {
   return await window.clubs.getClubs();
 }
 
+export async function addMemberToClub(id_club: string, member: NewMember) {
+  // @ts-ignore
+  return await window.clubs.addMemberToClub(id_club, member);
+}
+
 export async function getClub(
   id_club: string
 ): Promise<{ club: Club; members: Member[] }> {
   // @ts-ignore
   return await window.clubs.getClub(id_club);
+}
+
+export async function createClub(data: any): Promise<any> {
+  // @ts-ignore
+  return await window.clubs.createClub(data);
+}
+
+export async function updateClub(id_club: string, club: Club) {
+  // @ts-ignore
+  return await window.clubs.updtateClub(id_club, club);
 }
 
 //============== Festivals ===============//
@@ -131,6 +146,16 @@ export async function getMembersFromClub(id_club: string): Promise<Member[]> {
 export async function getMember(id_member: string) {
   // @ts-ignore
   return await window.members.getMember(id_member);
+}
+
+export async function deleteMember(id_member: string) {
+  // @ts-ignore
+  return await window.members.deleteMember(id_member);
+}
+
+export async function updateMember(id_member: string, data: Member) {
+  // @ts-ignore
+  return await window.members.updtateMember(id_member, data);
 }
 
 //============== Series ===============//

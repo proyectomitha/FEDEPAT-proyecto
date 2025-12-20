@@ -54,7 +54,7 @@ export function ElementList({
 
   return (
     <div
-      className={`mt-5 rounded-l-2xl max-h-[calc(100vh-20rem)] min-h-[calc(20rem)] overflow-y-auto custom-scrollbar`}
+      className={`mt-5 rounded-l-2xl max-h-[calc(100vh-30rem)] min-h-[calc(15rem)] overflow-y-auto custom-scrollbar`}
     >
       {elements.length === 0 ? (
         <p className="text-xl py-10 text-cyan-800">No hay elementos.</p>

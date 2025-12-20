@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "../../layout/Sidebar";
-import { getMember } from "../../fetchs";
+import { deleteMember, getMember } from "../../fetchs";
 import { useNavigate, useParams } from "react-router-dom";
 import { calcularEdad } from "../../functions";
+import { WarningDelete } from "../../components/WarningDelete";
 import { CornerDownLeft, Pencil, Trash } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
 
 export function MembersSingle() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [dataMember, setDataMember] = useState<any>("");
+  const [warning, setWarning] = useState<boolean>(false);
   const [, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,6 +33,28 @@ export function MembersSingle() {
 
   return (
     <>
+      <ToastContainer />
+      <WarningDelete
+        txt={"¿Seguro que quieres eliminar este usuario?"}
+        isOpen={warning}
+        fn_end={async function (): Promise<void> {
+          if (id == undefined) {
+            setWarning(false);
+            return;
+          }
+          let result: any = await deleteMember(id);
+          if (result != 1) {
+            toast.error("Error en la eliminación del usuario", {
+              theme: "colored",
+            });
+            setWarning(false);
+            navigate(`/clubs/${dataMember[0].club.id}`);
+          }
+        }}
+        onCancel={function (): void {
+          setWarning(false);
+        }}
+      ></WarningDelete>
       <Sidebar currentView="members" />
       <div className="ml-20 mt-0 h-full p-10 ">
         <div className="border-3 rounded-2xl text-4xl font-semibold text-black p-5">
@@ -84,6 +109,9 @@ export function MembersSingle() {
           </div>
           <div className="col-span-5 2xl:col-span-6"></div>
           <div
+            onClick={() => {
+              setWarning(true);
+            }}
             title="Eliminar deportista"
             className="col-span-1 justify-center rounded-2xl items-center text-3xl p-3 bg-red-700 hover:bg-red-600 cursor-pointer flex gap-5"
           >
@@ -91,6 +119,7 @@ export function MembersSingle() {
           </div>
 
           <div
+            onClick={() => navigate(`/members/${id}/edit`)}
             title="Editar deportista"
             className="col-span-1 justify-center rounded-2xl items-center text-3xl p-3 bg-blue-700 hover:bg-blue-500 cursor-pointer flex gap-5"
           >
