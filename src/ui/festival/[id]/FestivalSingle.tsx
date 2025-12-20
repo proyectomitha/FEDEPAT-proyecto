@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { Searcher } from "../layout/Searcher";
-import { Sidebar } from "../layout/Sidebar";
-import type { Festival, Member } from "../types";
+import { Searcher } from "../../layout/Searcher";
+import { Sidebar } from "../../layout/Sidebar";
+import type { Festival, Member } from "../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   deleteFestival,
   getCategories,
   getFestival,
   startFestival,
-} from "../fetchs";
-import { calcularEdad } from "../functions";
+} from "../../fetchs";
+import { calcularEdad } from "../../functions";
 import { ToastContainer, toast } from "react-toastify";
-import { UpdateFestivalForm } from "../components/UpdateFestivalForm";
-import { ElementList } from "../components/ElementList";
+import { UpdateFestivalForm } from "../../components/UpdateFestivalForm";
+import { ElementList } from "../../components/ElementList";
 
 export function FestivalSingle() {
   const navigate = useNavigate();

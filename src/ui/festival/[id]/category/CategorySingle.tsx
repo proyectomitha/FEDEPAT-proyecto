@@ -1,10 +1,10 @@
 import { ToastContainer } from "react-toastify";
-import { Sidebar } from "../../layout/Sidebar";
+import { Sidebar } from "../../../layout/Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { ElementList } from "../../components/ElementList";
+import { ElementList } from "../../../components/ElementList";
 import { useEffect, useState } from "react";
-import { getGlobalScoreCategory } from "../../fetchs";
+import { getGlobalScoreCategory } from "../../../fetchs";
 
 export function CategorySingle() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export function CategorySingle() {
 
   //scores
   const [scoresClub, setScoresClub] = useState("hability");
-  const [showScore, setShowScore] = useState([]);
+  const [, setShowScore] = useState([]);
 
   useEffect(() => {
     async function fetchData() {

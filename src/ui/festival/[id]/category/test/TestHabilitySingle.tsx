@@ -1,10 +1,10 @@
 import { toast, ToastContainer } from "react-toastify";
-import { Sidebar } from "../../../layout/Sidebar";
+import { Sidebar } from "../../../../layout/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { endTestHability, getTestHability } from "../../../fetchs";
-import { ElementListUpdate } from "../../../components/ElementListUpdate";
+import { endTestHability, getTestHability } from "../../../../fetchs";
+import { ElementListUpdate } from "../../../../components/ElementListUpdate";
 
 export function TestHabilitySingle() {
   const navigate = useNavigate();

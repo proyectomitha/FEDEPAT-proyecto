@@ -1,5 +1,5 @@
 import { ToastContainer } from "react-toastify";
-import { Sidebar } from "../../../layout/Sidebar";
+import { Sidebar } from "../../../../layout/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -8,10 +8,10 @@ import {
   endSerieReaction,
   getSerieReaction,
   getTestReaction,
-} from "../../../fetchs";
-import { TestConfigForm } from "../../../components/TestConfigForm";
-import { ElementListSerie } from "../../../components/ElementListSerie";
-import { ElementListUpdateReaction } from "../../../components/ElementListUpdateReaction";
+} from "../../../../fetchs";
+import { TestConfigForm } from "../../../../components/TestConfigForm";
+import { ElementListSerie } from "../../../../components/ElementListSerie";
+import { ElementListUpdateReaction } from "../../../../components/ElementListUpdateReaction";
 
 export function TestReactionSingle() {
   const navigate = useNavigate();
