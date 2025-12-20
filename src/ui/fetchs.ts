@@ -62,6 +62,13 @@ export async function updateClub(id_club: string, club: Club) {
   return await window.clubs.updtateClub(id_club, club);
 }
 
+export async function deleteClub(
+  id_club: string
+): Promise<{ club: Club; members: Member[] }> {
+  // @ts-ignore
+  return await window.clubs.deleteClub(id_club);
+}
+
 //============== Festivals ===============//
 
 export async function getFestivals() {

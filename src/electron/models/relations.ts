@@ -26,7 +26,7 @@ export function make_relations() {
     foreignKey: "testHabilityId",
     otherKey: "memberId",
     as: "members",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 
@@ -36,7 +36,7 @@ export function make_relations() {
     foreignKey: "memberId",
     otherKey: "serieReactionId",
     as: "serieReactions",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 
@@ -45,7 +45,7 @@ export function make_relations() {
     foreignKey: "serieReactionId",
     otherKey: "memberId",
     as: "members",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 
@@ -55,7 +55,7 @@ export function make_relations() {
     foreignKey: "memberId",
     otherKey: "serieResistanceId",
     as: "serieResistances",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 
@@ -64,23 +64,31 @@ export function make_relations() {
     foreignKey: "serieResistanceId",
     otherKey: "memberId",
     as: "members",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 
   // Miembro N:1 club
-  Club.hasMany(Member, { as: "members" });
-  Member.belongsTo(Club, { as: "club" });
+  Club.hasMany(Member, {
+    as: "members",
+    foreignKey: "clubId",
+  });
+  Member.belongsTo(Club, {
+    as: "club",
+    foreignKey: "clubId",
+    onUpdate: "CASCADE",
+    hooks: true,
+  });
 
   // Miembro N:N festival
   Festival.belongsToMany(Member, {
     through: "MemberFestival",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
   Member.belongsToMany(Festival, {
     through: "MemberFestival",
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     onUpdate: "CASCADE",
   });
 

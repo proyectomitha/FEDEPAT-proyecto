@@ -13,7 +13,7 @@ import { MembersSingle } from "./members/[id]/MemberSingle";
 import { NewMember } from "./clubes/id/newMember/NewMember";
 import { EditMember } from "./members/[id]/editMember/EditMember";
 import { NewClub } from "./clubes/newClub/NewClub";
-import { EditClub } from "./clubes/editClub/EditClub";
+import { EditClub } from "./clubes/id/editClub/EditClub";
 
 function App() {
   return (

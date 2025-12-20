@@ -10,6 +10,13 @@ Member.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
+
+    clubId: {
+      type: DataTypes.UUID,
+      allowNull: true, // importante para paranoid
+      field: "club_id",
+    },
+
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -35,6 +42,7 @@ Member.init(
     sequelize,
     tableName: "Members",
     timestamps: true,
+    paranoid: true,
     underscored: true,
   }
 );

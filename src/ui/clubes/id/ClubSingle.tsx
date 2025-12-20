@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Sidebar } from "../../layout/Sidebar";
 import type { Club, Member } from "../../types";
 import { useNavigate, useParams } from "react-router-dom";
-import { getClub } from "../../fetchs";
+import { deleteClub, getClub } from "../../fetchs";
 import { calcularEdad } from "../../functions";
 import { Searcher } from "../../layout/Searcher";
 import { ElementList } from "../../components/ElementList";
 import { CornerDownLeft, Pencil, Trash, UserPlus } from "lucide-react";
+import { WarningDelete } from "../../components/WarningDelete";
+import { ToastContainer, toast } from "react-toastify";
 
 export function ClubSingle() {
   const { id } = useParams();
@@ -14,6 +16,7 @@ export function ClubSingle() {
   const [searchMember, setSearchMember] = useState("");
   const [filteredData, setFilteredData] = useState<Member[]>([]);
   const [dataClub, setDataClub] = useState<{ club: Club; members: Member[] }>();
+  const [warning, setWarning] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,6 +56,31 @@ export function ClubSingle() {
 
   return (
     <>
+      <ToastContainer />
+      <WarningDelete
+        txt={
+          "Se borrarán los datos de todos los deportistas miembros del club ¿Está seguro que quiere eliminar este club?"
+        }
+        isOpen={warning}
+        fn_end={async function (): Promise<void> {
+          if (id == undefined) {
+            setWarning(false);
+            return;
+          }
+          const result: any = await deleteClub(id);
+          if (result != 1) {
+            toast.error("Error en la eliminación del club", {
+              theme: "colored",
+            });
+            setWarning(false);
+          } else {
+            navigate(`/clubs`);
+          }
+        }}
+        onCancel={function (): void {
+          setWarning(false);
+        }}
+      ></WarningDelete>
       <Sidebar currentView="clubs" />
       <div className="ml-20 mt-0 h-full px-10 py-3">
         <div className=" grid grid-cols-10 gap-4 mb-5">
@@ -62,7 +90,7 @@ export function ClubSingle() {
 
           <div className="col-span-2 2xl:col-span-2 flex m-auto gap-5">
             <div
-              onClick={() => navigate(`/clubs`)}
+              onClick={() => setWarning(true)}
               title="Eliminar club"
               className="justify-center rounded-2xl items-center text-2xl 2xl:text-3xl bg-red-700 hover:bg-red-600 p-5 w-full h-full cursor-pointer flex gap-5 max-w-20"
             >

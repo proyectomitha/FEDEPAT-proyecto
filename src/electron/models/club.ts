@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database/db.js";
+import { Member } from "./member.js";
 
 export class Club extends Model {}
 
@@ -23,6 +24,16 @@ Club.init(
     sequelize,
     tableName: "Clubs",
     timestamps: true,
+    paranoid: true,
     underscored: true,
   }
 );
+/*
+Club.addHook("beforeDestroy", async (club, options) => {
+  await Member.destroy({
+    //@ts-ignore
+    where: { clubId: club.id },
+    transaction: options.transaction,
+  });
+});
+*/

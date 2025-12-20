@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Sidebar } from "../../layout/Sidebar";
+import { Sidebar } from "../../../layout/Sidebar";
 import { CornerDownLeft, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { getClub, updateClub } from "../../fetchs";
+import { getClub, updateClub } from "../../../fetchs";
 import { ToastContainer, toast } from "react-toastify";
-import type { Club } from "../../types";
+import type { Club } from "../../../types";
 
 export function EditClub() {
   const navigate = useNavigate();

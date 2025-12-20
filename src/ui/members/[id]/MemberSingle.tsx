@@ -35,7 +35,7 @@ export function MembersSingle() {
     <>
       <ToastContainer />
       <WarningDelete
-        txt={"¿Seguro que quieres eliminar este usuario?"}
+        txt={"¿Estás seguro que quiere eliminar este usuario?"}
         isOpen={warning}
         fn_end={async function (): Promise<void> {
           if (id == undefined) {
@@ -48,7 +48,8 @@ export function MembersSingle() {
               theme: "colored",
             });
             setWarning(false);
-            navigate(`/clubs/${dataMember[0].club.id}`);
+          } else {
+            navigate(`/clubs/${dataMember[0].club?.id ?? ""}`);
           }
         }}
         onCancel={function (): void {
@@ -69,7 +70,7 @@ export function MembersSingle() {
           <div className="flex mt-5">
             <label className="font-bold">Club:</label>
             <p className="ml-3">
-              {dataMember ? `${dataMember[0].club.name}` : ""}
+              {dataMember ? `${dataMember[0].club?.name ?? "Eliminado"}` : ""}
             </p>
           </div>
           <div className="flex mt-5">
@@ -101,10 +102,10 @@ export function MembersSingle() {
         <div className="mt-20 grid grid-cols-10 gap-4">
           <div
             title="Ir al club del deportista"
-            onClick={() => navigate(`/clubs/${dataMember[0].club.id}`)}
+            onClick={() => navigate(`/clubs/${dataMember[0].club?.id ?? ""}`)}
             className="col-span-3 2xl:col-span-2 justify-center rounded-2xl items-center text-2xl 2xl:text-3xl p-3 bg-black hover:bg-amber-500 cursor-pointer flex gap-5"
           >
-            <p>Ir a Club</p>
+            <p>Ir al club</p>
             <CornerDownLeft size={32} />
           </div>
           <div className="col-span-5 2xl:col-span-6"></div>
@@ -113,7 +114,9 @@ export function MembersSingle() {
               setWarning(true);
             }}
             title="Eliminar deportista"
-            className="col-span-1 justify-center rounded-2xl items-center text-3xl p-3 bg-red-700 hover:bg-red-600 cursor-pointer flex gap-5"
+            className={`col-span-1 justify-center rounded-2xl items-center text-3xl p-3 bg-red-700 hover:bg-red-600 cursor-pointer flex gap-5 ${
+              dataMember[0]?.club ? "" : "hidden"
+            }`}
           >
             <Trash size={35} />
           </div>

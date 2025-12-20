@@ -37,8 +37,10 @@ export function MemberList({
     const lowerSearch = search.toLowerCase();
 
     const filtered = members.filter((item) =>
-      //@ts-ignore
-      `${item.name} ${item.lastname} ${item.club.name} ${item.number}`
+      `${item.name} ${item.lastname} ${
+        //@ts-ignore
+        item.club?.name ?? "Eliminado"
+      } ${item.number}`
         .toLowerCase()
         .includes(lowerSearch)
     );
@@ -68,7 +70,10 @@ export function MemberList({
               <tr
                 key={member.id}
                 onClick={() => navigate(`/members/${member.id}`)}
-                className="hover:bg-white border-b-3 border-white cursor-pointer"
+                className={`hover:bg-white border-b-3 border-white cursor-pointer ${
+                  //@ts-ignore
+                  member.club ? "" : "hidden"
+                }`}
               >
                 <td className="p-4 pl-8">{member.name}</td>
                 <td className="p-4 pl-8">{member.lastname}</td>
@@ -76,7 +81,7 @@ export function MemberList({
                 <td className="p-4 pl-8 text-center">
                   {
                     //@ts-ignore
-                    member.club.name
+                    member.club?.name ?? "Eliminado"
                   }
                 </td>
                 <td className="p-4 pl-8 text-center">{member.number}</td>
