@@ -1,30 +1,54 @@
 import { useEffect, useState } from "react";
-import { Searcher } from "../../layout/Searcher";
-import { Sidebar } from "../../layout/Sidebar";
-import type { Festival, Member } from "../../types";
-import { useNavigate, useParams } from "react-router-dom";
-import { deleteFestival, getCategories, getFestival } from "../../fetchs";
-import { calcularEdad } from "../../functions";
+import { Searcher } from "../../../layout/Searcher";
 import { ToastContainer, toast } from "react-toastify";
-import { ElementList } from "../../components/ElementList";
-import { CornerDownLeft, Eye, Pencil, Printer, Trash } from "lucide-react";
-import { WarningDelete } from "../../components/WarningDelete";
+import { Sidebar } from "../../../layout/Sidebar";
+import { useNavigate, useParams } from "react-router-dom";
+import { CornerDownLeft, Pencil, Play, Trash } from "lucide-react";
+import { calcularEdad } from "../../../functions";
+import {
+  addMemberToFestival,
+  deleteFestival,
+  getFestival,
+  getMembers,
+  removeMemberToFestival,
+  startFestival,
+} from "../../../fetchs";
+import type { Festival, Member } from "../../../types";
+import { WarningDelete } from "../../../components/WarningDelete";
+import { ElementList } from "../../../components/ElementList";
+import { PopUpFestivalAddMember } from "../../../components/PopUpFestivalAddMember";
 
-export function FestivalSingle() {
+export function FestivalDraft() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [warning, setWarning] = useState<boolean>(false);
+  const [popUpMembers, setPopUpMembers] = useState<boolean>(false);
   const [reload, setReload] = useState(true);
-  const [searchMember] = useState("");
-  const [searchCategory, setSearchCategory] = useState("");
-  const [, setFilteredData] = useState<Member[]>([]);
+  const [searchNewMember] = useState("");
+  const [searchMember, setSearchMember] = useState("");
+  const [members, setMembers] = useState<Member[]>([]);
+  const [filteredData, setFilteredData] = useState<Member[]>([]);
+  const [, setFilteredDataN] = useState<Member[]>([]);
   const [dataFestival, setDataFestival] = useState<{
     festival: Festival;
     members: Member[];
   }>();
-  const [categories, setCategories] = useState<String[]>([]);
-  const [, setLoading] = useState(true);
-  const [loadingCategories, setLoadingCategories] = useState(true);
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const members = await getMembers();
+        if (members) setMembers(members);
+      } catch (error) {
+        console.error("Error al obtener otros miembros: ", error);
+      } finally {
+        setReload(false);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
     async function fetchData() {
@@ -32,29 +56,12 @@ export function FestivalSingle() {
         if (!id) throw new Error("ID error");
         const data = await getFestival(id);
         if (data) setDataFestival(data);
-        window.localStorage.setItem("id_festival", data.festival.id);
-        const catego = await getCategories(data.festival.id);
-        if (catego) setCategories(catego);
+        console.log(data?.festival);
       } catch (error) {
         console.error("Error al obtener información del festival: ", error);
       } finally {
         setReload(false);
         setLoading(false);
-      }
-    }
-    fetchData();
-  }, [id, reload]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (!dataFestival?.festival.id) return;
-        const catego = await getCategories(dataFestival?.festival.id);
-        if (catego) setCategories(catego);
-      } catch (error) {
-        console.error("Error al obtener información del festival: ", error);
-      } finally {
-        setLoadingCategories(false);
       }
     }
     fetchData();
@@ -79,9 +86,30 @@ export function FestivalSingle() {
     setFilteredData(filtered);
   }, [searchMember, dataFestival?.members, reload]);
 
+  useEffect(() => {
+    const lowerSearch = searchNewMember.toLowerCase();
+    if (!dataFestival) return;
+
+    const festivalMemberIds = dataFestival.members.map((m) => m.id);
+
+    const filtered = members
+      .filter((item) => !festivalMemberIds.includes(item.id)) // 👈 solo los que NO están en el festival
+      .filter((item) =>
+        `${item.name} ${item.lastname} ${item.number ?? ""}`
+          .toLowerCase()
+          .includes(lowerSearch)
+      )
+      .map((item) => ({
+        ...item,
+        age: calcularEdad(item.birth),
+      }));
+
+    setFilteredDataN(filtered);
+  }, [searchNewMember, members, dataFestival?.members, reload]);
   return (
     <>
       <ToastContainer />
+      <Sidebar currentView="festivals" />
       <WarningDelete
         txt={
           "Se borrarán los cambios hechos hasta el momento ¿Está seguro que quiere eliminar este festival?"
@@ -110,8 +138,22 @@ export function FestivalSingle() {
           setWarning(false);
         }}
       ></WarningDelete>
-      <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 mt-0 h-full p-10">
+      <PopUpFestivalAddMember
+        id={id ? id : ""}
+        isOpen={popUpMembers}
+        onCancel={() => setPopUpMembers(false)}
+        members={members}
+        suscriptor={dataFestival?.members ? dataFestival.members : []}
+        update={() => setReload(!reload)}
+        addSuscriptors={function (id: string, membersL: string[]): void {
+          addMemberToFestival(id, membersL);
+        }}
+        removeSuscriptors={function (id: string, membersL: string[]): void {
+          removeMemberToFestival(id, membersL);
+        }}
+      ></PopUpFestivalAddMember>
+      <div className="ml-20 mt-0 h-full p-10 ">
+        {/* Información */}
         <div>
           <div className=" grid grid-cols-10 gap-4 mb-5">
             <h1 className="col-span-8 border-3 rounded-2xl text-4xl text-left font-semibold text-black p-3">
@@ -165,106 +207,61 @@ export function FestivalSingle() {
             </div>
           </div>
         </div>
-
-        {/* Mostrar deportistas inscritos y pruebas*/}
-        <div
-          className={`mt-5 grid grid-cols-3 gap-5 justify-center flex-col lg:flex-row`}
+        {/* Selección de participantes */}
+        <Searcher
+          placeholder="Buscar atleta ..."
+          onChangeSearch={setSearchMember}
+        />
+        <ElementList
+          search={searchMember}
+          elements={filteredData}
+          loading={loading}
+          data={[
+            { attribute: "name", label: "Nombre", type: "str" },
+            { attribute: "lastname", label: "Apellido", type: "str" },
+            { attribute: "age", label: "Edad", type: "str" },
+            //{ attribute: "birth", label: "Fecha de nacimiento", type: "date" },
+            { attribute: "gender", label: "Sexo", type: "str" },
+            { attribute: "number", label: "ID", type: "str" },
+          ]}
+          filter={["name", "lastname", "number"]}
+        />
+        <button
+          title="Iniciar festival"
+          onClick={() => setPopUpMembers(true)}
+          className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5 mt-5"
         >
-          {/* 
-          <div className={`col-span-2 xl:col-span-1 bg-cyan-900 rounded-lg`}>
-            <h2 className="text-2xl my-3 text-left ml-4">Participantes</h2>
+          <p className="text-lg lg:text-2xl">Añadir participantes</p>
+        </button>
 
-            <div className="px-4">
-              <Searcher
-                onChangeSearch={setSearchMember}
-                placeholder="Buscar participante ..."
-              />
-            </div>
-            <ElementList
-              search={searchMember}
-              elements={filteredData}
-              loading={loading}
-              data={[
-                { attribute: "name", label: "Nombre", type: "str" },
-                { attribute: "lastname", label: "Apellido", type: "str" },
-                { attribute: "age", label: "Edad", type: "str" },
-                { attribute: "gender", label: "Sexo", type: "str" },
-                { attribute: "number", label: "ID", type: "str" },
-              ]}
-              filter={["name", "lastname", "number"]}
-              overflowy={true}
-            />
-          </div>
-          */}
-          {/* Botones izquierda */}
-          <div>
-            <div
-              title="Ver participantes"
-              onClick={() => {
-                navigate(`/festivals/${id}/members`);
-              }}
-              className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5"
-            >
-              <p className="text-lg lg:text-2xl">Participantes</p>
-              <Eye size={35} />
-            </div>
-            <div
-              title="Ver ranking"
-              onClick={() => {
-                navigate(`/festivals/${id}`);
-              }}
-              className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5 mt-5"
-            >
-              <p className="text-lg lg:text-2xl">Ver ranking</p>
-              <Eye size={35} />
-            </div>
-          </div>
-          {/* Categorias */}
-          <div className={`col-span-2 xl:col-span-2 rounded-lg`}>
-            <div>
-              <div className="px-4">
-                <Searcher
-                  onChangeSearch={setSearchCategory}
-                  placeholder="Buscar categoría ..."
-                />
-              </div>
-              <ElementList
-                overflowy={true}
-                search={searchCategory}
-                path="festival/category/"
-                elements={categories}
-                path_id="category"
-                data={[
-                  { attribute: "category", label: "Categoría", type: "str" },
-                ]}
-                filter={["category"]}
-                loading={loadingCategories}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Botones de iniciar o eliminar */}
+        {/* Botones de guardado y play */}
         <div className="mt-5 grid grid-cols-10 gap-4">
-          <button
+          <div
             onClick={() => navigate(`/festivals`)}
             title="Ir a todos los festivales"
             className="col-span-1 2xl:col-span-1 justify-center rounded-2xl items-center text-2xl 2xl:text-3xl p-3 bg-black hover:bg-amber-500 cursor-pointer flex gap-5"
           >
             <CornerDownLeft size={32} />
-          </button>
+          </div>
           <div className="col-span-6 2xl:col-span-6"></div>
 
-          <button
-            title="Imprimir informe"
+          <div
+            title="Iniciar festival"
             onClick={() => {
+              startFestival(id ? id : "");
+              /*
+              if (!result) {
+                toast.error("Error al iniciar el festival", {
+                  theme: "colored",
+                });
+              }*/
               navigate(`/festivals/${id}`);
             }}
-            className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5"
+            className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-green-500 hover:bg-green-400 cursor-pointer flex gap-5"
           >
-            <p className="text-lg lg:text-2xl">Imprimir informe </p>
-            <Printer size={35} />
-          </button>
+            <p className="text-lg lg:text-2xl">Iniciar festival</p>
+            <Play size={35} />
+          </div>
         </div>
       </div>
     </>

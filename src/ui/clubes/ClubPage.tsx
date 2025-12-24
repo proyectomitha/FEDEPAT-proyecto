@@ -20,13 +20,13 @@ export function Clubes() {
             title="Nuevo club"
             className="col-span-3 justify-center ml-auto cursor-pointer"
           >
-            <div
+            <button
               className="w-fit p-5 flex gap-5 items-center rounded-2xl text-3xl bg-amber-500 hover:bg-amber-400"
               onClick={() => navigate(`/clubs/new-club`)}
             >
               <p>Nuevo club</p>
               <Plus size={35} />
-            </div>
+            </button>
           </div>
         </div>
       </div>

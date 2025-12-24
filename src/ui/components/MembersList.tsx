@@ -18,8 +18,8 @@ export function MemberList({
     async function fetchData() {
       try {
         if (getMembersFunction) {
-          const data = await getMembersFunction(); // 👈 aquí la llamada
-          console.log(data);
+          const data = await getMembersFunction();
+          //console.log(data);
           setMembers(data);
         }
       } catch (error) {

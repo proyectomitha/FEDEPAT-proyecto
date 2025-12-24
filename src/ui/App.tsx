@@ -4,7 +4,6 @@ import { Festivals } from "./festival/Festivals";
 import { Members } from "./members/MemberPage";
 import { Clubes } from "./clubes/ClubPage";
 import { ClubSingle } from "./clubes/id/ClubSingle";
-import { NewFestivalSingle } from "./newfestivals/[id]/NewFestivalSingle";
 import { FestivalSingle } from "./festival/[id]/FestivalSingle";
 import { CategorySingle } from "./festival/[id]/category/CategorySingle";
 import { TestReactionSingle } from "./festival/[id]/category/test/TestReactionSingle";
@@ -14,6 +13,10 @@ import { NewMember } from "./clubes/id/newMember/NewMember";
 import { EditMember } from "./members/[id]/editMember/EditMember";
 import { NewClub } from "./clubes/newClub/NewClub";
 import { EditClub } from "./clubes/id/editClub/EditClub";
+import { NewFestivalSingle } from "./festival/new-festival/NewFestivalSingle";
+import { FestivalDraft } from "./festival/[id]/draft/FestivalDraft";
+import { EditFestival } from "./festival/[id]/edit-festival/EditFestival";
+import { FestivalMember } from "./festival/[id]/members/FestivalMember";
 
 function App() {
   return (
@@ -21,7 +24,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/festivals" replace />} />
         <Route path="/festivals" element={<Festivals />} />
-        <Route path="/festival/:id" element={<FestivalSingle />} />
+        <Route path="/festivals/new-festival" element={<NewFestivalSingle />} />
+        <Route path="/festivals/:id/edit-festival" element={<EditFestival />} />
+        <Route path="/festivals/:id/draft" element={<FestivalDraft />} />
+        <Route path="/festivals/:id" element={<FestivalSingle />} />
+        <Route path="/festivals/:id/members" element={<FestivalMember />} />
         <Route
           path="/festival/category/:category"
           element={<CategorySingle />}
@@ -34,7 +41,6 @@ function App() {
           path="/festival/category/test/hability"
           element={<TestHabilitySingle />}
         />
-        <Route path="/newfestivals/:id" element={<NewFestivalSingle />} />
         <Route path="/members" element={<Members />} />
         <Route path="/members/:id" element={<MembersSingle />} />
         <Route path="/members/:id/edit" element={<EditMember />} />

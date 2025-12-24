@@ -83,12 +83,12 @@ export function make_relations() {
   // Miembro N:N festival
   Festival.belongsToMany(Member, {
     through: "MemberFestival",
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
   Member.belongsToMany(Festival, {
     through: "MemberFestival",
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
     onUpdate: "CASCADE",
   });
 

@@ -2,10 +2,19 @@ export type Festival = {
   id: string;
   name: string;
   description: string;
+  type: string;
   locked: boolean;
   startDate: Date;
   endDate: Date;
   active: boolean;
+};
+
+export type newFestival = {
+  name: string;
+  description: string;
+  type: string;
+  startDate: Date;
+  endDate: Date;
 };
 
 export type Member = {

@@ -33,7 +33,11 @@ export async function update_festival(id: string, data: any) {
 
 //delete festival
 export async function delete_festival(id: string) {
-  return await Festival.destroy({ where: { id: id } });
+  return await Festival.destroy({
+    where: {
+      id: id,
+    },
+  });
 }
 
 //========================================== FIN DE CRUD

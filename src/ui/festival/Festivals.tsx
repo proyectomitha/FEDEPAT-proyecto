@@ -2,8 +2,8 @@ import { useState } from "react";
 import { FestivalList } from "../components/FestivalList";
 import { Searcher } from "../layout/Searcher";
 import { Sidebar } from "../layout/Sidebar";
-import { createFestival } from "../fetchs";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 export function Festivals() {
   const navigate = useNavigate();
@@ -11,29 +11,28 @@ export function Festivals() {
   return (
     <>
       <Sidebar currentView="festivals" />
-      <div className="ml-20 lg:ml-50 mt-0 h-full p-10">
-        <div className="flex flex-col justify-center max-w-2xl mx-auto">
-          <h1 className="mb-5 text-cyan-800 font-bold">Festivales</h1>
-        </div>
-        <div className="mx-auto max-w-4xl">
-          <div className="grid grid-cols-5 gap-3">
-            <div className="col-span-4">
-              <Searcher
-                onChangeSearch={setSearch}
-                placeholder="Buscar festival ..."
-              />
-            </div>
+      <div className="ml-20 mt-0 h-full p-10 ">
+        <Searcher
+          onChangeSearch={setSearch}
+          placeholder="Buscar festival ..."
+        />
+        <FestivalList search={search} />
+
+        <div className="mt-10 grid grid-cols-10 gap-4">
+          <div className="col-span-7"></div>
+
+          <div
+            title="Nuevo festival"
+            className="col-span-3 justify-center ml-auto cursor-pointer"
+          >
             <button
-              className="px-4 h-9 mb-5 rounded-sm bg-blue-600 hover:bg-blue-700 cursor-pointer "
-              onClick={async () => {
-                const newFestival = await createFestival();
-                if (newFestival) navigate(`/newfestivals/${newFestival.id}`);
-              }}
+              className="w-fit p-5 flex gap-5 items-center rounded-2xl text-3xl bg-amber-500 hover:bg-amber-400 cursor-pointer"
+              onClick={() => navigate(`/festivals/new-festival`)}
             >
-              Nuevo festival
+              <p>Nuevo festival</p>
+              <Plus size={35} />
             </button>
           </div>
-          <FestivalList search={search} />
         </div>
       </div>
     </>

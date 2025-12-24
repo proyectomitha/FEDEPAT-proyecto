@@ -1,4 +1,4 @@
-import type { Club, Festival, Member, NewMember } from "./types";
+import type { Club, Festival, Member, newFestival, NewMember } from "./types";
 //============== Score ===============//
 export async function getGlobalScore(id_club: string) {
   // @ts-ignore
@@ -81,29 +81,23 @@ export async function getFestival(id_festival: string) {
   return await window.festivals.getFestival(id_festival);
 }
 
-export async function createFestival(): Promise<Festival> {
+export async function createFestival(data: newFestival): Promise<Festival> {
   //@ts-ignore
-  return await window.festivals.createFestival({
-    name: "Nuevo festival",
+  return await window.festivals.createFestival(data);
+  /*  name: "Nuevo festival",
     description: "Descripción ...",
     startDate: new Date(),
     endDate: new Date(),
-  });
+  });*/
 }
 
-export async function updateFestival(
-  id: string,
-  name: string,
-  description: string,
-  startDate: Date,
-  endDate: Date
-) {
+export async function updateFestival(id: string, data: any) {
   //@ts-ignore
   return await window.festivals.updateFestival(id, {
-    name: name,
-    description: description,
-    startDate: startDate,
-    endDate: endDate,
+    name: data.name,
+    description: data.description,
+    startDate: data.startDate,
+    endDate: data.endDate,
   });
 }
 
