@@ -1,12 +1,14 @@
 import { toast, ToastContainer } from "react-toastify";
 import { Sidebar } from "../../../../layout/Sidebar";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { CornerDownLeft, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { endTestHability, getTestHability } from "../../../../fetchs";
 import { ElementListUpdate } from "../../../../components/ElementListUpdate";
+import { Searcher } from "../../../../layout/Searcher";
 
 export function TestHabilitySingle() {
+  const { id, category } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
   const [reload, setReload] = useState(true);
@@ -35,52 +37,64 @@ export function TestHabilitySingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 xl:ml-0 mt-0 h-full p-10">
-        <div className="flex items-center">
-          <div className="col-span-1 text-left">
-            <button
-              className="p-2 cursor-pointer hover:bg-cyan-500 bg-cyan-600 rounded-xs"
-              onClick={() =>
-                navigate(
-                  `/festival/category/${localStorage.getItem("category")}`
-                )
-              }
-            >
-              <ArrowLeft className="size-8" />
-            </button>
+      <div className="ml-20 mt-0 h-full p-10">
+        <h1 className="col-span-8 border-3 rounded-2xl text-4xl text-left font-semibold text-black p-3">
+          Prueba de habilidad: {category}
+        </h1>
+        <div className="col-span-2">
+          <div className="mt-10">
+            <Searcher onChangeSearch={undefined} />
+            <ElementListUpdate
+              search={""}
+              reload={() => setReload(true)}
+              elements={data.members ? data.members : []}
+              serie_id={data.id}
+              overflowy={true}
+              filter={["id"]}
+              loading={loading}
+              can_update={!data.locked}
+            />
           </div>
-          <h1 className="col-span-3 text-center w-full">Prueba de habilidad</h1>
         </div>
-        <div className="grid grid-cols-2 mt-15 gap-10">
-          <div className="col-span-2">
-            <h2 className="text-3xl">Puntajes</h2>
-            <div className="mt-10 bg-cyan-800">
-              <ElementListUpdate
-                search={""}
-                reload={() => setReload(true)}
-                elements={data.members ? data.members : []}
-                serie_id={data.id}
-                overflowy={true}
-                filter={["id"]}
-                loading={loading}
-                can_update={!data.locked}
-              />
-            </div>
-            <button
-              className="p-4 bg-green-700 mt-5 cursor-pointer hover:bg-green-600 rounded-md"
-              onClick={async () => {
-                const ret = await endTestHability(data.id);
-                ret
-                  ? setReload(true)
-                  : toast.error("Error al configurar test", {
-                      theme: "colored",
-                      autoClose: 2000,
-                    });
-              }}
-            >
-              Completar prueba
-            </button>
-          </div>
+        {/* Botones inferiores */}
+        <div className="mt-5 grid grid-cols-10 gap-4">
+          <button
+            onClick={() => navigate(`/festivals/${id}/category/${category}`)}
+            title="Ir a todos los festivales"
+            className="col-span-1 2xl:col-span-1 justify-center rounded-2xl items-center text-2xl 2xl:text-3xl p-3 bg-black hover:bg-amber-500 cursor-pointer flex gap-5"
+          >
+            <CornerDownLeft size={32} />
+          </button>
+          <div className="col-span-5"></div>
+          <button
+            className="col-span-2 justify-center rounded-2xl items-center text-2xl p-3 bg-blue-500 hover:bg-blue-400 cursor-pointer flex gap-5"
+            onClick={async () => {
+              const ret = await endTestHability(data.id);
+              ret
+                ? setReload(true)
+                : toast.error("Error al configurar test", {
+                    theme: "colored",
+                    autoClose: 2000,
+                  });
+            }}
+          >
+            Guardar
+            <Save size={36} />
+          </button>
+          <button
+            className="col-span-2 justify-center rounded-2xl items-center text-2xl p-3 bg-green-500 hover:bg-green-400 cursor-pointer flex gap-5"
+            onClick={async () => {
+              const ret = await endTestHability(data.id);
+              ret
+                ? setReload(true)
+                : toast.error("Error al configurar test", {
+                    theme: "colored",
+                    autoClose: 2000,
+                  });
+            }}
+          >
+            Terminar
+          </button>
         </div>
       </div>
     </>

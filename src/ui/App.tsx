@@ -30,15 +30,15 @@ function App() {
         <Route path="/festivals/:id" element={<FestivalSingle />} />
         <Route path="/festivals/:id/members" element={<FestivalMember />} />
         <Route
-          path="/festival/category/:category"
+          path="/festivals/:id/category/:category"
           element={<CategorySingle />}
         />
         <Route
-          path="/festival/category/test/reaction"
+          path="/festivals/:id/category/:category/test/reaction"
           element={<TestReactionSingle />}
         />
         <Route
-          path="/festival/category/test/hability"
+          path="/festivals/:id/category/:category/test/hability"
           element={<TestHabilitySingle />}
         />
         <Route path="/members" element={<Members />} />

@@ -170,32 +170,6 @@ export function FestivalSingle() {
         <div
           className={`mt-5 grid grid-cols-3 gap-5 justify-center flex-col lg:flex-row`}
         >
-          {/* 
-          <div className={`col-span-2 xl:col-span-1 bg-cyan-900 rounded-lg`}>
-            <h2 className="text-2xl my-3 text-left ml-4">Participantes</h2>
-
-            <div className="px-4">
-              <Searcher
-                onChangeSearch={setSearchMember}
-                placeholder="Buscar participante ..."
-              />
-            </div>
-            <ElementList
-              search={searchMember}
-              elements={filteredData}
-              loading={loading}
-              data={[
-                { attribute: "name", label: "Nombre", type: "str" },
-                { attribute: "lastname", label: "Apellido", type: "str" },
-                { attribute: "age", label: "Edad", type: "str" },
-                { attribute: "gender", label: "Sexo", type: "str" },
-                { attribute: "number", label: "ID", type: "str" },
-              ]}
-              filter={["name", "lastname", "number"]}
-              overflowy={true}
-            />
-          </div>
-          */}
           {/* Botones izquierda */}
           <div>
             <div
@@ -231,7 +205,7 @@ export function FestivalSingle() {
               <ElementList
                 overflowy={true}
                 search={searchCategory}
-                path="festival/category/"
+                path={`festivals/${id}/category/`}
                 elements={categories}
                 path_id="category"
                 data={[
