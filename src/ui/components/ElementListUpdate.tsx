@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { setScore } from "../fetchs";
-import { hmsToSeconds, secondsToHMS } from "../functions";
+import { calcularEdad } from "../functions";
+import { MemberRow } from "./MemberRow";
 
 export function ElementListUpdate({
   search,
   elements,
   serie_id,
   filter,
-  reload,
   loading = false,
-  overflowy = false,
   can_update = true,
 }: {
   can_update?: boolean;
-  reload: () => void;
-  overflowy?: boolean;
   search: string;
   elements: any[];
   serie_id: string;
@@ -28,19 +25,28 @@ export function ElementListUpdate({
 
   useEffect(() => {
     const lowerSearch = search.toLowerCase();
-
-    const filtered = elements.filter((item) =>
-      filter.some((key) => {
-        const value = String(item[key] ?? "").toLowerCase();
-        return value.includes(lowerSearch);
-      })
-    );
+    if (!elements) return;
+    const filtered = elements
+      .map((item: any) => ({
+        ...item,
+        age: calcularEdad(item.birth),
+      }))
+      .filter((item: any) =>
+        `${item.name} ${item.lastname} ${item.number} ${item.age}`
+          .toLowerCase()
+          .includes(lowerSearch)
+      )
+      .sort((a: any, b: any) => {
+        const aSub = a.MemberTestHability.time;
+        const bSub = b.MemberTestHability.time;
+        return aSub - bSub; //
+      });
 
     setFilteredData(filtered);
 
     // inicializar valores locales (score + time en segundos)
     const init: Record<string, { score: number; time: number }> = {};
-    filtered.forEach((m) => {
+    filtered.forEach((m: any) => {
       init[m.id] = {
         score: m.MemberTestHability?.score ?? 0,
         time: m.MemberTestHability?.time ?? 0,
@@ -49,133 +55,46 @@ export function ElementListUpdate({
     setValues(init);
   }, [search, elements, filter]);
 
+  const updateOnBlur = async (id: string, score: number, time: number) => {
+    if (can_update) {
+      return await setScore(id, serie_id, score, time);
+    }
+  };
+
   if (loading) return <p className="text-xl">Cargando clubes...</p>;
 
   return (
-    <div className={`mt-5 ${overflowy ? "max-h-96 overflow-y-auto" : ""}`}>
+    <div
+      className={`mt-5 rounded-l-2xl max-h-[calc(100vh-25rem)] min-h-[calc(15rem)] overflow-y-auto custom-scrollbar`}
+    >
       {elements.length === 0 ? (
         <p className="text-xl py-10 text-cyan-800">No hay elementos.</p>
       ) : (
         <div className="">
-          <table
-            className={`overflow-x-auto min-w-[900px] text-left whitespace-nowrap bg-cyan-600 ${
-              overflowy ? "border-collapse auto" : ""
-            }`}
-          >
-            <thead className={`bg-cyan-800 ${overflowy ? "sticky top-0" : ""}`}>
+          <table className="w-full table-fixed p-10 text-left whitespace-nowrap text-black bg-gray-100">
+            <thead
+              className={`bg-[#ffb200] sticky top-0 text-lg font-light cursor-default`}
+            >
               <tr>
-                <th className="p-4 px-8">ID</th>
-                <th className="p-4 px-8">Nombre</th>
-                <th className="p-4 px-8">Apellido</th>
-                <th className="p-4 px-8">Puntos</th>
-                <th className="p-4 px-8">Tiempo (HH:MM:SS)</th>
-                {can_update ? <th className="p-4 px-8"></th> : ""}
+                <th className="p-4 bg-[#ffb200]">ID</th>
+                <th className="p-4 bg-[#ffc43c]">Nombre</th>
+                <th className="p-4 bg-[#ffb200]">Apellido</th>
+                <th className="p-4 bg-[#ffc43c]">Puntos</th>
+                <th className="p-4 bg-[#ffb200]">HH:MM:SS.ms</th>
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((member) => {
+              {filteredData.map((member: any) => {
                 const value = values[member.id] || { score: 0, time: 0 };
-                const { h, m, s } = secondsToHMS(value.time);
 
                 return (
-                  <tr key={member.id} className="hover:bg-cyan-500">
-                    <td className="p-4 px-8">{member.number}</td>
-                    <td className="p-4 px-8">{member.name}</td>
-                    <td className="p-4 px-8">{member.lastname}</td>
-                    <td className="p-4 px-8">
-                      <input
-                        type="number"
-                        className="w-20 p-1 rounded text-cyan-700 bg-white"
-                        value={value.score}
-                        onChange={(e) =>
-                          setValues((prev) => ({
-                            ...prev,
-                            [member.id]: {
-                              ...prev[member.id],
-                              score: Number(e.target.value),
-                            },
-                          }))
-                        }
-                      />
-                    </td>
-                    <td className="p-4 px-8 flex gap-1 items-center">
-                      <input
-                        type="number"
-                        min="0"
-                        className="w-14 p-1 rounded text-cyan-700 bg-white"
-                        value={h}
-                        onChange={(e) => {
-                          const newH = Number(e.target.value);
-                          setValues((prev) => ({
-                            ...prev,
-                            [member.id]: {
-                              ...prev[member.id],
-                              time: hmsToSeconds(newH, m, s),
-                            },
-                          }));
-                        }}
-                      />
-                      :
-                      <input
-                        type="number"
-                        min="0"
-                        max="59"
-                        className="w-14 p-1 rounded text-cyan-700 bg-white"
-                        value={m}
-                        onChange={(e) => {
-                          const newM = Number(e.target.value);
-                          setValues((prev) => ({
-                            ...prev,
-                            [member.id]: {
-                              ...prev[member.id],
-                              time: hmsToSeconds(h, newM, s),
-                            },
-                          }));
-                        }}
-                      />
-                      :
-                      <input
-                        type="number"
-                        min="0"
-                        max="59"
-                        className="w-14 p-1 rounded text-cyan-700 bg-white"
-                        value={s}
-                        onChange={(e) => {
-                          const newS = Number(e.target.value);
-                          setValues((prev) => ({
-                            ...prev,
-                            [member.id]: {
-                              ...prev[member.id],
-                              time: hmsToSeconds(h, m, newS),
-                            },
-                          }));
-                        }}
-                      />
-                    </td>
-                    {can_update ? (
-                      <td className="p-4 px-8 w-full text-right">
-                        <button
-                          className="p-2 bg-green-600 cursor-pointer hover:bg-green-500"
-                          onClick={async () => {
-                            console.log(member.id);
-                            console.log(
-                              await setScore(
-                                member.id,
-                                serie_id, //<-- id_Serie
-                                value.score,
-                                value.time
-                              )
-                            );
-                            reload();
-                          }}
-                        >
-                          Actualizar
-                        </button>
-                      </td>
-                    ) : (
-                      ""
-                    )}
-                  </tr>
+                  <MemberRow
+                    key={member.id}
+                    member={member}
+                    value={value}
+                    setValues={setValues}
+                    updateOnBlur={updateOnBlur}
+                  />
                 );
               })}
             </tbody>

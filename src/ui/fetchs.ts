@@ -29,7 +29,8 @@ export async function setScore(
   score: number,
   time: any
 ) {
-  console.log(id_member, id_serie, score, time);
+  console.log("saved - " + score + " - " + time);
+  //console.log(id_member, id_serie, score, time);
   // @ts-ignore
   return await window.score.setScore(id_member, id_serie, score, time);
 }

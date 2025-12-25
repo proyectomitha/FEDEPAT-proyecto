@@ -29,13 +29,13 @@ export function Sidebar({
       icon: <PartyPopper size={30} />,
       view: "festivals",
       path: "/",
-    },
+    } /*
     {
       label: "Ranking",
       icon: <Medal size={30} />,
       view: "ranking",
       path: "/puntuacion",
-    },
+    },*/,
     {
       label: "Base de datos",
       icon: <Database size={30} />,
