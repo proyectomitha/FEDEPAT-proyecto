@@ -397,7 +397,7 @@ export async function end_test_hability(id: string) {
   return await testHability.update({ locked: true });
 }
 
-// Terminar test de habilidad
+// Terminar test de reacción
 export async function end_serie_reaction(id: string) {
   const testHability = await SerieReaction.findByPk(id);
   if (!testHability) return { status: "error", error: "Test not found" };

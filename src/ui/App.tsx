@@ -6,7 +6,7 @@ import { Clubes } from "./clubes/ClubPage";
 import { ClubSingle } from "./clubes/id/ClubSingle";
 import { FestivalSingle } from "./festival/[id]/FestivalSingle";
 import { CategorySingle } from "./festival/[id]/category/CategorySingle";
-import { TestReactionSingle } from "./festival/[id]/category/test/TestReactionSingle";
+import { TestReactionMenu } from "./festival/[id]/category/test/TestReactionMenu";
 import { TestHabilitySingle } from "./festival/[id]/category/test/TestHabilitySingle";
 import { MembersSingle } from "./members/[id]/MemberSingle";
 import { NewMember } from "./clubes/id/newMember/NewMember";
@@ -17,6 +17,7 @@ import { NewFestivalSingle } from "./festival/new-festival/NewFestivalSingle";
 import { FestivalDraft } from "./festival/[id]/draft/FestivalDraft";
 import { EditFestival } from "./festival/[id]/edit-festival/EditFestival";
 import { FestivalMember } from "./festival/[id]/members/FestivalMember";
+import { TestReactionSingle } from "./festival/[id]/category/test/reaction/TestReactionSingle";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
         />
         <Route
           path="/festivals/:id/category/:category/test/reaction"
+          element={<TestReactionMenu />}
+        />
+        <Route
+          path="/festivals/:id/category/:category/test/reaction/:idSerie"
           element={<TestReactionSingle />}
         />
         <Route

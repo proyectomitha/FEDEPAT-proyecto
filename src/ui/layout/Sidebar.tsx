@@ -1,4 +1,4 @@
-import { Users, Database, Medal, PartyPopper, Home } from "lucide-react";
+import { Users, Database, PartyPopper, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function Sidebar({

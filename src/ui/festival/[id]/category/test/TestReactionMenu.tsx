@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import { Sidebar } from "../../../../layout/Sidebar";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, CornerDownLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   auxiliar,
@@ -13,7 +13,8 @@ import { TestConfigForm } from "../../../../components/TestConfigForm";
 import { ElementListSerie } from "../../../../components/ElementListSerie";
 import { ElementListUpdateReaction } from "../../../../components/ElementListUpdateReaction";
 
-export function TestReactionSingle() {
+export function TestReactionMenu() {
+  const { id, category } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
   const [dataSerie, setDataSerie] = useState<any>([]);
@@ -26,10 +27,7 @@ export function TestReactionSingle() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const fest = localStorage.getItem("id_festival");
-        const category = localStorage.getItem("category");
-        if (!fest || !category) return;
-        const dataf = await getTestReaction(fest, category);
+        const dataf = await getTestReaction(id ?? "", category ?? "");
         console.log(dataf);
         if (dataf) setData(dataf);
         setOrder(dataf.numberTests);
@@ -43,6 +41,7 @@ export function TestReactionSingle() {
     fetchData();
   }, [reloadSup]);
 
+  //Esto va en el single
   useEffect(() => {
     async function fetchData() {
       try {
@@ -62,22 +61,10 @@ export function TestReactionSingle() {
     <>
       <ToastContainer />
       <Sidebar currentView="festivals" open_t={false} />
-      <div className="ml-20 xl:ml-0 mt-0 h-full p-10 ">
-        <div className="flex items-center">
-          <div className="col-span-1 text-left">
-            <button
-              className="p-2 cursor-pointer hover:bg-cyan-500 bg-cyan-600 rounded-xs"
-              onClick={() =>
-                navigate(
-                  `/festival/category/${localStorage.getItem("category")}`
-                )
-              }
-            >
-              <ArrowLeft className="size-8" />
-            </button>
-          </div>
-          <h1 className="col-span-3 text-center w-full">Prueba de reacción</h1>
-        </div>
+      <div className="ml-20 mt-0 h-full p-10">
+        <h1 className="col-span-8 border-3 rounded-2xl text-4xl text-left font-semibold text-black p-3">
+          Prueba de reacción: {category}
+        </h1>
 
         <div className={`mt-15 gap-10 ${data.init ? "hidden" : ""}`}>
           <h2 className="text-2xl">La prueba aún no se ha iniciado</h2>
@@ -98,35 +85,39 @@ export function TestReactionSingle() {
             data.init ? "" : "hidden"
           }`}
         >
+          {/* Botones izquierda */}
           <div className="col-span-2">
-            <h2 className="text-3xl mb-5">Prueba</h2>
-            <ul className="flex bg-cyan-700 -mb-5">
+            <ul className="grid grid-cols-1 gap-4 -mb-5">
               <li
-                className={`p-4 text-xl hover:bg-cyan-600 cursor-pointer ${
-                  order == 1 ? "bg-cyan-600" : ""
+                className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
+                  order == 1 ? "bg-amber-400" : "bg-amber-500"
                 } ${data.numberTests < 2 ? "" : "hidden"}`}
                 onClick={() => setOrder(1)}
               >
                 Fase de grupos
               </li>
               <li
-                className={`p-4 text-xl hover:bg-cyan-600 cursor-pointer ${
-                  order === 2 ? "bg-cyan-600" : ""
+                className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
+                  order === 2 ? "bg-amber-400" : "bg-amber-500"
                 } ${data.numberTests < 3 ? "" : "hidden"}`}
                 onClick={() => setOrder(2)}
               >
                 Semifinal
               </li>
               <li
-                className={`p-4 text-xl hover:bg-cyan-600 cursor-pointer ${
-                  order === 3 ? "bg-cyan-600" : ""
+                className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
+                  order === 3 ? "bg-amber-400" : "bg-amber-500"
                 }`}
                 onClick={() => setOrder(3)}
               >
                 Final
               </li>
             </ul>
-            <div className="mt-0 bg-cyan-800">
+          </div>
+
+          {/* Tabla derecha */}
+          <div className="col-span-3">
+            <div className="mt-0 ">
               <ElementListSerie
                 reload={() => setReload(true)}
                 search={String(order)}
@@ -137,15 +128,14 @@ export function TestReactionSingle() {
                 ]}
                 filter={["order"]}
                 loading={loading}
-                id={idSerie}
+                id={id ?? ""}
+                category={category ?? ""}
                 setId={function (id: string): void {
                   setIdSerie(id);
                 }}
               />
             </div>
-          </div>
-          <div className="col-span-3">
-            <h2 className="text-3xl">Puntajes</h2>
+            {/*<h2 className="text-3xl">Puntajes</h2>
             <div className="mt-5 bg-cyan-800">
               <ElementListUpdateReaction
                 search={""}
@@ -172,8 +162,20 @@ export function TestReactionSingle() {
               }}
             >
               Auxiliar
-            </button>
+            </button>*/}
           </div>
+        </div>
+        {/* Botones inferior */}
+        {/* Botones inferiores */}
+        <h1 className="text-zinc-950"></h1>
+        <div className="mt-5 grid grid-cols-10 gap-4">
+          <button
+            onClick={() => navigate(`/festivals/${id}/category/${category}`)}
+            title="Ir a todos los festivales"
+            className="col-span-1 2xl:col-span-1 justify-center rounded-2xl items-center text-2xl 2xl:text-3xl p-3 bg-black hover:bg-amber-500 cursor-pointer flex gap-5"
+          >
+            <CornerDownLeft size={32} />
+          </button>
         </div>
       </div>
     </>

@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 //import { useNavigate } from "react-router-dom";
 
 export function ElementListSerie({
   setId,
   reload,
-  id,
   search,
   elements,
+  id,
+  category,
   data,
   filter,
   loading = false,
-  overflowy = false,
 }: {
   id: string;
+  category: string;
   setId: (id: string) => void;
   overflowy?: boolean;
   search: string;
@@ -22,6 +24,7 @@ export function ElementListSerie({
   loading?: boolean;
   reload: () => void;
 }) {
+  const navigate = useNavigate();
   const [filteredData, setFilteredData] = useState<any[]>([]);
 
   useEffect(() => {
@@ -44,23 +47,20 @@ export function ElementListSerie({
   if (loading) return <p className="text-xl">Cargando clubes...</p>;
 
   return (
-    <div
-      className={`mt-5 ${
-        overflowy ? "max-h-96 overflow-y-auto  scroll-stable" : ""
-      }`}
-    >
+    <div className="rounded-l-2xl max-h-[calc(100vh-10rem)] overflow-y-auto custom-scrollbar">
       {elements.length === 0 ? (
         <p className="text-xl py-10 text-cyan-800">No hay elementos.</p>
       ) : (
-        <table
-          className={`w-full p-10 text-left whitespace-nowrap bg-cyan-600 ${
-            overflowy ? " table-fixed border-collapse" : ""
-          }`}
-        >
-          <thead className={`bg-cyan-800 ${overflowy ? "sticky top-0" : ""}`}>
+        <table className="w-full table-fixed p-10 text-left whitespace-nowrap text-black bg-gray-100">
+          <thead className="bg-[#ffb200] sticky top-0 text-lg font-light cursor-default">
             <tr>
-              {data.map((col) => (
-                <th key={col.label} className="p-4 px-8">
+              {data.map((col, index) => (
+                <th
+                  key={col.label}
+                  className={`p-4 ${
+                    index % 2 === 0 ? "bg-[#ffb200]" : "bg-[#ffc43c]"
+                  }`}
+                >
                   {col.label}
                 </th>
               ))}
@@ -71,12 +71,11 @@ export function ElementListSerie({
               <tr
                 key={club.id}
                 onClick={() => {
-                  setId(club.id);
-                  reload();
+                  navigate(
+                    `/festivals/${id}/category/${category}/test/reaction/${club.id}`
+                  );
                 }}
-                className={`hover:bg-cyan-500 cursor-pointer ${
-                  id === club.id ? "bg-cyan-500" : ""
-                }`}
+                className={`hover:bg-white border-b-3 border-white cursor-pointer`}
               >
                 {data.map((col) => {
                   const value = getNestedValue(club, col.attribute as string);
