@@ -1,8 +1,8 @@
 {
-  "appId": "com.mitha.template",
+  "appId": "com.mitha.patinaje",
   "files": ["dist-react", "dist-electron"],
   "extraResources": ["dist-electron/preload.cjs"],
-  "icon": "./template.png",
+  "icon": "./patinajesmc.png",
   "mac": {
     "target": "dmg"
   },

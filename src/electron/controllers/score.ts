@@ -1,4 +1,3 @@
-import { sequelize } from "../database/db.js";
 import { Club } from "../models/club.js";
 import { Member } from "../models/member.js";
 import {

@@ -13,6 +13,7 @@ import { registerIpcApi } from "./ipc-controllers/ipc-api.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
+    width: 900,
     minWidth: 900, // ancho mínimo
     minHeight: 300, //alto mínimo
     webPreferences: {

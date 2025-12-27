@@ -32,10 +32,10 @@ export async function get_members() {
   return members;
 }
 
-//2.5 obtener los participantes de una misma edad
+/*/2.5 obtener los participantes de una misma edad
 export async function get_members_by_old(from: number, to: number) {
   return null;
-}
+}*/
 
 //3 obtener todos los users entre dos fechas
 export async function get_member_by_birth(from: Date, to: Date) {

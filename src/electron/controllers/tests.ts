@@ -1,7 +1,7 @@
 import { Festival } from "../models/festival.js";
 import { TestHability } from "../models/testHability.js";
 import { SerieReaction, TestReaction } from "../models/testReaction.js";
-import { SerieResistance, TestResistance } from "../models/testResistance.js";
+import { TestResistance } from "../models/testResistance.js";
 import {
   MemberSerieReaction,
   MemberTestHability,
@@ -12,7 +12,6 @@ import {
   serpenteo,
   calcularEdad,
 } from "./auxiliar-functions.js";
-import { Membertype } from "../types-electron.js";
 
 //start festival and create Test Hability
 /**

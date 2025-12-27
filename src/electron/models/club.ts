@@ -1,6 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../database/db.js";
-import { Member } from "./member.js";
 
 export class Club extends Model {}
 

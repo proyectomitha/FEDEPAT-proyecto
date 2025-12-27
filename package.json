@@ -1,5 +1,9 @@
 {
-  "name": "electron-project",
+  "name": "patinaje-smc",
+  "author": {
+    "email": "sergiocaceresmc2002@gmail.com",
+    "name": "Sergio M. Cáceres"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",

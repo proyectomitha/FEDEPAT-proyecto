@@ -1,18 +1,11 @@
-import { Festival } from "../models/festival.js";
 import { TestHability } from "../models/testHability.js";
-import { SerieReaction, TestReaction } from "../models/testReaction.js";
 import { SerieResistance, TestResistance } from "../models/testResistance.js";
 import {
-  MemberSerieReaction,
   MemberSerieResistance,
   MemberTestHability,
 } from "../models/memberTest.js";
 import { Member } from "../models/member.js";
-import {
-  ordenarPosiciones,
-  serpenteo,
-  calcularEdad,
-} from "./auxiliar-functions.js";
+import { ordenarPosiciones, serpenteo } from "./auxiliar-functions.js";
 
 //Configurar la organización de la prueba de reacción e iniciarla
 export async function configure_test_resistance(
