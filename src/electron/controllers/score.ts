@@ -609,7 +609,14 @@ export async function get_score_in_serie_resistance(id: string) {
         attributes: ["score", "time"],
       },
     },
-    order: [[Member, MemberSerieResistance, "score", "DESC"]],
+    order: [
+      [
+        { model: Member, as: "members" },
+        MemberSerieResistance,
+        "score",
+        "DESC",
+      ],
+    ],
   });
   return serie;
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //import { useNavigate } from "react-router-dom";
 
-export function ElementListSerie({
+export function ElementListSerieResistance({
   search,
   elements,
   id,
@@ -70,7 +70,7 @@ export function ElementListSerie({
                 key={club.id}
                 onClick={() => {
                   navigate(
-                    `/festivals/${id}/category/${category}/test/reaction/${club.id}/${type}`
+                    `/festivals/${id}/category/${category}/test/resistence/${club.id}/${type}`
                   );
                 }}
                 className={`hover:bg-white border-b-3 border-white cursor-pointer`}

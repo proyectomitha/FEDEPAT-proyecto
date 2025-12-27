@@ -31,6 +31,11 @@ export function registerIpcScore() {
     return users.map((p: any) => p.toJSON());
   });
 
+  ipcMain.handle("getScoreSerieResistance", async (_event, { id }) => {
+    const users: any = await sc.get_score_in_serie_resistance(id);
+    return users.map((p: any) => p.toJSON());
+  });
+
   ipcMain.handle(
     "setScore",
     async (_event, { id_member, id_serie, score, time }) => {

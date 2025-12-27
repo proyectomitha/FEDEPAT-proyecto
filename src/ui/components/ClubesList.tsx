@@ -38,7 +38,7 @@ export function ClubesList({ search }: { search: string }) {
   if (loading) return <p>Cargando clubes...</p>;
 
   return (
-    <div className="mt-5 rounded-l-2xl max-h-[calc(100vh-17rem)] overflow-y-auto custom-scrollbar">
+    <div className="mt-5 rounded-l-2xl max-h-[calc(100vh-27rem)] min-h-[calc(15rem)] overflow-y-auto custom-scrollbar">
       {clubes.length === 0 ? (
         <p className="text-black">No hay clubes registrados.</p>
       ) : (

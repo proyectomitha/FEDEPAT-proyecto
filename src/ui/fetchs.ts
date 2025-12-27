@@ -198,7 +198,7 @@ export async function getTestResistance(id_festival: string, category: string) {
 
 export async function getSerieResistance(id_serie: string) {
   // @ts-ignore
-  return await window.festivals.getSerieResistance(id_serie);
+  return await window.score.getScoreSerieResistance(id_serie);
 }
 
 export async function endSerieReaction(id_serie: string) {
@@ -206,7 +206,7 @@ export async function endSerieReaction(id_serie: string) {
   return await window.tests.endSerieReaction(id_serie);
 }
 
-export async function endSerieResistancce(id_serie: string) {
+export async function endSerieResistance(id_serie: string) {
   // @ts-ignore
   return await window.tests.endSerieResistance(id_serie);
 }
@@ -220,6 +220,21 @@ export async function updateTestReaction(
 ) {
   //@ts-ignore
   return await window.tests.configureTestReaction(
+    id,
+    type,
+    strict_mode,
+    maxmember
+  );
+}
+
+export async function updateTestResistence(
+  id: string,
+  type: string,
+  maxmember: number,
+  strict_mode: number
+) {
+  //@ts-ignore
+  return await window.tests.configureTestResistance(
     id,
     type,
     strict_mode,

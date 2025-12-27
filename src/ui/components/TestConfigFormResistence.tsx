@@ -1,6 +1,6 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Cog } from "lucide-react";
 import { useEffect, useState } from "react";
-import { updateTestReaction } from "../fetchs";
+import { updateTestResistence } from "../fetchs";
 import { toast } from "react-toastify";
 
 type TestDTO = {
@@ -10,7 +10,7 @@ type TestDTO = {
   strict_mode: number; // 0 | 1
 };
 
-export function TestConfigForm({
+export function TestConfigFormResistence({
   cant_open = true,
   init_open = true,
   test,
@@ -21,7 +21,7 @@ export function TestConfigForm({
   test: TestDTO;
   reload: () => void;
 }) {
-  const [isOpen, setIsOpen] = useState(init_open);
+  const [, setIsOpen] = useState(init_open);
 
   const [form, setForm] = useState<TestDTO>({
     id: test.id ?? "",
@@ -44,32 +44,22 @@ export function TestConfigForm({
   }, [cant_open]);
 
   return (
-    <div className="flex flex-col justify-center w-full">
-      <button
+    <div className="flex flex-col justify-center w-full ">
+      <div
         onClick={() => !cant_open && setIsOpen((o) => !o)}
-        className={`mt-10 mx-auto w-full max-w-2xl px-4 py-2 bg-cyan-800 font-semibold text-white text-2xl flex justify-between rounded-t-lg transition ${
-          isOpen ? "mt-0" : "rounded-b-lg"
-        } ${cant_open ? "" : "hover:bg-cyan-600 cursor-pointer"}`}
+        className={`mt-10 mx-auto w-full max-w-3xl p-5 bg-amber-500 font-semibold text-3xl flex justify-between rounded-t-lg text-black`}
       >
-        Configuración del test
-        <ChevronDown className={`${isOpen ? "hidden" : "size-8"}`} />
-        <ChevronUp
-          className={`${isOpen ? "size-8" : "hidden"} ${
-            cant_open ? "hidden" : ""
-          }`}
-        />
-      </button>
+        Configuración de la prueba de resistencia
+      </div>
 
       <div
-        className={`text-gray-400 mx-auto w-full max-w-2xl border-2 border-t-0 border-cyan-800 rounded-b-lg text-sm p-1 mb-5 ${
-          isOpen ? "" : "hidden"
-        } text-left bg-gray-100`}
+        className={`text-gray-400 mx-auto w-full max-w-3xl rounded-b-lg text-sm p-1 mb-5 text-left bg-gray-100`}
       >
         <div className="p-5 space-y-6 mx-auto">
-          <div className="grid sm:grid-cols-9 md:grid-cols-12 lg:grid-cols-12 gap-6 lg:gap-5">
+          <div className="grid grid-cols-10 gap-5">
             {/* Tipo de test */}
-            <div className="col-span-9 sm:col-span-3 md:col-span-6 lg:col-span-5 xl:col-span-4">
-              <label className="text-sm font-medium text-gray-900 block mb-2">
+            <div className="col-span-5">
+              <label className="text-2xl font-medium text-gray-900 block mb-4 text-left">
                 Tipo de test
               </label>
               <select
@@ -83,9 +73,9 @@ export function TestConfigForm({
             </div>
 
             {/* Máximo miembros */}
-            <div className="col-span-9 sm:col-span-3 md:col-span-6 lg:col-span-4 xl:col-span-3">
-              <label className="text-sm font-medium text-gray-900 block mb-2">
-                Máximo miembros
+            <div className="col-span-5 ">
+              <label className="text-2xl font-medium text-gray-900 block mb-4 text-left">
+                Máximo de atletas por serie
               </label>
               <input
                 type="number"
@@ -102,24 +92,30 @@ export function TestConfigForm({
             </div>
 
             {/* Modo estricto */}
-            <div className="col-span-9 sm:col-span-3 md:col-span-6 lg:col-span-4 xl:col-span-2 flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={form.strict_mode === 0}
-                onChange={(e) =>
-                  setForm({ ...form, strict_mode: e.target.checked ? 0 : 1 })
-                }
-                className="h-5 w-5 text-cyan-600 rounded"
-              />
-              <label className="text-sm font-medium text-gray-900">
-                Modo estricto
-              </label>
+            <div className="col-span-6">
+              <div className="flex items-center gap-5 mb-5">
+                <input
+                  type="checkbox"
+                  checked={form.strict_mode === 0}
+                  onChange={(e) =>
+                    setForm({ ...form, strict_mode: e.target.checked ? 0 : 1 })
+                  }
+                  className="h-10 w-10 text-blue-600 rounded"
+                />
+                <label className="text-2xl font-medium text-gray-900 block text-left">
+                  Modo estricto
+                </label>
+              </div>
+              <p>
+                El modo estricto obliga que todas las series tengan un número de
+                atletas igual o inferior al seleccionado.
+              </p>
             </div>
           </div>
 
-          <div className="pt-5 border-t border-gray-200 rounded-b">
+          <div className="pt-5 border-t border-gray-200 rounded-b flex flex-row-reverse">
             <button
-              className="text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-lg px-5 py-2 text-center cursor-pointer"
+              className="col-span-2 justify-center rounded-2xl items-center text-3xl p-3 bg-blue-700 hover:bg-blue-500 cursor-pointer flex gap-5 text-white"
               onClick={async () => {
                 console.log(
                   form.id,
@@ -127,7 +123,7 @@ export function TestConfigForm({
                   form.maxmember,
                   form.strict_mode
                 );
-                const ret = await updateTestReaction(
+                const ret = await updateTestResistence(
                   form.id,
                   String(form.type),
                   Number(form.maxmember),
@@ -147,7 +143,8 @@ export function TestConfigForm({
                 }
               }}
             >
-              Configurar Test
+              <p>Configurar Test</p>
+              <Cog size={32} />
             </button>
           </div>
         </div>

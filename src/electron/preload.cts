@@ -56,6 +56,25 @@ electron.contextBridge.exposeInMainWorld("tests", {
   nextTestReaction: async (id: string, n_max: number) =>
     await ipcRenderer.invoke("nextTestReaction", { id, n_max }),
 
+  configureTestResistance: async (
+    id: string,
+    type: string,
+    strict_mode: number,
+    n_max: number
+  ) =>
+    await ipcRenderer.invoke("configureTestResistance", {
+      id,
+      type,
+      strict_mode,
+      n_max,
+    }),
+
+  startTestResistance: async (id: string) =>
+    await ipcRenderer.invoke("startTestResistance", { id }),
+
+  nextTestResistance: async (id: string, n_max: number) =>
+    await ipcRenderer.invoke("nextTestResistance", { id, n_max }),
+
   endTestHability: async (id: string) =>
     await ipcRenderer.invoke("endTestHability", { id }),
 
@@ -139,6 +158,9 @@ electron.contextBridge.exposeInMainWorld("score", {
   getScoreSerieReaction: async (id: string) =>
     await ipcRenderer.invoke("getScoreSerieReaction", { id }),
 
+  getScoreSerieResistance: async (id: string) =>
+    await ipcRenderer.invoke("getScoreSerieResistance", { id }),
+
   setScore: async (
     id_member: string,
     id_serie: string,
@@ -146,4 +168,29 @@ electron.contextBridge.exposeInMainWorld("score", {
     time: number
   ) =>
     await ipcRenderer.invoke("setScore", { id_member, id_serie, score, time }),
+});
+
+//Código heredado, para expedientes y base de datos
+electron.contextBridge.exposeInMainWorld("electronAPI", {
+  selectSQLiteFile: () => ipcRenderer.invoke("select-sqlite-file"),
+
+  openFile: (
+    absolutePath: string
+  ): Promise<{ success: boolean; error?: string }> =>
+    ipcRenderer.invoke("open-file", absolutePath),
+
+  selectFileAndCreate: (labId: string) =>
+    ipcRenderer.invoke("select-file-and-save", labId),
+
+  selectFileAndUpdate: (fileId: string) =>
+    ipcRenderer.invoke("select-file-and-update", fileId),
+
+  pdfTratamiento: (fileId: string) =>
+    ipcRenderer.invoke("export-receta-pdf", fileId),
+
+  selectFile: () => ipcRenderer.invoke("select-any-file"),
+
+  selectDB: () => ipcRenderer.invoke("select-database"),
+
+  exportDB: () => ipcRenderer.invoke("export-database"),
 });

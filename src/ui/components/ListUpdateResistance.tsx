@@ -3,7 +3,7 @@ import { setScore } from "../fetchs";
 import { calcularEdad } from "../functions";
 import { MemberRow } from "./MemberRow";
 
-export function ListUpdateReaction({
+export function ListUpdateResistance({
   search,
   elements,
   serie_id,
@@ -67,8 +67,8 @@ export function ListUpdateReaction({
     const init: Record<string, { score: number; time: number }> = {};
     filtered.forEach((m: any) => {
       init[m.id] = {
-        score: m.MemberSerieReaction?.score ?? 0,
-        time: m.MemberSerieReaction?.time ?? 0,
+        score: m.MemberSerieResistance?.score ?? 0,
+        time: m.MemberSerieResistance?.time ?? 0,
       };
     });
     setValues(init);

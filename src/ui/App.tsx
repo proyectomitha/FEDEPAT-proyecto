@@ -18,12 +18,16 @@ import { FestivalDraft } from "./festival/[id]/draft/FestivalDraft";
 import { EditFestival } from "./festival/[id]/edit-festival/EditFestival";
 import { FestivalMember } from "./festival/[id]/members/FestivalMember";
 import { TestReactionSingle } from "./festival/[id]/category/test/reaction/TestReactionSingle";
+import { TestResistenceSingle } from "./festival/[id]/category/test/resistence/TestResistenceSingle";
+import { TestResistenceMenu } from "./festival/[id]/category/test/TestResistenceMenu";
+import { Database } from "./database/Database";
 
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Navigate to="/festivals" replace />} />
+        <Route path="/database" element={<Database />} />
         <Route path="/festivals" element={<Festivals />} />
         <Route path="/festivals/new-festival" element={<NewFestivalSingle />} />
         <Route path="/festivals/:id/edit-festival" element={<EditFestival />} />
@@ -39,13 +43,22 @@ function App() {
           element={<TestReactionMenu />}
         />
         <Route
-          path="/festivals/:id/category/:category/test/reaction/:idSerie"
+          path="/festivals/:id/category/:category/test/reaction/:idSerie/:type"
           element={<TestReactionSingle />}
+        />
+        <Route
+          path="/festivals/:id/category/:category/test/resistence"
+          element={<TestResistenceMenu />}
+        />
+        <Route
+          path="/festivals/:id/category/:category/test/resistence/:idSerie/:type"
+          element={<TestResistenceSingle />}
         />
         <Route
           path="/festivals/:id/category/:category/test/hability"
           element={<TestHabilitySingle />}
         />
+
         <Route path="/members" element={<Members />} />
         <Route path="/members/:id" element={<MembersSingle />} />
         <Route path="/members/:id/edit" element={<EditMember />} />

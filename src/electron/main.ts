@@ -9,6 +9,7 @@ import { registerIpcClub } from "./ipc-controllers/ipc-clubs.js";
 import { registerIpcFestival } from "./ipc-controllers/ipc-festivals.js";
 import { registerIpcScore } from "./ipc-controllers/ipc-score.js";
 import { registerIpcTest } from "./ipc-controllers/ipc-tests.js";
+import { registerIpcApi } from "./ipc-controllers/ipc-api.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
@@ -21,7 +22,9 @@ app.on("ready", async () => {
   try {
     //Conexión a la base de datos y migraciones
     await connectDB();
-    await seed(); // Creación de seed por defecto
+    if (isDev()) {
+      await seed(); // Creación de seed por defecto
+    }
   } catch (error) {
     console.log(error);
   }
@@ -31,6 +34,7 @@ app.on("ready", async () => {
   registerIpcFestival();
   registerIpcScore();
   registerIpcTest();
+  registerIpcApi();
 
   if (isDev()) {
     mainWindow.loadURL("http://localhost:5123");

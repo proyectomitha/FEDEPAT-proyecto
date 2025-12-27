@@ -51,7 +51,7 @@ export function MemberList({
   if (loading) return <p>Cargando miembros...</p>;
 
   return (
-    <div className="mt-5 rounded-l-2xl max-h-[calc(100vh-10rem)] overflow-y-auto custom-scrollbar">
+    <div className="mt-5 rounded-l-2xl max-h-[calc(100vh-17rem)] min-h-[calc(15rem)] overflow-y-auto custom-scrollbar">
       {members.length === 0 ? (
         <p className="text-black">No hay miembros registrados.</p>
       ) : (

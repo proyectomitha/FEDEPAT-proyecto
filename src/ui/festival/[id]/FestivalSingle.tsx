@@ -232,7 +232,9 @@ export function FestivalSingle() {
           <button
             title="Imprimir informe"
             onClick={() => {
-              navigate(`/festivals/${id}`);
+              toast.error("Error: la función aún no está implementada", {
+                theme: "colored",
+              });
             }}
             className="col-span-3 2xl:col-span-3 justify-center rounded-2xl items-center text-3xl p-3 bg-amber-500 hover:bg-amber-400 cursor-pointer flex gap-5"
           >

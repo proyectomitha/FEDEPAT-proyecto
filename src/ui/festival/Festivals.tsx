@@ -12,6 +12,9 @@ export function Festivals() {
     <>
       <Sidebar currentView="festivals" />
       <div className="ml-20 mt-0 h-full p-10 ">
+        <h1 className="col-span-8 border-3 rounded-2xl text-4xl mb-5 text-left font-semibold text-black p-3">
+          Festivales
+        </h1>
         <Searcher
           onChangeSearch={setSearch}
           placeholder="Buscar festival ..."

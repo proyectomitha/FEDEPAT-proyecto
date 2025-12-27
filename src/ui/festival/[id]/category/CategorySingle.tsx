@@ -75,7 +75,7 @@ export function CategorySingle() {
             onClick={() => {
               if (data?.habilityScore[0].locked) {
                 navigate(
-                  `/festivals/${id}/category/${category}/test/resistance`
+                  `/festivals/${id}/category/${category}/test/resistence`
                 );
               } else {
                 toast.error("Aún no se ha realizado la prueba de habilidad", {

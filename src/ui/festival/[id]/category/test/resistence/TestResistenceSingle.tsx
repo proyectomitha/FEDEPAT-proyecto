@@ -3,11 +3,11 @@ import { Sidebar } from "../../../../../layout/Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { CornerDownLeft, Save } from "lucide-react";
 import { useEffect, useState } from "react";
-import { endSerieReaction, getSerieReaction } from "../../../../../fetchs";
+import { endSerieResistance, getSerieResistance } from "../../../../../fetchs";
 import { Searcher } from "../../../../../layout/Searcher";
-import { ListUpdateReaction } from "../../../../../components/ListUpdateReaction";
+import { ListUpdateResistance } from "../../../../../components/ListUpdateResistance";
 
-export function TestReactionSingle() {
+export function TestResistenceSingle() {
   const { id, category, idSerie, type } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
@@ -17,12 +17,16 @@ export function TestReactionSingle() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const dataf = await getSerieReaction(idSerie ?? "");
+        console.log(idSerie);
+        const dataf = await getSerieResistance(idSerie ?? "");
         /*const dataf = await getTestHability(
           id ? id : "",
           category ? category : ""
-        );*/
+        );
+        e59a954a-6580-4fdd-b826-7b1ea5b29445
+        */
         //console.log("dataf cargado");
+        console.log(dataf);
         if (dataf[0]) setData(dataf[0]);
         console.log(dataf[0]);
       } catch (error) {
@@ -46,7 +50,7 @@ export function TestReactionSingle() {
       <div className="ml-20 mt-0 h-full p-10">
         <div className="col-span-8 border-3 rounded-2xl  text-black text-left">
           <h1 className="text-4xl text-left font-semibold text-black p-3">
-            Prueba de reacción: {category}
+            Prueba de resistencia: {category}
           </h1>
           <p className="text-black pl-3 py-5 text-2xl">
             Tipo de prueba: {type == "time" ? "Por tiempo" : "Por puntuación"}
@@ -55,7 +59,7 @@ export function TestReactionSingle() {
         <div className="col-span-2">
           <div className="mt-10">
             <Searcher onChangeSearch={undefined} />
-            <ListUpdateReaction
+            <ListUpdateResistance
               type={type ?? "time"}
               search={""}
               elements={data.members ? data.members : []}
@@ -71,7 +75,7 @@ export function TestReactionSingle() {
         <div className="mt-5 grid grid-cols-10 gap-4">
           <button
             onClick={() =>
-              navigate(`/festivals/${id}/category/${category}/test/reaction`)
+              navigate(`/festivals/${id}/category/${category}/test/resistence`)
             }
             title="Ir a todos los festivales"
             className="col-span-1 2xl:col-span-1 justify-center rounded-2xl items-center text-2xl 2xl:text-3xl p-3 bg-black hover:bg-amber-500 cursor-pointer flex gap-5"
@@ -95,7 +99,7 @@ export function TestReactionSingle() {
               <button
                 className="col-span-2 justify-center rounded-2xl items-center text-2xl p-3 bg-green-500 hover:bg-green-400 cursor-pointer flex gap-5"
                 onClick={async () => {
-                  const ret = await endSerieReaction(idSerie ?? "");
+                  const ret = await endSerieResistance(idSerie ?? "");
                   ret.status != "error"
                     ? setReload(true)
                     : toast.error(`Error al configurar test: ${ret.error}`, {

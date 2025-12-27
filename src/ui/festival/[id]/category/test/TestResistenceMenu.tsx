@@ -3,24 +3,31 @@ import { Sidebar } from "../../../../layout/Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import { CornerDownLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getTestReaction } from "../../../../fetchs";
-import { TestConfigFormReaction } from "../../../../components/TestConfigFormReaction";
-import { ElementListSerie } from "../../../../components/ElementListSerie";
+import { getSerieResistance, getTestResistance } from "../../../../fetchs";
+import { TestConfigFormResistence } from "../../../../components/TestConfigFormResistence";
+import { ElementListSerieResistance } from "../../../../components/ElementListSerieResistance";
 
-export function TestReactionMenu() {
+export function TestResistenceMenu() {
   const { id, category } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
+  const [, setDataSerie] = useState<any>([]);
   const [reloadSup, setReloadSup] = useState(true);
+  const [reload, setReload] = useState(true);
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(1);
+  const [idSerie] = useState("");
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const dataf = await getTestReaction(id ?? "", category ?? "");
+        const dataf = await getTestResistance(id ?? "", category ?? "");
         console.log(dataf);
-        if (dataf) setData(dataf);
+        if (dataf) {
+          setData(dataf);
+        } else {
+          console.log("No hay respuesta");
+        }
         setOrder(dataf.numberTests);
       } catch (error) {
         console.error("Error al obtener información de la prueba: ", error);
@@ -32,6 +39,23 @@ export function TestReactionMenu() {
     fetchData();
   }, [reloadSup]);
 
+  //Esto va en el single
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        console.log("idSerie:" + idSerie);
+        const dataf = await getSerieResistance(idSerie);
+        //console.log(dataf);
+        if (dataf) setDataSerie(dataf[0].members);
+      } catch (error) {
+        console.error("Error al obtener información de la prueba: ", error);
+      } finally {
+        setReload(false);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [idSerie, reload]);
   return (
     <>
       <ToastContainer />
@@ -39,17 +63,16 @@ export function TestReactionMenu() {
       <div className="ml-20 mt-0 h-full p-10">
         <div className="col-span-8 border-3 rounded-2xl  text-black text-left">
           <h1 className="text-4xl text-left font-semibold text-black p-3">
-            Prueba de reacción: {category}
+            Prueba de resistencia: {category}
           </h1>
           <p className="text-black pl-3 py-5 text-2xl">
             Tipo de prueba:{" "}
             {data.type == "time" ? "Por tiempo" : "Por puntuación"}
           </p>
         </div>
-
         <div className={`mt-15 gap-10 ${data.init ? "hidden" : ""}`}>
           <h2 className="text-2xl">La prueba aún no se ha iniciado</h2>
-          <TestConfigFormReaction
+          <TestConfigFormResistence
             test={{
               id: data.id,
               type: data.type,
@@ -99,10 +122,10 @@ export function TestReactionMenu() {
           {/* Tabla derecha */}
           <div className="col-span-3">
             <div className="mt-0 ">
-              <ElementListSerie
+              <ElementListSerieResistance
                 type={data.type ?? "time"}
                 search={String(order)}
-                elements={data.serieReactions ? data.serieReactions : []}
+                elements={data.serieResistances ? data.serieResistances : []}
                 data={[
                   { attribute: "number", label: "Serie", type: "str" },
                   { attribute: "locked", label: "Terminado", type: "str" },

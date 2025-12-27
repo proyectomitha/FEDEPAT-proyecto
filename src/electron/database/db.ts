@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
 import path from "path";
 import { app } from "electron";
+import { isDev } from "../util.js";
 
-const route: string = path.join(
+export const route: string = path.join(
   app.getAppPath(),
+  isDev() ? "." : "../dist-electron/",
   "/dist-database/database.sqlite"
 );
 

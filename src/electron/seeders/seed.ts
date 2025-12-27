@@ -716,7 +716,7 @@ export async function seed() {
     await club2.addMember(member135);
     await club1.addMember(member136);
 
-    /*/Crear festival
+    //Crear festival
     const [festival]: any = await Festival.findOrCreate({
       where: { name: "Torneo de prueba" },
       defaults: { name: "Torneo de prueba" },
@@ -731,10 +731,47 @@ export async function seed() {
       member7.id,
       member8.id,
       member9.id,
+      member100.id,
+      member101.id,
+      member102.id,
+      member103.id,
+      member104.id,
+      member105.id,
+      member106.id,
+      member107.id,
+      member108.id,
+      member109.id,
+      member110.id,
+      member111.id,
+      member112.id,
+      member113.id,
+      member114.id,
+      member115.id,
+      member116.id,
+      member117.id,
+      member118.id,
+      member119.id,
+      member120.id,
+      member121.id,
+      member122.id,
+      member123.id,
+      member124.id,
+      member125.id,
+      member126.id,
+      member127.id,
+      member128.id,
+      member129.id,
+      member130.id,
+      member131.id,
+      member132.id,
+      member133.id,
+      member134.id,
+      member135.id,
+      member136.id,
     ];
     await add_members_to_festival(festival.id, members);
     await start_festival(festival.id);
-    */
+
     console.log("\n\n//========== Seed creado exitosamente.\n\n");
   } catch (error) {
     console.error("\n\n//======= Error en seed:", error);
