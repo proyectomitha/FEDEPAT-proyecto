@@ -74,7 +74,7 @@ export function TestReactionMenu() {
                   order == 1
                     ? "bg-blue-400 hover:bg-blue-500"
                     : "bg-amber-500 hover:bg-amber-400"
-                }`}
+                } ${data.numberTests < 2 ? "" : "hidden"}`}
                 onClick={() => setOrder(1)}
               >
                 Fase de grupos
@@ -84,7 +84,7 @@ export function TestReactionMenu() {
                   order === 2
                     ? "bg-blue-400 hover:bg-blue-500"
                     : "bg-amber-500 hover:bg-amber-400"
-                }`}
+                } ${data.numberTests < 3 ? "" : "hidden"}`}
                 onClick={() => setOrder(2)}
               >
                 Semifinal
