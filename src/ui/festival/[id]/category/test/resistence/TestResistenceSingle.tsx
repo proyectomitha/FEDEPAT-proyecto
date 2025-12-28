@@ -71,7 +71,6 @@ export function TestResistenceSingle() {
           </div>
         </div>
         {/* Botones inferiores */}
-        <h1 className="text-zinc-950"></h1>
         <div className="mt-5 grid grid-cols-10 gap-4">
           <button
             onClick={() =>

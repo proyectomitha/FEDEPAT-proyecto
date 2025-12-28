@@ -71,23 +71,29 @@ export function TestReactionMenu() {
             <ul className="grid grid-cols-1 gap-4 -mb-5">
               <li
                 className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
-                  order == 1 ? "bg-amber-400" : "bg-amber-500"
-                } ${data.numberTests < 2 ? "" : "hidden"}`}
+                  order == 1
+                    ? "bg-blue-400 hover:bg-blue-500"
+                    : "bg-amber-500 hover:bg-amber-400"
+                }`}
                 onClick={() => setOrder(1)}
               >
                 Fase de grupos
               </li>
               <li
                 className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
-                  order === 2 ? "bg-amber-400" : "bg-amber-500"
-                } ${data.numberTests < 3 ? "" : "hidden"}`}
+                  order === 2
+                    ? "bg-blue-400 hover:bg-blue-500"
+                    : "bg-amber-500 hover:bg-amber-400"
+                }`}
                 onClick={() => setOrder(2)}
               >
                 Semifinal
               </li>
               <li
-                className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3 hover:bg-amber-400 cursor-pointer flex gap-5 ${
-                  order === 3 ? "bg-amber-400" : "bg-amber-500"
+                className={`col-span-2 justify-center rounded-2xl items-center text-2xl p-3  cursor-pointer flex gap-5 ${
+                  order === 3
+                    ? "bg-blue-400 hover:bg-blue-500"
+                    : "bg-amber-500 hover:bg-amber-400"
                 }`}
                 onClick={() => setOrder(3)}
               >
@@ -113,40 +119,10 @@ export function TestReactionMenu() {
                 category={category ?? ""}
               />
             </div>
-            {/*<h2 className="text-3xl">Puntajes</h2>
-            <div className="mt-5 bg-cyan-800">
-              <ElementListUpdateReaction
-                search={""}
-                overflowy={true}
-                elements={dataSerie ? dataSerie : []}
-                filter={["id"]}
-                loading={loading}
-                reload={() => setReload(true)}
-                serie_id={idSerie}
-              />
-            </div>
-            <button
-              className="ml-5 p-4 bg-green-700 mt-5 cursor-pointer hover:bg-green-600 rounded-md"
-              onClick={async () => {
-                console.log(await endSerieReaction(idSerie));
-              }}
-            >
-              Completar serie
-            </button>
-            <button
-              className="ml-5 p-4 bg-blue-700 mt-5 cursor-pointer hover:bg-blue-600 rounded-md"
-              onClick={async () => {
-                console.log(await auxiliar(idSerie));
-              }}
-            >
-              Auxiliar
-            </button>*/}
           </div>
         </div>
-        {/* Botones inferior */}
         {/* Botones inferiores */}
-        <h1 className="text-zinc-950"></h1>
-        <div className="mt-5 grid grid-cols-10 gap-4">
+        <div className="mt-15 grid grid-cols-10 gap-4">
           <button
             onClick={() => navigate(`/festivals/${id}/category/${category}`)}
             title="Ir a todos los festivales"

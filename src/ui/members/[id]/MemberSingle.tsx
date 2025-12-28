@@ -35,7 +35,9 @@ export function MembersSingle() {
     <>
       <ToastContainer />
       <WarningDelete
-        txt={"¿Estás seguro que quiere eliminar este usuario?"}
+        txt={
+          "¿Estás seguro que quiere eliminar este usuario? Esto puede modificar la información de algunos eventos ya creados"
+        }
         isOpen={warning}
         fn_end={async function (): Promise<void> {
           if (id == undefined) {

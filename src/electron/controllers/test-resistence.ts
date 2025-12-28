@@ -268,7 +268,7 @@ export async function next_test_resistance(id: string) {
     console.log("\n\n helo7 \n");
 
     //filtrar miembros. los primeros divisor members
-    const next_members = order_members;
+    const next_members = order_members.slice(0, n_max ** 2); //<<<<<<<<<<<<<<<<<<<<<<<<
     console.log("\n\n helo8 \n");
 
     //numero de series de la ronda 2

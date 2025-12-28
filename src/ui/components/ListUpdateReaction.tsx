@@ -40,23 +40,23 @@ export function ListUpdateReaction({
       )
       .sort((a: any, b: any) => {
         if (type == "time") {
-          const aSub = a.MemberSerieResistance.score;
-          const bSub = b.MemberSerieResistance.score;
+          const aSub = a.MemberSerieReaction.score;
+          const bSub = b.MemberSerieReaction.score;
           return bSub - aSub; //de puntuación
         } else {
-          const aSub = a.MemberSerieResistance.time;
-          const bSub = b.MemberSerieResistance.time;
+          const aSub = a.MemberSerieReaction.time;
+          const bSub = b.MemberSerieReaction.time;
           return aSub - bSub; //de tiempo
         }
       })
       .sort((a: any, b: any) => {
         if (type == "time") {
-          const aSub = a.MemberSerieResistance.time;
-          const bSub = b.MemberSerieResistance.time;
+          const aSub = a.MemberSerieReaction.time;
+          const bSub = b.MemberSerieReaction.time;
           return aSub - bSub; //de tiempo
         } else {
-          const aSub = a.MemberSerieResistance.score;
-          const bSub = b.MemberSerieResistance.score;
+          const aSub = a.MemberSerieReaction.score;
+          const bSub = b.MemberSerieReaction.score;
           return bSub - aSub; //
         }
       });
