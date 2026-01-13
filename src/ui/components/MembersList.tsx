@@ -58,11 +58,11 @@ export function MemberList({
         <table className="w-full table-fixed p-10 text-left whitespace-nowrap text-black bg-gray-100">
           <thead className="bg-[#ffb200] sticky top-0 text-lg font-light cursor-default">
             <tr>
+              <th className="p-4 pl-8 text-center">ID</th>
               <th className="p-4 pl-8">Nombre</th>
               <th className="p-4 pl-8 bg-[#ffc43c]">Apellido</th>
               <th className="p-4 pl-8 text-center">Género</th>
               <th className="p-4 pl-8 bg-[#ffc43c] text-center">Club</th>
-              <th className="p-4 pl-8 text-center">ID</th>
             </tr>
           </thead>
           <tbody>
@@ -75,6 +75,7 @@ export function MemberList({
                   member.club ? "" : "hidden"
                 }`}
               >
+                <td className="p-4 pl-8 text-center">{member.number}</td>
                 <td className="p-4 pl-8">{member.name}</td>
                 <td className="p-4 pl-8">{member.lastname}</td>
                 <td className="p-4 pl-8 text-center">{member.gender}</td>
@@ -84,7 +85,6 @@ export function MemberList({
                     member.club?.name ?? "Eliminado"
                   }
                 </td>
-                <td className="p-4 pl-8 text-center">{member.number}</td>
               </tr>
             ))}
           </tbody>

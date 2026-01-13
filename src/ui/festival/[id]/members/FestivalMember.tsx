@@ -76,11 +76,11 @@ export function FestivalMember() {
               elements={filteredData}
               loading={loading}
               data={[
+                { attribute: "number", label: "ID", type: "str" },
                 { attribute: "name", label: "Nombre", type: "str" },
                 { attribute: "lastname", label: "Apellido", type: "str" },
                 { attribute: "age", label: "Edad", type: "str" },
                 { attribute: "gender", label: "Sexo", type: "str" },
-                { attribute: "number", label: "ID", type: "str" },
               ]}
               filter={["name", "lastname", "number"]}
               overflowy={true}
